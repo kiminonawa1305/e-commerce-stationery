@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long>, IUserRepositoryCustom {
+    User findFirstByEmail(String email);
 }

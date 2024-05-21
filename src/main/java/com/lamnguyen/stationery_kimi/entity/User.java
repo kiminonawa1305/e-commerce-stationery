@@ -1,13 +1,22 @@
 package com.lamnguyen.stationery_kimi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,12 +24,22 @@ public class User {
     @Column
     private String avatar;
     @Column
-    private String name;
+    private String firstName;
     @Column
+    private String lastName;
+
+    @Column
+    private String phone;
+
+    @Column
+    @Email(message = "Email không hợp lệ!")
     private String email;
+
     @Column
     private String password;
-    @Column
+
+    @Column(columnDefinition="enum")
+    @ColumnDefault("'user'")
     private String role;
 
     @OneToMany(mappedBy = "user")
@@ -28,4 +47,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Bill> bills;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "verify_id", referencedColumnName = "id")
+    private VerifyEmailStatus verifyEmailStatus;
 }
