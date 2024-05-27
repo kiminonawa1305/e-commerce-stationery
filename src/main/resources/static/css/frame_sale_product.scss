@@ -1,0 +1,28 @@
+.frame_sale_product {
+  &_menu {
+    .menu-item {
+      border: 2px #ffffff solid;
+      border-block: 0;
+      opacity: 0.3;
+      background-color: #051c93;
+      cursor: pointer;
+      transition: 200ms linear;
+    }
+
+    .menu-item.active {
+      opacity: 1;
+      border: 2px #ffffff var(--bs-primary);
+      background-color: var(--bs-primary);
+    }
+  }
+
+  .time-count-down {
+    gap: 10px;
+    letter-spacing: 5px;
+
+    div {
+      padding-left: 10px;
+      padding-right: 5px;
+    }
+  }
+}

@@ -1,0 +1,121 @@
+<html lang="vi" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+<div class="top bg-primary justify-content-center">
+    <div class="container">
+        <div class="row py-3">
+            <div class="logo col-2 text-white p-0">
+                <a th:href="@{/}" class="text-white text-decoration-none ou d-flex">
+                    <img th:src="@{/images/logo/logo.jpg}" alt="Logo" class="rounded me-2" width="50" height="50">
+                    <h1 class="name m-0">Kimi</h1>
+                </a>
+            </div>
+            <div class="search-product col-4 align-content-center">
+                <div class="input-group">
+                    <input id="search-product" type="text" class="form-control rounded rounded-end-0"
+                           placeholder="Recipient's username"
+                           aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <label for="search-product" class="input-group-text rounded rounded-start-0">
+                        <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+                    </label>
+                </div>
+            </div>
+            <div class="contact-menu  col-2 p-0">
+                <a th:href="@{tel:0855354919}"
+                   class="text-decoration-none align-items-center text-white d-flex flex-row">
+                        <span class="contact-menu-icon me-2">
+                            <span class="bg-warning rounded-circle text-primary p-2">
+                                <i class="fa-sharp fa-solid fa-phone p-1"></i>
+                            </span>
+                        </span>
+                    <div class="align-content-center">
+                        <p class="contact-menu-top m-0">Hỗ trợ khách hàng</p>
+                        <p class="contact-menu-bottom fw-bold m-0 text-start">0855354919</p>
+                    </div>
+                </a>
+            </div>
+            <div class="sign-button col-2 text-white  d-flex flex-row">
+                 <span class="sign-button-icon me-2 align-content-center text-nowrap">
+                        <span class="bg-warning rounded-circle text-primary p-2">
+                            <i class="fa-sharp fa-solid fa-user p-1"></i>
+                        </span>
+                 </span>
+                <div id="not-user" class="sign-button-display">
+                    <a th:href="@{sign-up.html}"
+                       class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start">
+                        Đăng ký
+                    </a>
+                    <a th:href="@{sign-in.html}"
+                       class="sign-button-bottom d-inline-block fw-bold m-0 text-decoration-none text-white w-100 text-start">
+                        Đăng nhập
+                    </a>
+                </div>
+                <div th:if="${user} != null" id="have-user" class="sign-button-display">
+                    <a th:href="@{checkouts_ship_info.html}" id="name-user"
+                       class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start fs-5"
+                       style="line-height: 18px">
+                    </a>
+                    <a href="#" id="login-out"
+                       class="sign-button-bottom d-inline-block fw-bold m-0 text-decoration-none text-white w-100 text-start fs-6">
+                        Đăng xuất
+                    </a>
+                </div>
+            </div>
+            <div class="cart-menu col-2 align-content-center">
+                <a href="#" class="d-inline-block text-decoration-none rounded text-white border border-white p-2">
+                        <span class="cart-menu-icon">
+                            <i class="fa-sharp fa-solid fa-cart-shopping fs-4"></i>
+                        </span>
+                    <span class="cart-menu-text fw-bold fs-5">Giỏ hàng</span>
+                    <span class="cart-menu-amount bg-warning p-2 text-center rounded">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottom bg-white">
+    <nav class="container">
+        <div class="row py-3 m-0">
+            <div th:replace="component/menu::menu"></div>
+            <div class="col-9 d-flex gap-2">
+                <div class="col m-0">
+                    <a href="#" class="text-decoration-none fs-5  d-flex align-items-center gap-1">
+                        <img th:src="@{/images/icon/hot_percent.webp}" alt="hot_percent">
+                        <span>Cẩm nang ưu đãi</span>
+                    </a>
+                </div>
+                <div class="col m-0">
+                    <a href="#" class="text-decoration-none fs-5  d-flex align-items-center gap-1">
+                        <img alt="Kiem_tra_don_hang" th:src="@{/images/icon/van.webp}">
+                        <span>Kiểm tra đơn hàng</span>
+                    </a>
+                </div>
+                <div class="col m-0">
+                    <a href="#" class="text-decoration-none fs-5  d-flex align-items-center gap-1">
+                        <img th:src="@{/images/icon/solution_printing.webp}" alt="solution_printing">
+                        <span>Giải pháp in ấn</span>
+                    </a>
+                </div>
+                <div class="col  m-0">
+                    <a href="#" class="text-decoration-none fs-5 d-flex align-items-center gap-1">
+                        <img th:src="@{/images/icon/order_help.png}" alt="solution_printing" width="32" height="32">
+                        <span>Đặc hàng giúp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!--<script>-->
+<!--    const user = JSON.parse(sessionStorage.getItem('user'));-->
+<!--    console.log(user)-->
+<!--    if (user) {-->
+<!--        $('#not-user').hide();-->
+<!--        $('#have-user').show();-->
+<!--        $("#name-user").text("Xin chào " + user.lastName + "," + user.firstName);-->
+<!--    } else {-->
+<!--        $('#have-user').hide();-->
+<!--        $('#not-user').show();-->
+<!--    }-->
+<!--</script>-->
+
+</html>

@@ -1,9 +1,15 @@
 package com.lamnguyen.stationery_kimi.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "product_images")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,0 +1,124 @@
+body {
+    background-color: #f1f1f1;
+}
+
+main section {
+    margin-bottom: 20px;
+}
+
+section .section_header img {
+    height: 400px;
+}
+
+section .section_body {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+section .section_body,
+section .section_footer {
+    background-color: var(--background-section);
+}
+
+section .menu {
+    gap: 10px;
+}
+
+section .button_see_all,
+section .menu-item {
+    background-color: var(--background-menu-item);
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: var(--color-menu-item);
+}
+
+section .menu-item:hover,
+section .menu-item.active {
+    color: var(--color-menu-item-active);
+    background-color: var(--background-menu-item-active);
+}
+
+#carousel {
+    z-index: -1;
+}
+
+.carousel img {
+    height: 400px;
+}
+
+/**************section.deal***************/
+section.deal {
+    --background-section: #0073ec;
+    --background-menu-item: #ec4846;
+    --color-menu-item: #fff;
+}
+
+
+/**************section.printing_paper***************/
+section.printing_paper {
+    --background-section: #35a5d7;
+    --background-menu-item: #004cdc;
+    --color-menu-item: #fff;
+}
+
+/**************section.painting_color***************/
+section.painting_color {
+    --background-section: #f6e9d9;
+    --background-menu-item-active: #fff;
+    --background-menu-item: #ef5b3b;
+    --color-menu-item-active: #ef5b3b;
+    --color-menu-item: #fff;
+}
+
+/**************section.learning_tool***************/
+section.learning_tool {
+    --background-section: #fce6c4;
+    --background-menu-item: #0c4490;
+    --color-menu-item: #fff;
+}
+
+
+/**************section.office_tool***************/
+section.office_tool {
+    --background-section: #0aa6fe;
+    --background-menu-item: #ed4e12;
+    --color-menu-item: #fff;
+}
+
+/**************section.pen***************/
+section.pen {
+    --background-section: #0333bc;
+    --background-menu-item-active: #fff;
+    --background-menu-item: #0181fe;
+    --color-menu-item-active: #0181fe;
+    --color-menu-item: #fff;
+}
+
+
+/**************section.high_class_gift***************/
+section.high_class_gift {
+    --background-section: #161817;
+    --background-menu-item-active: #d0a449;
+    --background-menu-item: #fff;
+    --color-menu-item-active: #fff;
+    --color-menu-item: #000;
+}
+
+section.high_class_gift .button_see_all {
+    background-color: var(--background-menu-item-active);
+    color: var(--color-menu-item-active);
+}
+
+/**************section.book***************/
+section.book {
+    --background-section: #f6b6d3;
+    --background-menu-item-active: #fff;
+    --background-menu-item: #11cd34;
+    --color-menu-item-active: #11cd3;
+    --color-menu-item: #fff;
+}
+
+/*section.book .button_see_all {*/
+/*    background-color: var(--background-menu-item-active);*/
+/*    color: var(--color-menu-item-active);*/
+/*}*/

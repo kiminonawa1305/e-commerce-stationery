@@ -1,0 +1,80 @@
+$color-bg-main: #f5f6fa;
+$color-menu-item: #b4c2df;
+$color-sub-frame: #ffffff;
+$color-bg-product-item: #fafbfb;
+$color-yellow: #ffc107;
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+#main-frame{
+  background-color: $color-bg-main;
+}
+.content {
+  @include box(90%, auto);
+  background-color: $color-sub-frame;
+}
+
+input {
+  outline: 0;
+}
+
+select {
+  @extend input;
+}
+
+.list-products {
+  @include box(auto, 300px);
+  li {
+    display: inline-block;
+    text-align: center;
+  }
+
+  span.state {
+    @include box(1.5rem);
+    display: inline-block;
+  }
+
+  ul:nth-child(odd):not(:first-child) {
+    background-color: $color-bg-product-item
+  }
+
+  .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.product-item {
+  img {
+    @include box(32px, 32px);
+    object-fit: contain;
+    padding: 0;
+    border-radius: 4px;
+  }
+}
+
+.description-state {
+  background-color: $color-bg-main;
+  text-align: center;
+
+  .type-of-state {
+    align-items: center;
+
+    li:last-child {
+      margin: 0 0.5rem;
+      padding: 12px;
+
+    }
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  .bg-icon {
+    @include box(1.5rem);
+  }
+}

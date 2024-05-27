@@ -1,0 +1,98 @@
+<div class="container text-center">
+    <div class="info-items py-2 border-bottom border-dark-subtle">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="info-items__image">
+                <div class="position-relative">
+                    <img src="../image/product/demo_product.webp" alt="" class="object-fit-cover">
+                    <div class="info-items__quantity position-absolute top-0 start-100 translate-middle bg-secondary text-light align-content-center fs-6">
+                        <span >1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="info-items__description text-start p-3">
+                <p>Ream giấy A4 70 gsm IK Copy (500 tờ) - Hàng nhập khẩu Indonesia</p>
+            </div>
+            <div class="info-items__price">
+                <p>69,600<sup class="text-decoration-underline">đ</sup></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="apply-sale py-3 border-bottom border-dark-subtle">
+        <div class="apply-sale-from border-dotted row mx-0 border-primary p-3">
+            <div class="form-floating text-primary col-9 ps-0">
+                <input type="text" class="form-control rounded-0 border-primary" id="floatingSaleID"
+                       placeholder="Mã giảm giá">
+                <label class="mx-2" for="floatingSaleID">Mã giảm giá</label>
+            </div>
+            <button type="submit" class="field-input-btn col-3 btn btn-default btn-disabled bg-info rounded-0">
+                <span class="btn-content text-light">Sử dụng</span>
+            </button>
+        </div>
+
+        <!-- Button trigger modal -->
+        <div class="w-100 d-flex justify-content-start">
+            <button type="button" class="btn-show-sale border-0 bg-body text-danger" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">
+                <i class="fa-solid fa-ticket" aria-hidden="false"></i> Xem thêm mã giảm giá
+            </button>
+        </div>
+
+
+        <div class="vouchers"></div>
+        <div class="list_short_coupons">
+            <span class="short_coupon position-relative d-inline-block fw-bold border border-1 border-danger p-2 m-1 text-danger">
+                <span
+                        data-code="">Giảm 280,000 <sup class="text-decoration-underline">đ</sup>
+                </span>
+            </span>
+            <span class="short_coupon position-relative d-inline-block fw-bold border border-1 border-danger p-2 m-1  text-danger">
+                <span
+                        data-code="">Giảm 280,000 <sup class="text-decoration-underline">đ</sup>
+                </span>
+            </span>
+            <span class="short_coupon position-relative d-inline-block fw-bold border border-1 border-danger p-2 m-1 text-danger">
+                <span
+                        data-code="">Giảm 280,000 <sup class="text-decoration-underline">đ</sup>
+                </span>
+            </span>
+            <span class="short_coupon position-relative d-inline-block fw-bold border border-1 border-danger p-2 m-1  text-danger">
+                <span
+                        data-code="">Giảm 280,000 <sup class="text-decoration-underline">đ</sup>
+                </span>
+            </span>
+            <span class="short_coupon position-relative d-inline-block fw-bold border border-1 border-danger p-2 m-1  text-danger">
+                <span
+                        data-code="">Giảm 280,000 <sup class="text-decoration-underline">đ</sup>
+                </span>
+            </span>
+            <span class="short_coupon position-relative d-inline-block fw-bold border border-1 border-danger p-2 m-1  text-danger">
+                <span
+                        data-code="">Giảm 280,000 <sup class="text-decoration-underline">đ</sup>
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div class="customer-friendly py-3 border-bottom border-dark-subtle">
+        <h4>Chương trình khách hàng thân thiết</h4>
+    </div>
+
+    <div class="show-total-bill py-3 border-bottom border-dark-subtle">
+        <div class="provisional-price d-flex justify-content-between ">
+            <p class="text-body-secondary fw-bold">Tạm tính</p>
+            <p>76,000<sup class="text-decoration-underline">đ</sup></p>
+        </div>
+        <div class="ship-fee d-flex justify-content-between ">
+            <p class="text-body-secondary fw-bold">Phí vận chuyển</p>
+            <p>xx<sup class="text-decoration-underline">đ</sup></p>
+        </div>
+    </div>
+
+    <div class="final-price py-3 d-flex justify-content-between ">
+        <p class="text-body-secondary fw-bold">Tổng cộng</p>
+        <p>76,000<sup class="text-decoration-underline">đ</sup></p>
+    </div>
+</div>
+
+<script defer src="../js/display_info_payments.js"></script>

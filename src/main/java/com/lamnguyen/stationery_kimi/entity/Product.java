@@ -23,41 +23,25 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    @NotNull(message = "Tên không được để trống!")
-    @NotBlank(message = "Tên không được để trống!")
     private String name;
     @Column
-    @NotNull(message = "Số lượng không được để trống!")
-    @NotBlank(message = "Số lượng không được để trống!")
-    private Long quantity;
-    @Column
-    @NotNull(message = "Loại không được để trống!")
-    @NotBlank(message = "Loại không được để trống!")
-    private String type;
-    @Column
-    @NotNull(message = "Mô tả không được để trống!")
-    @NotBlank(message = "Mô tả không được để trống!")
     private String description;
     @Column
-    @NotNull(message = "Giá không được để trống!")
-    @NotBlank(message = "Giá không được để trống!")
     private Integer price;
 
     @Column(name = "`lock`")
     @ColumnDefault("0")
     private Boolean lock;
 
+    @OneToMany(mappedBy = "product")
+    private List<ProductType> productTypes;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @NotNull(message = "Danh mục không được để trống!")
-    @NotBlank(message = "Danh mục không được để trống!")
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "provider_id")
-    @NotNull(message = "Nhà cung cấp không được để trống!")
-    @NotBlank(message = "Nhà cung cấp không được để trống!")
     private Provider provider;
 
     @OneToMany(mappedBy = "product")
@@ -68,4 +52,11 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<BillDetail> billDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<TimeGoldPrice> timeGoldPrices;
 }

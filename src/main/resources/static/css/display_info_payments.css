@@ -1,0 +1,58 @@
+.info-items__image > div {
+  width: 5em;
+  height: 5em;
+}
+.info-items__image > div img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+.info-items__quantity {
+  border-radius: 2px;
+  width: 2em;
+  height: 2em;
+}
+
+.border-dotted {
+  border: 1px dashed;
+}
+
+.short_coupon {
+  cursor: pointer;
+}
+
+.short_coupon span::before {
+  position: absolute;
+  content: "";
+  width: 12px;
+  height: 12px;
+  border: 1px solid #dc3545;
+  border-radius: 50%;
+  /* Halve the circle */
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  /* Rotate the circle */
+  transform: rotate(45deg);
+  background-color: white;
+  top: 36%;
+  left: -6px;
+}
+
+.short_coupon span::after {
+  position: absolute;
+  content: "";
+  width: 12px;
+  height: 12px;
+  border: 1px solid #dc3545;
+  border-radius: 50%;
+  /* Halve the circle */
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  /* Rotate the circle */
+  transform: rotate(225deg);
+  background-color: white;
+  top: 36%;
+  right: -6px;
+}
+
+/*# sourceMappingURL=display_info_payments.css.map */

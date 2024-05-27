@@ -31,4 +31,8 @@ public class ComboProduct {
 
     @OneToMany(mappedBy = "comboProduct")
     private List<BillDetail> billDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
 }

@@ -43,6 +43,12 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:3.2.0'
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
     implementation 'org.springframework.security:spring-security-crypto:6.2.4'
+
+    //Thư viện cho việc crawl dữ liệu
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.1'
+
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.3.0")
 }
 
 tasks.named('test') {

@@ -64,7 +64,11 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     @Override
     public UserDTO register(UserRegisterRequest userRegisterRequest) {
         String email = userRegisterRequest.getEmail();
-        User userExist = userService.findUserByEmail(email);
+        User userExist = null;
+        try {
+            userExist = userService.findUserByEmail(email);
+        } catch (Exception exception) {
+        }
         if (userExist != null && userExist.getVerifyEmailStatus().getType().equals(VerifyEmailStatusType.VERIFY_SUCCESS.toString()))
             throw new ApplicationException(ErrorCode.EMAIL_EXISTED);
 

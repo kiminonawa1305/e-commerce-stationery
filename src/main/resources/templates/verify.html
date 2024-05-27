@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác thực tài khoản</title>
+    <link rel="stylesheet" href="css/sign.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/fontawesome.js" crossorigin="anonymous"></script>
+    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/frame_sale_product.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/menu.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<header></header>
+<main style="padding-block: 100px">
+    <div class="container" id="form">
+        <h1>Xác thực tài khoản</h1>
+        <div class="d-flex code_verify">
+            <input type="text" name="1" class="text_verify">
+            <input type="text" name="2" class="text_verify">
+            <input type="text" name="3" class="text_verify">
+            <input type="text" name="4" class="text_verify ">
+            <input type="text" name="5" class="text_verify ">
+            <input type="text" name="6" class="text_verify">
+            <input type="text" class="text_verify" readonly="" style="width: 0; height: 0; padding: 0"><br>
+        </div>
+        <p class="fs-5 text-body-secondary">Mã xác thực của bạn chỉ có hiệu lục 10 phút.</p>
+        <button id="verify" class="p-2 rounded-1 bg-primary border-0 fs-4 px-5 text-white fw-bold" style="margin-top: 20px">Xác nhận</button>
+    </div>
+</main>
+<footer></footer>
+</body>
+<script type="module" src="js/verify.js"></script>
+</html>

@@ -31,6 +31,8 @@ public class UserRegisterRequest {
 
     @Column
     @Email(message = "Email không hợp lệ!")
+    @NotNull(message = "Email không được để trống!")
+    @NotBlank(message = "Email không được để trống!")
     private String email;
 
     @Column
@@ -39,6 +41,8 @@ public class UserRegisterRequest {
     @Pattern(regexp = "^(?=.*[0-9]).+$", message = "Mật khẩu phải chứa ít nhất 1 chữ số!")
     @Pattern(regexp = "^(?=.*[@#$%^&+=]).+$", message = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt!")
     @Pattern(regexp = "^.{8,}$", message = "Mật khẩu phải chứa ít nhất 8 ký tự!")
+    @NotNull(message = "Password không được để trống!")
+    @NotBlank(message = "Password không được để trống!")
     private String password;
 
     @Column

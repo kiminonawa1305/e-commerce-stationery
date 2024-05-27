@@ -1,0 +1,129 @@
+@import url(bootstrap-reboot.css);
+
+$color-bg-main: #f5f6fa;
+$color-menu-item: #b4c2df;
+$color-sub-frame: #ffffff;
+$color-bg-product-item: #fafbfb;
+$color-yellow: #ffc107;
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+.menu-personal {
+  @include box(auto, 100%);
+  background-color: $color-sub-frame;
+  min-height: auto;
+  max-width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-16%, 1.5rem);
+}
+
+.description-state {
+  background-color: $color-bg-main;
+  text-align: center;
+
+  .type-of-state {
+    align-items: center;
+
+    li:last-child {
+      margin: 0 0.5rem;
+      padding: 12px;
+
+    }
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  .bg-icon {
+    @include box(1.5rem);
+  }
+}
+
+.user-info__avatar {
+  @include box(60px);
+}
+
+.menu-personal__base-info {
+  font-size: small;
+}
+
+.user-info__email {
+  color: $color-menu-item;
+}
+
+.menu-personal__items {
+  .item {
+    cursor: pointer;
+    color: $color-menu-item;
+  }
+
+  .item:hover {
+    background-color: $color-bg-main;
+  }
+
+  .active {
+    color: $color-yellow;
+    position: relative;
+  }
+
+  .active::before {
+    position: absolute;
+    content: '';
+    @include box(2%, 100%);
+    background-color: $color-yellow;
+    top: 0;
+    left: 0;
+    border-radius: 25px;
+  }
+}
+
+.content {
+  @include box(90%, auto);
+  background-color: $color-sub-frame;
+}
+
+input {
+  outline: 0;
+}
+
+select {
+  @extend input;
+}
+
+.list-products {
+  @include box(auto, 300px);
+  li {
+    display: inline-block;
+    text-align: center;
+  }
+
+  span.state {
+    @include box(1.5rem);
+    display: inline-block;
+  }
+
+  ul:nth-child(odd):not(:first-child) {
+    background-color: $color-bg-product-item
+  }
+
+  .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.product-item {
+  img {
+    @include box(32px, 32px);
+    object-fit: contain;
+    padding: 0;
+    border-radius: 4px;
+  }
+}

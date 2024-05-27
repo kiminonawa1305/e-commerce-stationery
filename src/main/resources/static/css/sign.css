@@ -1,0 +1,37 @@
+body {
+    background: linear-gradient(90deg, #09bce4 0%, #2659f3 100%);
+    font-family: 'Arial', sans-serif;
+}
+
+.sign-up,
+.sign-in,
+.forget-password {
+    background-color: rgba(0, 117, 178, 0.7);
+    width: 600px;
+    margin: 30px auto;
+}
+
+input::placeholder {
+    color: var(--bs-secondary);
+}
+
+.text_verify {
+    padding: 15px 10px;
+    border: 1px gray solid;
+    border-radius: 10px;
+    font-size: 30px;
+    margin: 0 5px;
+    text-align: center;
+    width: 55px;
+}
+
+.text_verify:focus {
+    outline: none;
+    border: 1px gray solid;
+    box-shadow: none;
+}
+
+.code_verify {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}

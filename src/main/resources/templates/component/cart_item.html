@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="useItem(cart_item)" class="cart-item border-1 border rounded-2 border-secondary-subtle p-3 position-relative">
+    <div class=" row justify-content-between align-items-center">
+        <div class="col-8 d-flex flex-row">
+            <img class="cart-item-img" src="../image/logo/logo.jpg" width="75" height="75" alt="">
+            <div class="container">
+                <p class="cart-item-name m-0">Bút bi</p>
+                <p class="cart-item-type text-secondary m-0">Xanh</p>
+            </div>
+        </div>
+        <div class="col-4 d-flex flex-row justify-content-end pe-5">
+            <span class="cart-item-price ">2000d</span>
+            <div class="d-flex justify-content-center">
+                <button type="button"
+                        class="decrease rounded-start-2 rounded-end-0  border-1 border-end-0 border-secondary"
+                        style="width: 30px; height: 30px">
+                    -
+                </button>
+                <input type="number" class="border-1 border-secondary text-center"
+                       style="width: 75px;height: 30px" value="0">
+                <button class="button increase rounded-start-0 rounded-end-2 border-1 border-start-0 border-secondary"
+                        style="width: 30px; height: 30px">
+                    +
+                </button>
+                <button class="position-absolute rounded-circle bg-black text-white m-2 top-0" style="right: 0">X
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+</html>

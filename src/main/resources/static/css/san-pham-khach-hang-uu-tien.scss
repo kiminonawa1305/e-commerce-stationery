@@ -1,0 +1,13 @@
+$background: #ec8481;
+$background-section: #ccb7ff;
+main {
+  background: $background;
+}
+
+.voucher-left:before, .voucher-left:after {
+  background: $background;
+}
+
+.background-section {
+  background: $background-section;
+}

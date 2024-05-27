@@ -1,0 +1,109 @@
+@import url(bootstrap-reboot.css);
+.menu-personal {
+  width: auto;
+  height: 100%;
+  background-color: #ffffff;
+  min-height: auto;
+  max-width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-16%, 1.5rem);
+}
+
+.description-state {
+  background-color: #f5f6fa;
+  text-align: center;
+}
+.description-state .type-of-state {
+  align-items: center;
+}
+.description-state .type-of-state li:last-child {
+  margin: 0 0.5rem;
+  padding: 12px;
+}
+.description-state ul {
+  padding: 0;
+  margin: 0;
+}
+.description-state .bg-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.user-info__avatar {
+  width: 60px;
+  height: 60px;
+}
+
+.menu-personal__base-info {
+  font-size: small;
+}
+
+.user-info__email {
+  color: #b4c2df;
+}
+
+.menu-personal__items .item {
+  cursor: pointer;
+  color: #b4c2df;
+}
+.menu-personal__items .item:hover {
+  background-color: #f5f6fa;
+}
+.menu-personal__items .active {
+  color: #ffc107;
+  position: relative;
+}
+.menu-personal__items .active::before {
+  position: absolute;
+  content: "";
+  width: 2%;
+  height: 100%;
+  background-color: #ffc107;
+  top: 0;
+  left: 0;
+  border-radius: 25px;
+}
+
+.content {
+  width: 90%;
+  height: auto;
+  background-color: #ffffff;
+}
+
+input, select {
+  outline: 0;
+}
+
+.list-products {
+  width: auto;
+  height: 300px;
+}
+.list-products li {
+  display: inline-block;
+  text-align: center;
+}
+.list-products span.state {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-block;
+}
+.list-products ul:nth-child(odd):not(:first-child) {
+  background-color: #fafbfb;
+}
+.list-products .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-item img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  padding: 0;
+  border-radius: 4px;
+}
+
+/*# sourceMappingURL=info_account.css.map */

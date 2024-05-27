@@ -60,7 +60,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     private ProductDTO convertToDTO(Product product) {
-        return modelMapper.map(product, ProductDTO.class);
+        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+        product.getImage().forEach(productImage ->
+                productDTO.getUrlImageProducers().add(productImage.getUrl())
+        );
+        return productDTO;
     }
 
     private List<ProductDTO> convertToDTOList(List<Product> products) {

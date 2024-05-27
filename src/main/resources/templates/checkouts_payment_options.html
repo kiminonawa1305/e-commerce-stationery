@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>KIMI - Thanh Toán đơn hàng</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css"
+          rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/list_of_vouchers.css">
+    <link rel="stylesheet" href="css/checkouts_payment_options.css">
+    <link rel="stylesheet" href="css/display_info_payments.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"/>
+</head>
+<body>
+<main>
+    <div class="row ">
+        <div class="col-1"></div>
+        <div class="ship_info_frame justify-content-center col-6 px-4 py-2">
+            <div class="head px-3">
+                <a href="#">
+                    <div class="logo d-flex align-items-center my-0">
+                        <img src="image/logo/logo.jpg" alt="logo" class="logo__image object-fit-cover">
+                        <div class="logo_title ">
+                            <span class="logo__title text-uppercase fw-bold fs-1">Kimi</span>
+                            <p class="logo_title__slogan fst-italic fs-4">Vũ trụ văn phòng phẩm</p>
+                        </div>
+                    </div>
+                </a>
+
+
+                <div class="process-step">
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb text-black">
+                            <li class="breadcrumb-item"><a href="#">Giỏ hàng</a></li>
+                            <li class="breadcrumb-item" ><a href="#">Thông tin giao hàng</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Phương thức thanh toán</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="content mx-3 py-3">
+                <h5 class="my-2">Phương thức vận chuyển</h5>
+                <div class="d-flex justify-content-between align-items-center mb-5 p-3 border border-dark-subtle border-1 rounded-0">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked disabled>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Giao hàng tận nơi
+                        </label>
+                    </div>
+                    <div class="price-ship">30,000<sup class="text-decoration-line">đ</sup></div>
+                </div>
+                <h5 class="my-2">Phương thức thanh toán</h5>
+                <div class="payment-options border border-1 border-dark-subtle rounded-0">
+                    <div class="direct border-bottom border-1 border-dark-subtle rounded-0">
+                        <div class="p-3 d-flex justify-content-between">
+                            <div class=" d-flex justify-content-between align-items-center">
+                                <input class="form-check-input checkradio" type="checkbox" name="group" value="" id="check-radio-direct" checked>
+                                <div class="image-square mx-3"><img src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6" alt="Thanh toán khi nhận hàng (COD)"></div>
+                                <label class="form-check-label" for="check-radio-direct">
+                                    Thanh toán khi giao hàng (COD)
+                                </label>
+                            </div>
+                            <div class="empty"></div>
+                        </div>
+                    </div>
+                    <div class="momo">
+                        <div class="p-3 d-flex justify-content-between">
+                            <div class="form-check d-flex justify-content-between align-items-center">
+                                <input class="form-check-input checkradio" name="group" type="checkbox"  value="" id="check-radio-momo">
+                                <div class="image-square mx-3"><img src="https://hstatic.net/0/0/global/design/seller/image/payment/momo.svg?v=6" alt="Thanh toán momo"></div>
+                                <label class="form-check-label" for="check-radio-momo">
+                                    Ví MoMo
+                                </label>
+                            </div>
+                        </div>
+                        <div class="empty"></div>
+
+                    </div>
+                </div>
+                <div class="finish-payment d-flex justify-content-between my-3">
+                    <a href="#" class="go-to-cart">Giỏ hàng</a>
+                    <button type="submit" class="btn btn-primary rounded-0">Hoàn tất đơn hàng</button>
+                </div>
+
+            </div>
+            <div class="foot mx-3 border-top border-dark-subtle border-1 text-center"> Powered by Haravan</div>
+        </div>
+
+        <div class="payment_frame col-4 border-dark-subtle border-start border-1">
+        </div>
+        <div class="right-payment col-1"></div>
+    </div>
+</main>
+<script type="text/javascript" src="js/list_of_vouchers.js"></script>
+<script type="text/javascript" src="js/display_info_payments.js"></script>
+<script type="text/javascript" src="js/checkouts_payment_options.js"></script>
+</body>
+</html>

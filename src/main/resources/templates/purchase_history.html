@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Tài khoản</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.2-web/css/all.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <link rel="stylesheet" href="css/purchase_history.css">
+    <link rel="stylesheet" href="css/info_account.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+<header></header>
+<main class="container">
+    <div id="main-frame" class="row my-5 rounded-3">
+        <div class="col-2 position-relative ">
+            <div class="categories-info"></div>
+        </div>
+        <div class="display-categories col-10 py-5 px-2">
+            <div class="content rounded-3">
+                <div class="nav-filter d-flex justify-content-between p-3 my-3">
+                    <div class="description-state p-3 rounded-3">
+                        <ul>
+                            <li>
+                                <ul class="type-of-state d-flex">
+                                    <li class="bg-icon text-danger inline-block rounded-2 bg-danger-subtle"><i class="fa-solid fa-trash"></i></li>
+                                    <li>Đã hủy</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <ul class="type-of-state d-flex">
+                                    <li class="bg-icon text-secondary inline-block rounded-2 bg-secondary-subtle"><i class="fa-solid fa-loader"></i></li>
+                                    <li>Đang chờ xác thực</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <ul class="type-of-state d-flex">
+                                    <li class="bg-icon text-warning  inline-block rounded-2 bg-warning-subtle"><i class="fa-solid fa-check"></i></li>
+                                    <li>Đã xác thực</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <ul class="type-of-state d-flex">
+                                    <li class="bg-icon text-primary inline-block rounded-2 bg-primary-subtle"><i class="fa-solid fa-truck"></i></li>
+                                    <li>Đang giao hàng</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <ul class="type-of-state d-flex">
+                                    <li class="bg-icon text-success inline-block rounded-2 bg-success-subtle"><i class="fa-solid fa-box-circle-check"></i></li>
+                                    <li>Đã nhận hàng</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="search d-flex justify-content-end align-items-center">
+                        <input type="text" id="search-name-product"
+                               class="rounded-3 py-1 ps-1 pe-5 border-0 me-3 bg-body-secondary"
+                               placeholder="Tìm tên sản phẩm"><label
+                            for="search-name-product"></label>
+
+                        <select name="filter" id="filter-product" class="border border-1 py-1 px-4   rounded-2">
+                            <option value="" selected>Tất cả</option>
+                            <option value="0">Đã hủy</option>
+                            <option value="1">Đang chờ xác nhận</option>
+                            <option value="2">Đã xác nhận</option>
+                            <option value="3">Đang giao hàng</option>
+                            <option value="4">Đã giao hàng</option>
+                        </select>
+                        <label for="filter-product"></label>
+                    </div>
+                </div>
+
+                <div class="list-products overflow-y-scroll" data-bs-spy="scroll" data-bs-target="" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
+                    <ul class="row align-items-center m-0 fw-bold">
+                        <li class="col">Code</li>
+                        <li class="col-3">Sản phẩm</li>
+                        <li class="col">Số lượng</li>
+                        <li class="col">Giá</li>
+                        <li class="col">Thành tiền</li>
+                        <li class="col">Trạng thái</li>
+                        <li class="col">Ngày</li>
+                        <li class="col"></li>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="0"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="1"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="2"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="3"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="4"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="4"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="4"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                    <ul class="row py-2 align-items-center m-0">
+                        <li class="col"><span class="code">xxxx</span></li>
+                        <li class="col-3">
+                            <div class=" product-item d-flex"><img src="image/product/demo_product.webp" alt="" class="me-2"><span class="name">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid doloremque eveniet facere illum, maiores maxime, minima nostrum obcaecati odio odit officia officiis placeat quam ratione reprehenderit tempora totam vitae.</span></div></li>
+                        <li class="col"><span class="quantity">2</span></li>
+                        <li class="col"><span class="price">10,000<sup class="text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="total">10,000<sup class="   text-decoration-underline">đ</sup></span></li>
+                        <li class="col"><span class="state text-uppercase rounded-2" data-state="4"></span></li>
+                        <li class="col"><span class="date-initial">dd/MM/yyyy</span></li>
+                        <li class="col">
+                            <div class="action d-flex">
+                                <button name="" class="btn border-0 text-danger fw-bold" data-bs-btn-delete-id="1"><i class="fa-solid fa-square-xmark"></i>
+                                </button>
+                                <button name="" class="btn border-0 text-success fw-bold" data-bs-btn-see-more-id="1"><i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer></footer>
+<script src="js/purchase_history.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,64 @@
+section {
+    position: relative;
+    z-index: 1; /* Đặt giá trị z-index thấp hơn menu */
+}
+
+.header-cart {
+    font-size: 30px;
+    margin: 20px 0;
+}
+
+.cart-content {
+    display: grid;
+    grid-template-columns: 70% 1fr;
+    gap: 15px;
+    font-size: 17px;
+}
+
+.cart-price-total {
+    font-weight: bold;
+}
+
+.cart-price-total span {
+    font-size: 18px;
+}
+
+.relation-product {
+    margin: 20px 85px;
+}
+
+.cart-item-price {
+    font-weight: bold;
+    margin-right: 2rem;
+}
+
+.cart-item {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.cart-title-ship span {
+    margin-left: 10px;
+}
+
+.product-list {
+    display: grid;
+    gap: 20px;
+    margin: 20px 0;
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* Sử dụng minmax để xác định kích thước tối thiểu và tối đa */
+    position: relative;
+}
+
+.product-list .product {
+    width: auto !important;
+}
+
+.menu {
+    position: fixed; /* hoặc position: absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff; /* chỉ là một ví dụ */
+    z-index: 1000; /* Đặt giá trị z-index cao hơn các phần tử khác */
+}
+

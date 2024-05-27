@@ -1,0 +1,46 @@
+.menu-list {
+    position: relative;
+    width: 150px;
+    border: 1px gray solid;
+    border-radius: 5px;
+    padding-block: 5px;
+    background: #fff;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 10px;
+    cursor: pointer;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: black;
+}
+
+.menu-item > .menu-list {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateX(calc(100% - 1px)) translateY(-1px);
+    display: none;
+}
+
+.menu-item:hover > a,
+.menu-item:hover > i {
+    color: var(--bs-primary);
+}
+
+.menu-item:hover > .menu-list {
+    display: block;
+}
+
+div.menu > .menu-body {
+    display: none;
+}
+
+div.menu.hover > .menu-body {
+    display: block;
+}

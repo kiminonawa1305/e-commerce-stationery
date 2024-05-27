@@ -1,0 +1,47 @@
+$color-bg-payment: #fafafa;
+*, a, ul, li, ol, p, h1, h2, h3, h4, h5, h6{
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+a {
+  color: black;
+}
+.payment_frame{
+  padding-top: 25px;
+  background-color: $color-bg-payment;
+}
+.right-payment{
+  @extend .payment_frame;
+}
+.info_user img{
+  width: 5em;
+  height: 5em;
+}
+.select-arrow{
+  position: absolute;
+  content: "";
+  width: 3em;
+  height: 1em;
+  display: block;
+  border-left: 1px solid gray;
+  top: 50%;
+  right: 0;
+  transform: translate(-10%, -40%);
+}
+.select-arrow::after{
+  position: absolute;
+  content: "";
+  width: 1em;
+  height: 0.7em;
+  display: block;
+  background-color: gray;
+  top: 25%;
+  right: 0;
+  transform: translate(-100%, 0);
+  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+//.payment_frame{
+//  height: 100vh;
+//}

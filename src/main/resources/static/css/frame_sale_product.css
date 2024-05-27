@@ -1,0 +1,23 @@
+.frame_sale_product_menu .menu-item {
+  border: 2px #ffffff solid;
+  border-block: 0;
+  opacity: 0.3;
+  background-color: #051c93;
+  cursor: pointer;
+  transition: 200ms linear;
+}
+.frame_sale_product_menu .menu-item.active {
+  opacity: 1;
+  border: 2px #ffffff var(--bs-primary);
+  background-color: var(--bs-primary);
+}
+.frame_sale_product .time-count-down {
+  gap: 10px;
+  letter-spacing: 5px;
+}
+.frame_sale_product .time-count-down div {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+/*# sourceMappingURL=frame_sale_product.css.map */

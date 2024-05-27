@@ -1,0 +1,26 @@
+*, a, ul, li, ol, p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+a {
+  color: black;
+}
+
+.payment_frame, .right-payment {
+  background-color: #fafafa;
+}
+
+.image-square img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+}
+
+.payment_frame, .right-payment {
+  height: 100vh;
+}
+
+/*# sourceMappingURL=checkouts_payment_options.css.map */

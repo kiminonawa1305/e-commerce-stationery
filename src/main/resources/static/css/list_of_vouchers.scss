@@ -1,0 +1,27 @@
+$color-coupon-blue: #338dbc;
+$color-coupon-btn-hover: #3da9e2;
+.accordion-button{
+  color: $color-coupon-blue;
+}
+.accordion-button:not(.collapsed){
+  @extend .accordion-button;
+}
+.accordion-button.changed::after{
+  color: $color-coupon-blue;
+  margin-left: 4px;
+}
+.apply_coupon_btn{
+  background-color: $color-coupon-blue;
+  height: 32px;
+  width: 72px;
+}
+.apply_coupon_btn:hover{
+  background-color: $color-coupon-btn-hover;
+}
+.see-more-btn::after{
+  color: $color-coupon-blue;
+  margin-left: 4px;
+}
+.coupon_desc_short{
+  padding-left: 20px;
+}
