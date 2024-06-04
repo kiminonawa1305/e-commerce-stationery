@@ -1,3 +1,4 @@
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <div class="menu-personal rounded-3 shadow">
     <div class="menu-personal__base-info pb-3 pt-5">
         <div class="user-info mx-3">
@@ -11,7 +12,8 @@
                 <span class="me-3"><i class="fa-solid fa-user"></i></span><span>Thông tin cá nhân</span>
             </div>
             <div class="item px-3 py-2 active">
-                <span class="me-3"><i class="fa-solid fa-rectangle-vertical-history"></i></span><span>Lịch sử mua hàng</span>
+                <span class="me-3"><i
+                        class="fa-solid fa-rectangle-vertical-history"></i></span><span>Lịch sử mua hàng</span>
             </div>
         </div>
     </div>
@@ -20,4 +22,5 @@
                 class="fa-solid fa-right-from-bracket fa-rotate-180"></i></button>
     </div>
 </div>
-<script src="../js/info_account.js"></script>
+<script th:src="@{/js/info_account.js}"></script>
+</html>

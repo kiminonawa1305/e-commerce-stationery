@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Xác thực tài khoản</title>
-    <link rel="stylesheet" href="css/sign.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/fontawesome.js" crossorigin="anonymous"></script>
-    <script src="js/jquery.js"></script>
-    <link rel="stylesheet" href="css/frame_sale_product.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/js/fontawesome.js}" crossorigin="anonymous"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/frame_sale_product.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <script th:src="@{/js/menu.js}"></script>
+
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"/>
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/menu.css">
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<header></header>
+<header>
+    <div th:replace="fragments/header_fragment::header"></div>
+</header>
 <main style="padding-block: 100px">
     <div class="container" id="form">
         <h1>Xác thực tài khoản</h1>
@@ -32,10 +35,14 @@
             <input type="text" class="text_verify" readonly="" style="width: 0; height: 0; padding: 0"><br>
         </div>
         <p class="fs-5 text-body-secondary">Mã xác thực của bạn chỉ có hiệu lục 10 phút.</p>
-        <button id="verify" class="p-2 rounded-1 bg-primary border-0 fs-4 px-5 text-white fw-bold" style="margin-top: 20px">Xác nhận</button>
+        <button id="verify" class="p-2 rounded-1 bg-primary border-0 fs-4 px-5 text-white fw-bold"
+                style="margin-top: 20px">Xác nhận
+        </button>
     </div>
 </main>
-<footer></footer>
+<footer>
+    <div th:replace="fragments/footer_fragment::foother"></div>
+</footer>
 </body>
-<script type="module" src="js/verify.js"></script>
+<script type="module" th:src="@{/js/verify.js}"></script>
 </html>

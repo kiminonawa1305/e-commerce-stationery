@@ -28,15 +28,15 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 //        ProductDTO product = productService.findProductById(id);
 //        if (product == null) throw new ApplicationException(ErrorCode.PRODUCT_NOT_FOUND);
 //        ProductCartDetail productCartDetail;
-//        if (cart.containsKey(product.getId())) {
-//            productCartDetail = cart.get(product.getId());
+//        if (cart.html.containsKey(product.getId())) {
+//            productCartDetail = cart.html.get(product.getId());
 //            if (product.getQuantity() < quantity + productCartDetail.getQuantity())
 //                throw new ApplicationException(ErrorCode.PRODUCT_NOT_ENOUGH);
 //            productCartDetail.setQuantity(productCartDetail.getQuantity() + quantity);
 //            return true;
 //        }
 //        if (product.getQuantity() < quantity) throw new ApplicationException(ErrorCode.PRODUCT_NOT_ENOUGH);
-//        cart.put(product.getId(), ProductCartDetail.builder().product(product).quantity(quantity).build());
+//        cart.html.put(product.getId(), ProductCartDetail.builder().product(product).quantity(quantity).build());
         return true;
     }
 }

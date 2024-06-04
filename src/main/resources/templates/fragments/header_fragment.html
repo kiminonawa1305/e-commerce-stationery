@@ -1,3 +1,4 @@
+<%@ page import="java.util.Map" %>
 <html lang="vi" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
 <div class="top bg-primary justify-content-center">
     <div class="container">
@@ -38,34 +39,43 @@
                             <i class="fa-sharp fa-solid fa-user p-1"></i>
                         </span>
                  </span>
-                <div id="not-user" class="sign-button-display">
-                    <a th:href="@{sign-up.html}"
-                       class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start">
-                        Đăng ký
-                    </a>
+                <div id="not-user" th:if="${session.user} == null" class="sign-button-display">
                     <a th:href="@{sign-in.html}"
                        class="sign-button-bottom d-inline-block fw-bold m-0 text-decoration-none text-white w-100 text-start">
                         Đăng nhập
                     </a>
+                    <a th:href="@{sign-up.html}"
+                       class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start">
+                        Đăng ký
+                    </a>
                 </div>
-                <div th:if="${user} != null" id="have-user" class="sign-button-display">
+                <div id="have-user" class="sign-button-display" th:if="${session.user} != null">
                     <a th:href="@{checkouts_ship_info.html}" id="name-user"
                        class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start fs-5"
                        style="line-height: 18px">
+                        <span>Xin chào </span>
+                        <span th:text="${session.user.getFirstName()}"></span>
+                        <span>, </span>
+                        <span th:text="${session.user.getLastName()}"></span>
                     </a>
-                    <a href="#" id="login-out"
-                       class="sign-button-bottom d-inline-block fw-bold m-0 text-decoration-none text-white w-100 text-start fs-6">
+                    <a th:href="@{/sign-out}">
+                          <span id="login-out"
+                                class="sign-button-bottom d-inline-block fw-bold m-0 text-decoration-none text-white w-100 text-start fs-6">
                         Đăng xuất
+                    </span>
                     </a>
                 </div>
             </div>
             <div class="cart-menu col-2 align-content-center">
-                <a href="#" class="d-inline-block text-decoration-none rounded text-white border border-white p-2">
+                <a href="/stationery_kimi/cart"
+                   class="d-inline-block text-decoration-none rounded text-white border border-white p-2">
                         <span class="cart-menu-icon">
                             <i class="fa-sharp fa-solid fa-cart-shopping fs-4"></i>
                         </span>
                     <span class="cart-menu-text fw-bold fs-5">Giỏ hàng</span>
-                    <span class="cart-menu-amount bg-warning p-2 text-center rounded">0</span>
+                    <span class="cart-menu-amount bg-warning p-2 text-center rounded" th:text="${session.amount}">
+                         0
+                    </span>
                 </a>
             </div>
         </div>
@@ -104,18 +114,4 @@
         </div>
     </nav>
 </div>
-
-<!--<script>-->
-<!--    const user = JSON.parse(sessionStorage.getItem('user'));-->
-<!--    console.log(user)-->
-<!--    if (user) {-->
-<!--        $('#not-user').hide();-->
-<!--        $('#have-user').show();-->
-<!--        $("#name-user").text("Xin chào " + user.lastName + "," + user.firstName);-->
-<!--    } else {-->
-<!--        $('#have-user').hide();-->
-<!--        $('#not-user').show();-->
-<!--    }-->
-<!--</script>-->
-
 </html>

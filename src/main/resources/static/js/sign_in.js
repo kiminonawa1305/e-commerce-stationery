@@ -26,7 +26,7 @@ $(document).ready(() => {
                 },
             });
             $.ajax({
-                url: urlAPI + 'api/auth/login',
+                url: "./api/auth/login",
                 type: 'POST',
                 dataType: 'json',
                 data: $(form).serialize(),
@@ -40,7 +40,7 @@ $(document).ready(() => {
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                     }).then((result) => {
-                        window.location.href = url + "index.html";
+                        window.location.href = "./";
                     });
                 },
                 error: function (xhr, status, error) {

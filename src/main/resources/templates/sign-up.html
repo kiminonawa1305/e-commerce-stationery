@@ -30,15 +30,15 @@
 </head>
 <body>
 <header>
-    <div th:replace="layout/header::header"></div>
+    <div th:replace="fragments/header_fragment::header"></div>
 </header>
 <main>
     <div class="container" id="form">
-        <div th:replace="layout/sign_up::form"></div>
+        <div th:replace="fragments/sign_up_fragment::form"></div>
     </div>
 </main>
 <footer>
-    <div th:replace="layout/footer"></div>
+    <div th:replace="fragments/footer_fragment"></div>
 </footer>
 <script type="module" th:src="@{/js/sign_in.js}"></script>
 </body>

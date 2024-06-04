@@ -1,0 +1,78 @@
+<html lang="vi" th:fragment="cart" xmlns:th="http://www.thymeleaf.org">
+<section class="d-flex justify-content-center align-items-lg-center">
+    <div class="container py-3 card d-flex justify-content-center">
+        <form action="#" method="post" class="needs-validation">
+            <div class="header-cart">Giỏ hàng</div>
+            <div class="alert alert-success d-inline-block note-cart">
+                Quý khách vui lòng đợi 5s - 10s trước khi ấn "Tiến hành đặt hàng" để giỏ hàng cập nhật quà tặng (nếu
+                có). Cảm ơn quý khách đã tin tưởng và ủng hộ Kimi Shop!
+            </div>
+            <div></div>
+            <div class="cart-content row ">
+                <div class="cart-product-list">
+                </div>
+                <div class="cart-price card py-3">
+                    <div class="d-flex justify-content-between">
+                        <div class="mb-3">Tổng tiền</div>
+                        <div class="cart-price-total"><span>49000</span>đ</div>
+                    </div>
+                    <input class="btn btn-primary rounded-2" type="submit" id="btn-submit"
+                           value="Tiến hành đặt hàng"/>
+                </div>
+            </div>
+            <div class="cart-title-ship mb-lg-3">
+                <i class="fa-solid fa-truck-fast text-primary"></i><span>Miễn phí vận chuyển cho đơn hàng từ 200,000₫</span>
+            </div>
+            <div class="cart-footer w-50">
+                <div class="form-check mb-lg-3">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox-bill">
+                    <label class="form-check-label text-danger" for="checkbox-bill">
+                        Xuất hóa đơn công ty
+                    </label>
+                </div>
+                <div class="d-none" id="bill-field">
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" placeholder="Tên công ty" aria-label="Tên công ty">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" placeholder="Mã số thuế" aria-label="Mã số thuế">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" placeholder="Địa chỉ công ty"
+                               aria-label="Địa chỉ công ty">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="email" placeholder="Địa chỉ email công ty"
+                               aria-label="Địa chỉ email công ty">
+                        <div class="invalid-feedback">Please enter email format</div>
+                    </div>
+                </div>
+
+                <div class="cart-order-note">
+                    <label for="note" class="form-label">Ghi chú đơn hàng</label>
+                    <textarea class="form-control" id="note" name="note"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="relation-product">
+    <div class="relation-product-title">
+        <button class="px-3 py-1 bg-primary fs-4 text-white fw-medium border-0 rounded-2">Sản phẩm bán chạy</button>
+    </div>
+    <div class="relation-product-body">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-inner">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+</html>

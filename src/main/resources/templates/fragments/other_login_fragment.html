@@ -1,0 +1,15 @@
+<html th:fragment="other_login" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<div class="fs-3 text-center row gap-5 justify-content-center">
+    <a th:href="@{/oauth2/authorization/google}" class="text-decoration-none col-4">
+        <button class="google-sign w-100 bg-danger text-white rounded-2 border-0 d-flex justify-content-center align-items-center gap-2 py-2">
+            <i class="fa-brands fa-google fs-5"></i>
+            <span class="title fs-5 fw-medium">Google</span>
+        </button>
+    </a>
+    <button class="col-4 facebook-sign text-white rounded-2 border-0  d-flex justify-content-center align-items-center gap-2 py-2"
+            style="background-color: #49669C;">
+        <i class="fa-brands fa-facebook fs-5"></i>
+        <span class="title fs-5 fw-medium">Facebook</span>
+    </button>
+</div>
+</html>
