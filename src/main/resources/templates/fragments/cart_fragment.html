@@ -9,7 +9,10 @@
             </div>
             <div></div>
             <div class="cart-content row ">
-                <div class="cart-product-list">
+                <div class="cart-product-list" th:if="${session.cart} != null">
+                    <div th:each="product: ${session.cart}">
+                        <div th:replace="component/cart_item::useItem(cart_item=${product})"></div>
+                    </div>
                 </div>
                 <div class="cart-price card py-3">
                     <div class="d-flex justify-content-between">

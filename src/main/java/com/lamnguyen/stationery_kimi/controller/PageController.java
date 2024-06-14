@@ -1,34 +1,45 @@
 package com.lamnguyen.stationery_kimi.controller;
 
 import com.lamnguyen.stationery_kimi.dto.ProductDTO;
+import com.lamnguyen.stationery_kimi.dto.ProductSeeMoreDTO;
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
+import com.lamnguyen.stationery_kimi.service.IProductService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PageController {
+    @Autowired
+    private IProductService service;
+
     @GetMapping({"/", "/index.html", "/home"})
     public String home(Model model, HttpSession session) {
-        List<ProductDTO> products_1 = new ArrayList<>();
-        List<ProductDTO> products_2 = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            ProductDTO productDTO = ProductDTO.builder()
-                    .name("Product " + i)
-                    .price(100 + i)
-                    .build();
-            products_1.add(productDTO);
-            products_2.add(productDTO);
-        }
-        model.addAttribute("deals_1", products_1);
-        model.addAttribute("deals_2", products_2);
-        System.out.println(session.getAttribute("user"));
+        List<ProductDTO> deals = service.findByCategory("deals");
+        List<ProductDTO> papers = service.findByCategory("papers");
+        List<ProductDTO> paintingColors = service.findByCategory("paintingColors");
+        List<ProductDTO> learningTool = service.findByCategory("learningTool");
+        List<ProductDTO> highClassGifts = service.findByCategory("highClassGifts");
+        List<ProductDTO> pens = service.findByCategory("pens");
+        List<ProductDTO> books = service.findByCategory("books");
+        List<ProductDTO> officeTools = service.findByCategory("officeTools");
+        model.addAttribute("deals", deals);
+        model.addAttribute("papers", papers);
+        model.addAttribute("paintingColors", paintingColors);
+        model.addAttribute("learningTools", learningTool);
+        model.addAttribute("pens", pens);
+        model.addAttribute("highClassGifts", highClassGifts);
+        model.addAttribute("officeTools", officeTools);
+        model.addAttribute("books", books);
         return "index";
     }
 
@@ -54,12 +65,7 @@ public class PageController {
     }
 
     @GetMapping("/cart")
-    public ModelAndView cart(HttpSession session) {
-        Map<String, String> cart = (Map<String, String>) session.getAttribute("cart");
-        if (cart == null)
-            cart = new HashMap<>();
-
-        session.setAttribute("cart", cart);
+    public ModelAndView cart() {
         return new ModelAndView("cart");
     }
 
@@ -75,5 +81,12 @@ public class PageController {
                 .build();
         session.setAttribute("user", userDTO);
         return "redirect:/";
+    }
+
+    @GetMapping("/api/products/see-more/{id}")
+    public String seeMore(@PathVariable("id") Integer id, Model model) {
+        ProductSeeMoreDTO result = service.seeMore(id);
+        model.addAttribute("data", result);
+        return "component/see_more";
     }
 }

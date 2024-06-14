@@ -16,9 +16,8 @@ public class CartController {
     @Autowired
     private IShoppingCartService shoppingCartService;
 
-    @PostMapping("/add")
-    public ApiResponse<Void> addProductToCart(@RequestBody Map<String, Object> prams) {
-        Long id = (Long) prams.get("id");
+    @PostMapping("/add/{id}")
+    public ApiResponse<Void> addProductToCart(@RequestBody Map<String, Object> prams, @PathVariable("id") Long id) {
         Integer quantity = (Integer) prams.get("quantity");
         if (id == null || quantity == null) throw new ApplicationException(ErrorCode.PRODUCT_NOT_FOUND);
         shoppingCartService.addProduct(id, quantity);

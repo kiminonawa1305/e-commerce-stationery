@@ -1,8 +1,10 @@
 package com.lamnguyen.stationery_kimi.service;
 
 import com.lamnguyen.stationery_kimi.dto.ProductDTO;
+import com.lamnguyen.stationery_kimi.dto.ProductSeeMoreDTO;
 import com.lamnguyen.stationery_kimi.entity.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IProductService {
@@ -17,4 +19,8 @@ public interface IProductService {
     List<ProductDTO> findAll(Integer page);
 
     List<ProductDTO> findAllByLockFalse(Integer page);
+
+    List<ProductDTO> findByCategory(String category);
+
+    ProductSeeMoreDTO seeMore(Integer id);
 }

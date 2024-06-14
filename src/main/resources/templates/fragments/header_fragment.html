@@ -73,8 +73,12 @@
                             <i class="fa-sharp fa-solid fa-cart-shopping fs-4"></i>
                         </span>
                     <span class="cart-menu-text fw-bold fs-5">Giỏ hàng</span>
-                    <span class="cart-menu-amount bg-warning p-2 text-center rounded" th:text="${session.amount}">
-                         0
+                    <span class="cart-menu-amount bg-warning p-2 text-center rounded" th:if="${session.cart} != null"
+                          th:text="${session.cart.size()}">
+                    </span>
+                    <span class="cart-menu-amount bg-warning p-2 text-center rounded"
+                          th:unless="${session.cart} != null">
+                        0
                     </span>
                 </a>
             </div>

@@ -1,15 +1,12 @@
 package com.lamnguyen.stationery_kimi.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.util.BitSet;
 import java.util.List;
 
 @Entity
@@ -34,7 +31,7 @@ public class Product {
     private Boolean lock;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductType> productTypes;
+    private List<ProductOption> productTypes;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
