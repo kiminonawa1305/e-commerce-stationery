@@ -1,9 +1,11 @@
 package com.lamnguyen.stationery_kimi.controller;
 
+import com.lamnguyen.stationery_kimi.dto.CartItemDisplay;
 import com.lamnguyen.stationery_kimi.dto.ProductDisplayDTO;
 import com.lamnguyen.stationery_kimi.dto.ProductSeeMoreDTO;
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
 import com.lamnguyen.stationery_kimi.service.IProductService;
+import com.lamnguyen.stationery_kimi.service.IShoppingCartService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ import java.util.Map;
 public class PageController {
     @Autowired
     private IProductService service;
+    @Autowired
+    private IShoppingCartService shoppingCartService;
 
     @GetMapping({"/", "/index.html", "/home"})
     public String home(Model model) {
@@ -65,8 +68,10 @@ public class PageController {
     }
 
     @GetMapping("/cart")
-    public ModelAndView cart() {
-        return new ModelAndView("cart");
+    public String cart(HttpSession session, Model model) {
+        List<CartItemDisplay> cartItemDisplays = shoppingCartService.loadCart(session);
+        model.addAttribute("cartItems", cartItemDisplays);
+        return "cart";
     }
 
     @GetMapping("/login/google")

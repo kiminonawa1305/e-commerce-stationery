@@ -34,7 +34,9 @@ public enum ErrorCode {
     PRODUCT_OPTION_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy tùy chọn sản phẩm."),
     PRODUCT_OPTION_NOT_ENOUGH(HttpServletResponse.SC_NOT_ACCEPTABLE, "Số lượng tùy chọn sản phẩm không đủ."),
     CART_ITEM_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy sản phẩm trong giỏ hàng."),
-    IMAGE_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy hình ảnh.");
+    IMAGE_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy hình ảnh."),
+    INVALID_QUANTITY(HttpServletResponse.SC_NOT_ACCEPTABLE, "Số lượng không hợp lệ."),
+    ;
 
     private int code;
     private String message;

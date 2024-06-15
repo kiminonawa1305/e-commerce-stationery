@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductOptionServiceImpl implements IProductOptionService {
@@ -24,13 +23,16 @@ public class ProductOptionServiceImpl implements IProductOptionService {
     @Override
     public List<ProductOptionDTO> findByProductId(Long productId) {
         List<ProductOption> productOption = productOptionRepository.findByQuantityGreaterThanEqualAndProduct_Id(1, productId);
-        return productOption.stream().map(this::convertToDTO).collect(Collectors.toList());
+        return convertToDTO(productOption);
     }
 
     @Override
     public ProductOptionDTO findById(Long id) {
-        ProductOption productOption = productOptionRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException(ErrorCode.PRODUCT_OPTION_NOT_FOUND));
+        ProductOption productOption = productOptionRepository.findById(id).orElse(ProductOption.builder()
+                .id(-1L)
+                .name("Mặc định")
+                .quantity(0)
+                .build());
         return convertToDTO(productOption);
     }
 
@@ -39,6 +41,6 @@ public class ProductOptionServiceImpl implements IProductOptionService {
     }
 
     private List<ProductOptionDTO> convertToDTO(List<ProductOption> productOptions) {
-        return productOptions.stream().map(this::convertToDTO).collect(Collectors.toList());
+        return productOptions.stream().map(this::convertToDTO).toList();
     }
 }

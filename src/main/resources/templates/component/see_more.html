@@ -5,9 +5,9 @@
             <div class="left overflow-hidden" style="flex: 1; width: 200px">
                 <div id="carousel-product" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner rounded rounded-1">
-                        <div th:each="urlImg : ${data.urlImageProducers}" class="carousel-item product-image">
+                        <div th:each="urlImg : ${data.productImageDTOS}" class="carousel-item product-image">
                             <img class=" w-100"
-                                 th:src="@{__${urlImg}__}" alt="product">
+                                 th:src="@{__${urlImg.getUrl()}__}" alt="product">
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carousel-product"
@@ -26,18 +26,17 @@
             <div class="right" style="flex: 1.5;">
                 <input name="id" type="number" th:value="${data.id}" hidden>
                 <div class="fs-2" th:text="${data.name}"></div>
-                <div class="price d-flex justify-content-between px-4 py-3 rounded-2"
+                <div th:if="${data.discountPercent} != null and ${data.discountPercent} != 0.0"
+                     class="price d-flex justify-content-between px-4 py-3 rounded-2"
                      style="background-color: #b7b7b7">
                     <div class="d-flex align-items-center gap-1">
-                         <span th:if="${data.discountPercent} != null" class="current-price fs-1 text-primary fw-bold"
+                         <span class="current-price fs-1 text-primary fw-bold"
                                th:text="${#numbers.formatCurrency(data.price - data.discountPercent * data.price)}"/>
-                        <del th:if="${data.discountPercent} != null" class="old-price fs-5"
+                        <del class="old-price fs-5"
                              th:text="${#numbers.formatCurrency(data.price)}"/>
                     </div>
-                    <span class="current-price fs-2 text-primary fw-bold" th:if="${data.discountPercent} == null"
-                          th:text="${#numbers.formatCurrency(data.price)}"/>
 
-                    <div th:if="${data.discountPercent} != null" class="discount position-relative"
+                    <div class="discount position-relative"
                          style="width: 90px; height: 90px">
                         <img src="https://theme.hstatic.net/1000230347/1000729967/14/icon-product-discount_large.png"
                              alt="logo" class="w-100 h-100">
@@ -50,13 +49,23 @@
                     </div>
                 </div>
 
+                <div th:if="${data.discountPercent} == null or ${data.discountPercent} == 0.0"
+                     class="price d-flex justify-content-start px-4 py-3 rounded-2"
+                     style="background-color: #b7b7b7">
+                      <span class="current-price fs-2 text-primary fw-bold"
+                            th:text="${#numbers.formatCurrency(data.price)}"/>
+                </div>
+
                 <div class="d-flex gap-2 my-1">
                     <label th:if="${data.getProductOptionDTOS() != null}"
                            th:each="option: ${data.getProductOptionDTOS()}"
                            class="rounded-2 p-2 border border-secondary border-1 product-option"
                            th:title="${option.name}"
+                           th:data-quantity="${option.quantity}"
                            th:for="'option-' + ${option.id}">
-                        <input type="radio" hidden name="product-option" th:value="${option.id}"
+                        <input type="radio" name="product-option" th:value="${option.id}"
+                               th:data-quantity="${option.quantity}"
+                               hidden
                                th:id="'option-' + ${option.id}">
                         <span th:text="${option.name}"/>
                     </label>
@@ -65,7 +74,7 @@
                 <div class="d-flex my-3 justify-content-center">
                     <div class="input-group w-25">
                         <span class="input-group-text bg-secondary border-secondary" id="decrease">-</span>
-                        <input type="number" class="form-control text-center m-0 border-secondary"
+                        <input id="quantity" type="number" class="form-control text-center m-0 border-secondary"
                                style="outline: none; box-shadow: none;"
                                name="quantity"
                                value="1" aria-label="quantity"
@@ -74,7 +83,8 @@
                     </div>
                 </div>
 
-                <div class="right-bottom d-flex fs-6  gap-2 mt-3">
+                <div th:if="${data.getProductOptionDTOS() != null and !#lists.isEmpty(data.getProductOptionDTOS())}"
+                     class="right-bottom d-flex fs-6  gap-2 mt-3" id="button-see-more">
                     <button class="button-add-to-cart text-primary py-3 fw-bold  border-1 border-primary bg-white rounded"
                             style="flex: 1">
                         <i class="fa-solid fa-cart-shopping"></i>
@@ -94,86 +104,5 @@
 
 </div>
 
-<script>
-    function getData() {
-        return {
-            id: $("input[name='id']").val(),
-            quantity: $("input[name='quantity']").val(),
-            productOptionId: $("input[name='product-option']:checked").val()
-        }
-    }
-
-    $(document).ready(function () {
-        $('.carousel-item.product-image').eq(0).addClass('active');
-
-        const productOption = $(".product-option");
-        productOption.eq(0).addClass('border-primary');
-        productOption.eq(0).removeClass('border-secondary');
-        productOption.eq(0).find("input").attr('checked', 'checked')
-
-        productOption.click(function () {
-            productOption.removeClass('border-primary');
-            productOption.removeClass('border-secondary');
-            productOption.addClass('border-secondary');
-            $(this).removeClass('border-secondary');
-            $(this).addClass('border-primary');
-        });
-
-        $("#button-hidden-see-more").on("click", (e) => {
-            $("#see-more").html("");
-        })
-
-        $("#decrease").click(function () {
-            let quantity = $(this).next().val();
-            if (quantity > 1) {
-                $("input[name='quantity']").val(--quantity);
-            }
-        })
-        $("#increase").click(function () {
-                let quantity = $(this).prev().val();
-                $("input[name='quantity']").val(++quantity);
-            }
-        )
-
-        const buttonAddCart = $(".button-add-to-cart");
-        buttonAddCart.on("mouseenter", function () {
-            $(this).addClass("bg-primary")
-            $(this).removeClass("bg-white")
-            $(this).addClass("text-white")
-            $(this).removeClass("text-primary")
-        });
-
-        buttonAddCart.on("mouseleave", function () {
-            $(this).removeClass("bg-primary")
-            $(this).addClass("bg-white")
-            $(this).addClass("text-primary")
-            $(this).removeClass("text-white")
-        });
-
-
-        buttonAddCart.click(() => {
-            $.ajax({
-                data: JSON.stringify(getData()),
-                url: "api/cart/add",
-                method: "POST",
-                contentType: "application/json",
-                success: (response) => {
-                    Toastify({
-                        text: "Thêm vào giỏ hàng thành công!",
-                        duration: 3000,
-                        backgroundColor: "#4cea06"
-                    }).showToast();
-                },
-                error: (error) => {
-                    console.log(error)
-                    Toastify({
-                        text: "Lỗi thêm vào giỏ hàng!",
-                        duration: 3000,
-                        backgroundColor: "#ea0606"
-                    }).showToast();
-                }
-            })
-        })
-    });
-</script>
+<script th:src="@{/js/see_more.js}"></script>
 </html>

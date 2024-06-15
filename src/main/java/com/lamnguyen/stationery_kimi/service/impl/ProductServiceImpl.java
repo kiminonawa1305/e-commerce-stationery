@@ -5,6 +5,7 @@ import com.lamnguyen.stationery_kimi.entity.Product;
 import com.lamnguyen.stationery_kimi.exception.ApplicationException;
 import com.lamnguyen.stationery_kimi.exception.ErrorCode;
 import com.lamnguyen.stationery_kimi.repository.IProductRepository;
+import com.lamnguyen.stationery_kimi.service.IDiscountService;
 import com.lamnguyen.stationery_kimi.service.IProductImageService;
 import com.lamnguyen.stationery_kimi.service.IProductOptionService;
 import com.lamnguyen.stationery_kimi.service.IProductService;
@@ -24,6 +25,8 @@ public class ProductServiceImpl implements IProductService {
     private IProductOptionService productOptionService;
     @Autowired
     private IProductImageService imageService;
+    @Autowired
+    private IDiscountService discountService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -83,17 +86,29 @@ public class ProductServiceImpl implements IProductService {
                 .build();
     }
 
+    @Override
+    public CartItemDisplay findCartItemById(Long id) {
+        ProductDTO productDTO = findProductById(id);
+        return CartItemDisplay.builder()
+                .price(productDTO.getPrice())
+                .name(productDTO.getName())
+                .build();
+    }
+
     private ProductDTO convertToDTO(Product product) {
-        return modelMapper.map(product, ProductDTO.class);
+        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+        DiscountDTO discountDTO = discountService.getDiscount(product.getId());
+        if (discountDTO == null) productDTO.setDiscountPercent(0.0);
+        else productDTO.setDiscountPercent(discountDTO.getDiscountPercent());
+        return productDTO;
     }
 
     private ProductDisplayDTO convertToDisplayDTO(Product product) {
         ProductDisplayDTO productDisplayDTO = modelMapper.map(product, ProductDisplayDTO.class);
         productDisplayDTO.setProductImageDTO(imageService.findFirstByProductId(product.getId()));
-        LocalDateTime now = LocalDateTime.now();
-        if (now.isBefore(product.getDiscount().getStartDate()) && now.isAfter(product.getDiscount().getEndDate()))
-            productDisplayDTO.setDiscountPercent(product.getDiscount().getDiscountPercent());
-        else productDisplayDTO.setDiscountPercent(0.0);
+        DiscountDTO discountDTO = discountService.getDiscount(product.getId());
+        if (discountDTO == null) productDisplayDTO.setDiscountPercent(0.0);
+        else productDisplayDTO.setDiscountPercent(discountDTO.getDiscountPercent());
         return productDisplayDTO;
     }
 

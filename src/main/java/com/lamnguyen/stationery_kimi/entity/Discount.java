@@ -20,7 +20,7 @@ public class Discount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private double discountPercent;
+    private Double discountPercent;
     @Column
     private LocalDateTime startDate;
     @Column

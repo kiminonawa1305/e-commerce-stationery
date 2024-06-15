@@ -1,5 +1,6 @@
 package com.lamnguyen.stationery_kimi.repository.custom;
 
+import com.lamnguyen.stationery_kimi.dto.CartItemDisplay;
 import com.lamnguyen.stationery_kimi.dto.ProductDTO;
 import com.lamnguyen.stationery_kimi.entity.Product;
 import jakarta.transaction.Transactional;

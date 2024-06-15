@@ -16,11 +16,11 @@
                     style="height: 45px"/>
             </div>
             <div class="card-text">
-                <span class="new-price text-primary fs-5 fw-bold" th:if="${discountPercent} == null"
+                <span class="new-price text-primary fs-5 fw-bold" th:if="${discountPercent} == null or ${discountPercent} == 0.0"
                       th:text="${#numbers.formatCurrency(price)}"></span>
-                <span class="new-price text-primary fs-5  fw-bold" th:if="${discountPercent} != null"
+                <span class="new-price text-primary fs-5  fw-bold" th:if="${discountPercent} != null and ${discountPercent} != 0.0"
                       th:text="${#numbers.formatCurrency(price - discountPercent * price)}"></span>
-                <del class="old-price text-body-tertiary" th:if="${discountPercent} != null"
+                <del class="old-price text-body-tertiary" th:if="${discountPercent} != null and ${discountPercent} != 0.0"
                      th:text="${#numbers.formatCurrency(price)}"></del>
             </div>
         </div>
