@@ -24,8 +24,10 @@
             </div>
 
             <div class="right" style="flex: 1.5;">
+                <input name="id" type="number" th:value="${data.id}" hidden>
                 <div class="fs-2" th:text="${data.name}"></div>
-                <div class="price d-flex justify-content-between px-4 py-3 rounded-2" style="background-color: #b7b7b7">
+                <div class="price d-flex justify-content-between px-4 py-3 rounded-2"
+                     style="background-color: #b7b7b7">
                     <div class="d-flex align-items-center gap-1">
                          <span th:if="${data.discountPercent} != null" class="current-price fs-1 text-primary fw-bold"
                                th:text="${#numbers.formatCurrency(data.price - data.discountPercent * data.price)}"/>
@@ -72,19 +74,20 @@
                     </div>
                 </div>
 
-
                 <div class="right-bottom d-flex fs-6  gap-2 mt-3">
-                    <button class="text-primary py-3 fw-bold  border-1 border-primary bg-white rounded" style="flex: 1">
+                    <button class="button-add-to-cart text-primary py-3 fw-bold  border-1 border-primary bg-white rounded"
+                            style="flex: 1">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <span class="ps-3">Thêm vào giỏ hàng</span>
                     </button>
-                    <button class="text-white py-3 fw-bold border-0 bg-primary border-primary rounded" style="flex: 1">
+                    <button class="text-white py-3 fw-bold border-0 bg-primary border-primary rounded"
+                            style="flex: 1">
                         <span>Mua ngay</span>
                     </button>
                 </div>
             </div>
         </div>
-        <button id="button-hidden-see-more" style="width: 60px; height: 45px;"
+        <button id="button-hidden-see-more" type="submit" style="width: 60px; height: 45px;"
                 class="bg-white border-secondary border-1 rounded-circle px-2">X
         </button>
     </div>
@@ -92,6 +95,14 @@
 </div>
 
 <script>
+    function getData() {
+        return {
+            id: $("input[name='id']").val(),
+            quantity: $("input[name='quantity']").val(),
+            productOptionId: $("input[name='product-option']:checked").val()
+        }
+    }
+
     $(document).ready(function () {
         $('.carousel-item.product-image').eq(0).addClass('active');
 
@@ -123,6 +134,46 @@
                 $("input[name='quantity']").val(++quantity);
             }
         )
+
+        const buttonAddCart = $(".button-add-to-cart");
+        buttonAddCart.on("mouseenter", function () {
+            $(this).addClass("bg-primary")
+            $(this).removeClass("bg-white")
+            $(this).addClass("text-white")
+            $(this).removeClass("text-primary")
+        });
+
+        buttonAddCart.on("mouseleave", function () {
+            $(this).removeClass("bg-primary")
+            $(this).addClass("bg-white")
+            $(this).addClass("text-primary")
+            $(this).removeClass("text-white")
+        });
+
+
+        buttonAddCart.click(() => {
+            $.ajax({
+                data: JSON.stringify(getData()),
+                url: "api/cart/add",
+                method: "POST",
+                contentType: "application/json",
+                success: (response) => {
+                    Toastify({
+                        text: "Thêm vào giỏ hàng thành công!",
+                        duration: 3000,
+                        backgroundColor: "#4cea06"
+                    }).showToast();
+                },
+                error: (error) => {
+                    console.log(error)
+                    Toastify({
+                        text: "Lỗi thêm vào giỏ hàng!",
+                        duration: 3000,
+                        backgroundColor: "#ea0606"
+                    }).showToast();
+                }
+            })
+        })
     });
 </script>
 </html>

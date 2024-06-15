@@ -1,7 +1,10 @@
 package com.lamnguyen.stationery_kimi.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductSeeMoreDTO extends ProductDTO {
+public class ProductDetailDTO extends ProductSeeMoreDTO {
+    private String description;
     private List<ProductImageDTO> productImageDTOS;
-    private List<ProductOptionDTO> productOptionDTOS;
 }

@@ -16,7 +16,9 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests(authorizeRequests ->
+        httpSecurity
+                .csrf(csrf -> csrf.disable())
+                .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .anyRequest().permitAll()
                 )
@@ -29,8 +31,7 @@ public class SecurityConfig {
                                         userInfoEndpoint.oidcUserService(oidcUserService())
                                 )
                 )
-                .formLogin(Customizer.withDefaults())
-                .csrf(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
     }
 

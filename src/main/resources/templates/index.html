@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ</title>
+
+    <link rel="icon" th:href="@{/images/logo/logo.jpg}">
+
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.js}"></script>
@@ -16,6 +19,8 @@
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <script th:src="@{/js/menu.js}"></script>
 
+    <link rel="stylesheet" type="text/css" th:href="${'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css'}">
+    <script type="text/javascript" th:src="${'https://cdn.jsdelivr.net/npm/toastify-js'}"></script>
 </head>
 <body>
 <header>
@@ -78,63 +83,41 @@
 
     <section id="frame_sale"></section>
 
-    <section class="p-2 bg-white rounded-2 deal">
+    <section th:if="${deals.size()} != 0" th:with="size=${deals.size()}" class="p-2 bg-white rounded-2 deal">
         <div class="mb-3 section_header">
             <img th:src="@{/images/banner/banner_deal.webp}" class="w-100" alt="banner_deal">
         </div>
         <div class="p-2 section_body" th:with="size=${deals.size()}">
-            <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
+            <div th:if="${size} > 0" th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
                 <div class="d-flex justify-content-between">
-                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                        <div th:replace="component/product ::product(data=${deals.get(index)})"></div>
+                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}"
+                         th:if="${index} < ${size}"
+                         th:with="data=${deals.get(index)}">
+                        <div th:replace="component/product::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="pt-4 pb-3 d-flex justify-content-center section_footer">
-            <button class=" p-2 border-0 rounded-2 button_see_all">
-                <span>Xem tất cả </span>
-                <i class="fa-solid fa-angle-right"></i>
-            </button>
+            <div class="pt-4 pb-3 d-flex justify-content-center section_footer">
+                <button class=" p-2 border-0 rounded-2 button_see_all">
+                    <span>Xem tất cả </span>
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+            </div>
         </div>
     </section>
 
-    <section class="p-2 bg-white rounded-2 printing_paper">
+    <section th:if="${papers.size()} != 0" th:with="size=${papers.size()}"
+             class="p-2 bg-white rounded-2 printing_paper">
         <div class="mb-3 section_header">
             <img th:src="@{/images/banner/banner_printing_paper.webp}" class="w-100" alt="banner_printing_paper">
         </div>
-        <div class="p-2 section_body" th:with="size=${papers.size()}">
-            <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
-                <div class="d-flex justify-content-between">
-                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                        <div th:replace="component/product ::product(data=${papers.get(index)})"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="pt-4 pb-3 d-flex justify-content-center section_footer">
-            <button class=" p-2 border-0 rounded-2 button_see_all">
-                <span>Xem tất cả </span>
-                <i class="fa-solid fa-angle-right"></i>
-            </button>
-        </div>
-    </section>
-
-    <section class="p-2 bg-white rounded-2 painting_color">
-        <div class="mb-3 section_header">
-            <img th:src="@{/images/banner/banner_painting_color.webp}" class="w-100" alt="banner_painting_color">
-        </div>
         <div class="p-2 section_body">
-            <div class="menu mt-2 mb-4 d-flex justify-content-end">
-                <div class="menu-item active">Sản phẩm HOT</div>
-                <div class="menu-item">BST tặng Flashcard</div>
-                <div class="menu-item">Parker</div>
-            </div>
-            <div class="p-2 section_body" th:with="size = ${paintingColors.size()}">
-                <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
-                    <div class="d-flex justify-content-between">
-                        <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                            <div th:replace="component/product ::product(data=${paintingColors.get(index)})"></div>
+            <div th:if="${size} > 0" th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
+                <div class="d-flex justify-content-between">
+                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}"
+                         th:with="data=${papers.get(index)}">
+                        <div th:replace="component/product ::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
                         </div>
                     </div>
                 </div>
@@ -148,15 +131,49 @@
         </div>
     </section>
 
-    <section class="p-2 bg-white rounded-2 learning_tool">
+    <section th:if="${paintingColors.size()} != 0" th:with="size = ${paintingColors.size()}"
+             class="p-2 bg-white rounded-2 painting_color">
+        <div class="mb-3 section_header">
+            <img th:src="@{/images/banner/banner_painting_color.webp}" class="w-100" alt="banner_painting_color">
+        </div>
+        <div class="p-2 section_body">
+            <div class="menu mt-2 mb-4 d-flex justify-content-end">
+                <div class="menu-item active">Sản phẩm HOT</div>
+                <div class="menu-item">BST tặng Flashcard</div>
+                <div class="menu-item">Parker</div>
+            </div>
+            <div class="p-2 section_body">
+                <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
+                    <div class="d-flex justify-content-between">
+                        <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}"
+                             th:with="data=${paintingColors.get(index)}">
+                            <div th:replace="component/product ::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-4 pb-3 d-flex justify-content-center section_footer">
+            <button class=" p-2 border-0 rounded-2 button_see_all">
+                <span>Xem tất cả </span>
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <section th:if="${learningTools.size()} != 0" th:with="size=${learningTools.size()}"
+             class="p-2 bg-white rounded-2 learning_tool">
         <div class="mb-3 section_header">
             <img th:src="@{/images/banner/banner_learning_tool.webp}" class="w-100" alt="banner_learning_tool">
         </div>
-        <div class="p-2 section_body" th:with="size=${learningTools.size()}">
-            <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
+        <div class="p-2 section_body">
+            <div th:if="${size} > 0" th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
                 <div class="d-flex justify-content-between">
-                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                        <div th:replace="component/product ::product(data=${learningTools.get(index)})"></div>
+                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}"
+                         th:with="data=${learningTools.get(index)}">
+                        <div th:replace="component/product ::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,15 +186,18 @@
         </div>
     </section>
 
-    <section class="p-2 bg-white rounded-2 office_tool">
+    <section th:if="${officeTools.size()} != 0" th:with="size=${officeTools.size()}"
+             class="p-2 bg-white rounded-2 office_tool">
         <div class="mb-3 section_header">
             <img th:src="@{/images/banner/banner_office_tool.webp}" class="w-100" alt="banner_office_tool">
         </div>
-        <div class="p-2 section_body" th:with="size=${officeTools.size()}">
-            <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
+        <div class="p-2 section_body">
+            <div th:if="${size} > 0" th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
                 <div class="d-flex justify-content-between">
-                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                        <div th:replace="component/product ::product(data=${officeTools.get(index)})"></div>
+                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}"
+                         th:with="data=${officeTools.get(index)}">
+                        <div th:replace="component/product ::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -190,11 +210,11 @@
         </div>
     </section>
 
-    <section class="p-2 bg-white rounded-2 pen">
+    <section th:if="${pens.size() != 0}" th:with="size=${pens.size()}" class="p-2 bg-white rounded-2 pen">
         <div class="mb-3 section_header">
             <img th:src="@{/images/banner/banner_pen.webp}" class="w-100" alt="banner_pen">
         </div>
-        <div class="p-2 section_body" th:with="size=${pens.size()}">
+        <div class="p-2 section_body">
             <div class="menu mt-2 mb-4 d-flex justify-content-end">
                 <div class="menu-item active">Bút Gel</div>
                 <div class="menu-item">Bút bi</div>
@@ -202,10 +222,12 @@
                 <div class="menu-item">Bút dạ quang</div>
                 <div class="menu-item">Bút xá</div>
             </div>
-            <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
+            <div th:if="${size} > 0" th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
                 <div class="d-flex justify-content-between">
-                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                        <div th:replace="component/product ::product(data=${pens.get(index)})"></div>
+                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}"
+                         th:with="data=${pens.get(index)}">
+                        <div th:replace="component/product ::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -218,20 +240,23 @@
         </div>
     </section>
 
-    <section class="p-2 bg-white rounded-2 high_class_gift">
+    <section th:if="${highClassGifts.size()} != 0" th:with="size=${highClassGifts.size()}"
+             class="p-2 bg-white rounded-2 high_class_gift">
         <div class="mb-3 section_header">
             <img th:src="@{/images/banner/banner_gift.webp}" class="w-100" alt="banner_gift">
         </div>
-        <div class="p-2 section_body" th:with="size=${highClassGifts.size()}">
+        <div class="p-2 section_body">
             <div class="menu mt-2 mb-4 d-flex justify-content-end">
                 <div class="menu-item active">Combo quà tặng</div>
                 <div class="menu-item">Bizner</div>
                 <div class="menu-item">Parker</div>
             </div>
-            <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
+            <div th:if="${size} > 0" th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
                 <div class="d-flex justify-content-between">
-                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                        <div th:replace="component/product ::product(data=${highClassGifts.get(index)})"></div>
+                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}"
+                         th:with="data=${highClassGifts.get(index)}">
+                        <div th:replace="component/product ::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -244,15 +269,17 @@
         </div>
     </section>
 
-    <section class="p-2 bg-white rounded-2 book">
+    <section th:if="${books.size()} != 0" th:with="size=${books.size()}" class="p-2 bg-white rounded-2 book">
         <div class="mb-3 section_header">
             <img th:src="@{/images/banner/banner_book.webp}" class="w-100" alt="banner_book">
         </div>
-        <div class="p-2 section_body" th:with="size=${books.size()}">
+        <div class="p-2 section_body">
             <div th:each="lop : ${#numbers.sequence(0, size - 1, 4)}">
                 <div class="d-flex justify-content-between">
-                    <div th:each="index : ${#numbers.sequence(lop + 0, lop + 3)}" th:if="${index} < ${size}">
-                        <div th:replace="component/product ::product(data=${books.get(index)})"></div>
+                    <div th:each="index : ${#numbers.sequence(lop, lop + 3)}" th:if="${index} < ${size}"
+                         th:with="data=${books.get(index)}">
+                        <div th:replace="component/product ::product(id=${data.id}, name=${data.name}, urlImage=${data.productImageDTO.url}, price=${data.price}, discountPercent=${data.discountPercent},  productNew=${data.productNew})">
+                        </div>
                     </div>
                 </div>
             </div>

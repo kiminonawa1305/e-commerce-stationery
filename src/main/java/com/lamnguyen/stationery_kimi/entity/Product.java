@@ -26,31 +26,34 @@ public class Product {
     @Column
     private Integer price;
 
+    @Column(name = "`new`")
+    private Boolean productNew;
+
     @Column(name = "`lock`")
     @ColumnDefault("0")
     private Boolean lock;
 
-    @OneToMany(mappedBy = "product")
-    private List<ProductOption> productTypes;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<ProductOption> productOptions;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "provider_id")
     private Provider provider;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductImage> image;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ComboProductDetail> comboProducts;
 
     @OneToMany(mappedBy = "product")
     private List<BillDetail> billDetails;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
     private Discount discount;
 

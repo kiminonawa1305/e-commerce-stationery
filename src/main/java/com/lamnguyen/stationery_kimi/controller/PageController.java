@@ -1,6 +1,6 @@
 package com.lamnguyen.stationery_kimi.controller;
 
-import com.lamnguyen.stationery_kimi.dto.ProductDTO;
+import com.lamnguyen.stationery_kimi.dto.ProductDisplayDTO;
 import com.lamnguyen.stationery_kimi.dto.ProductSeeMoreDTO;
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
 import com.lamnguyen.stationery_kimi.service.IProductService;
@@ -23,15 +23,15 @@ public class PageController {
     private IProductService service;
 
     @GetMapping({"/", "/index.html", "/home"})
-    public String home(Model model, HttpSession session) {
-        List<ProductDTO> deals = service.findByCategory("deals");
-        List<ProductDTO> papers = service.findByCategory("papers");
-        List<ProductDTO> paintingColors = service.findByCategory("paintingColors");
-        List<ProductDTO> learningTool = service.findByCategory("learningTool");
-        List<ProductDTO> highClassGifts = service.findByCategory("highClassGifts");
-        List<ProductDTO> pens = service.findByCategory("pens");
-        List<ProductDTO> books = service.findByCategory("books");
-        List<ProductDTO> officeTools = service.findByCategory("officeTools");
+    public String home(Model model) {
+        List<ProductDisplayDTO> deals = service.findByCategory(1L, 8, 0);
+        List<ProductDisplayDTO> papers = service.findByCategory(2L, 8, 0);
+        List<ProductDisplayDTO> paintingColors = service.findByCategory(3L, 8, 0);
+        List<ProductDisplayDTO> learningTool = service.findByCategory(4L, 8, 0);
+        List<ProductDisplayDTO> highClassGifts = service.findByCategory(5L, 8, 0);
+        List<ProductDisplayDTO> pens = service.findByCategory(6L, 8, 0);
+        List<ProductDisplayDTO> books = service.findByCategory(7L, 8, 0);
+        List<ProductDisplayDTO> officeTools = service.findByCategory(8L, 8, 0);
         model.addAttribute("deals", deals);
         model.addAttribute("papers", papers);
         model.addAttribute("paintingColors", paintingColors);
@@ -84,7 +84,7 @@ public class PageController {
     }
 
     @GetMapping("/api/products/see-more/{id}")
-    public String seeMore(@PathVariable("id") Integer id, Model model) {
+    public String seeMore(@PathVariable("id") Long id, Model model) {
         ProductSeeMoreDTO result = service.seeMore(id);
         model.addAttribute("data", result);
         return "component/see_more";

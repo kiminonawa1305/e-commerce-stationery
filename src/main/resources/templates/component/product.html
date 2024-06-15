@@ -1,37 +1,43 @@
-<html th:fragment="product(data)" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="product(id, name, urlImage, price, discountPercent, productNew)" lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
 <div class="card product rounded-4">
-    <a th:href="@{/detail/__${data.id}__}" class="text-decoration-none">
+    <a th:href="@{/detail/__${id}__}" class="text-decoration-none">
         <div class="card-img overflow-hidden rounded-bottom-0 rounded-4">
-            <img th:src="@{__${data.urlImageProducers[0]}__}" class="card-img-top" alt="san_pham.png">
+            <img th:src="@{__${urlImage}__}" class="card-img-top" alt="san_pham.png">
         </div>
         <div class="card-body text-center bg-white py-2">
-            <div class="card-title m-0">
-                <span class="d-inline-block text-white bg-danger rounded px-1">New</span>
-                <h5 class="title d-inline-block text-secondary" th:text="${data.name}"></h5>
+            <div class="card-title m-0 position-relative">
+                <span th:if="${productNew} == true"
+                      class="position-absolute d-inline-block text-white bg-danger rounded px-1 position-absolute">New</span>
+                <h5 th:if="${productNew} == true" class="title d-inline-block text-secondary overflow-hidden mb-0"
+                    th:text="${name}" style="height: 45px; text-indent: 45px"/>
+                <h5 th:if="${productNew} == null or ${productNew} == false"
+                    class="title d-inline-block text-secondary overflow-hidden mb-0" th:text="${name}"
+                    style="height: 45px"/>
             </div>
             <div class="card-text">
-                <span class="new-price text-primary fw-bold" th:if="${data.discountPercent} == null"
-                      th:text="${#numbers.formatCurrency(data.price)}"></span>
-                <span class="new-price text-primary fw-bold" th:if="${data.discountPercent} != null"
-                      th:text="${#numbers.formatCurrency(data.price - data.discountPercent * data.price)}"></span>
-                <del class="old-price text-body-tertiary fw-bold" th:if="${data.discountPercent} != null"
-                     th:text="${#numbers.formatCurrency(data.price)}"></del>
+                <span class="new-price text-primary fs-5 fw-bold" th:if="${discountPercent} == null"
+                      th:text="${#numbers.formatCurrency(price)}"></span>
+                <span class="new-price text-primary fs-5  fw-bold" th:if="${discountPercent} != null"
+                      th:text="${#numbers.formatCurrency(price - discountPercent * price)}"></span>
+                <del class="old-price text-body-tertiary" th:if="${discountPercent} != null"
+                     th:text="${#numbers.formatCurrency(price)}"></del>
             </div>
         </div>
     </a>
     <div class="card-footer border-0 bg-white d-flex justify-content-between rounded-4">
-        <a th:href="@{/detail/__${data.id}__}" class="text-decoration-none">
-            <div class="align-content-center" th:if="${data.discountPercent} != null">
+        <a th:href="@{/detail/__${id}__}" class="text-decoration-none">
+            <div class="align-content-center" th:if="${discountPercent} != null and ${discountPercent} != 0.0">
                 <span class="tag bg-warning fs-6 d-inline-block text-white rounded ps-1 pe-3"
-                      th:text="'-'+ ${T(java.lang.Math).round(data.discountPercent * 100)} +'%'">-20%</span>
+                      th:text="'-'+ ${T(java.lang.Math).round(discountPercent * 100)} +'%'">-20%</span>
             </div>
         </a>
         <div>
-            <button th:data-url="@{/api/products/see-more/__${data.id}__}"
+            <button th:data-url="@{/api/products/see-more/__${id}__}"
                     class="see see-more-info-product border-0 bg-primary p-2 rounded-circle text-white align-content-end">
                 <i class="fa-sharp fa-solid fa-eye"></i>
             </button>
-            <button th:data-url="@{/api/products/see-more/__${data.id}__}"
+            <button th:data-url="@{/api/products/see-more/__${id}__}"
                     class="add-to-cart see-more-info-product border-0 bg-danger p-2 rounded-circle text-white align-content-end">
                 <i class="fa-sharp fa-solid fa-cart-plus"></i>
             </button>

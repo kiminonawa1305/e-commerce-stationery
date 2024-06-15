@@ -7,12 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductCartDetail {
-    private ProductDTO product;
-    private int quantity;
+public class ProductImageDTO {
+    private Long id;
+    private String type;
+    private String url;
 }

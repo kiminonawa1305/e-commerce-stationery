@@ -43,12 +43,4 @@ public class ProductManagerController {
                 .data(result)
                 .build();
     }
-
-    public ApiResponse<List<ProductDTO>> findAll(@PathVariable Integer page) {
-        List<ProductDTO> result = productService.findAll(page);
-        return ApiResponse.<List<ProductDTO>>builder()
-                .message("Thông công!")
-                .data(result)
-                .build();
-    }
 }

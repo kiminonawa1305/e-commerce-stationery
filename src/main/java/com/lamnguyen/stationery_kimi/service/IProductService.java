@@ -1,6 +1,8 @@
 package com.lamnguyen.stationery_kimi.service;
 
 import com.lamnguyen.stationery_kimi.dto.ProductDTO;
+import com.lamnguyen.stationery_kimi.dto.ProductDisplayDTO;
+import com.lamnguyen.stationery_kimi.dto.ProductOptionDTO;
 import com.lamnguyen.stationery_kimi.dto.ProductSeeMoreDTO;
 import com.lamnguyen.stationery_kimi.entity.Product;
 
@@ -16,11 +18,10 @@ public interface IProductService {
 
     ProductDTO lockProductById(Product product);
 
-    List<ProductDTO> findAll(Integer page);
 
-    List<ProductDTO> findAllByLockFalse(Integer page);
+    List<ProductDisplayDTO> findAllByLockFalse(Integer limit, Integer page);
 
-    List<ProductDTO> findByCategory(String category);
+    List<ProductDisplayDTO> findByCategory(Long id, Integer limit, Integer page);
 
-    ProductSeeMoreDTO seeMore(Integer id);
+    ProductSeeMoreDTO seeMore(Long id);
 }

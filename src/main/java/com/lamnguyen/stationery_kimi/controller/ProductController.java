@@ -1,6 +1,7 @@
 package com.lamnguyen.stationery_kimi.controller;
 
 import com.lamnguyen.stationery_kimi.dto.ProductDTO;
+import com.lamnguyen.stationery_kimi.dto.ProductDisplayDTO;
 import com.lamnguyen.stationery_kimi.exception.ApplicationException;
 import com.lamnguyen.stationery_kimi.exception.ErrorCode;
 import com.lamnguyen.stationery_kimi.response.ApiResponse;
@@ -20,10 +21,10 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("/page-{page}")
-    public ApiResponse<List<ProductDTO>> findAllByLockFalse(@PathVariable("page") Integer page) {
-        List<ProductDTO> result = productService.findAllByLockFalse(page);
+    public ApiResponse<List<ProductDisplayDTO>> findAllByLockFalse(@PathVariable("page") Integer page) {
+        List<ProductDisplayDTO> result = productService.findAllByLockFalse(20, page);
         if (result.isEmpty()) throw new ApplicationException(ErrorCode.PRODUCT_NOT_FOUND);
-        return ApiResponse.<List<ProductDTO>>builder()
+        return ApiResponse.<List<ProductDisplayDTO>>builder()
                 .message("Thành công!")
                 .data(result)
                 .build();
