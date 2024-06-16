@@ -55,7 +55,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     }
 
     @Override
-    public Long forgotPassword(String email) {
+    public String forgotPassword(String email) {
         User user = userService.findUserByEmail(email);
 
         LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(timeOut);
@@ -69,13 +69,18 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         verifyEmailStatus.setExpiredAt(expiredAt);
         verifyEmailStatusService.save(verifyEmailStatus);
 
-        return user.getId();
+        return user.getEmail();
     }
 
     @Override
     public UserDTO register(UserRegisterRequest userRegisterRequest) {
         String email = userRegisterRequest.getEmail();
-        User userExist = userService.findUserByEmail(email);
+        User userExist = null;
+
+        try {
+            userExist = userService.checkUserExist(email);
+        } catch (Exception ignored) {
+        }
 
         LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(timeOut);
         String code = verifyEmailStatusService.generateVerificationCode();
@@ -132,8 +137,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     @Override
     public UserDTO verify(VerifyUserRequest verifyUserRequest) {
-        verifyEmailStatusService.verify(verifyUserRequest);
-        return UserDTO.builder().email(verifyUserRequest.getEmail()).build();
+        return UserDTO.builder()
+                .id(verifyEmailStatusService.verify(verifyUserRequest))
+                .email(verifyUserRequest.getEmail())
+                .build();
     }
 
     @Override

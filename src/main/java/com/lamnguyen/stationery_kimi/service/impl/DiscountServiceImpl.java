@@ -22,7 +22,7 @@ public class DiscountServiceImpl implements IDiscountService {
     @Override
     public DiscountDTO getDiscount(Long id) {
         LocalDateTime now = LocalDateTime.now();
-        Discount discount = discountRepository.findByStartDateLessThanEqualAndEndDateGreaterThanAndProductsContains(now, now, Product.builder().id(id).build());
+        Discount discount = discountRepository.findByStartDateLessThanEqualAndEndDateGreaterThanAndProductsContaining(now, now, Product.builder().id(id).build());
         if (discount == null) return null;
         return convertToDTO(discount);
     }

@@ -1,20 +1,6 @@
 $(document).ready(() => {
-    $('#sign-up-form').validate({
+    $('#reset-password-form').validate({
         rules: {
-            firstName: {
-                required: true,
-            },
-            lastName: {
-                required: true,
-            },
-            phone: {
-                required: true,
-                vietnamPhoneNumber: true
-            },
-            email: {
-                required: true,
-                email: true
-            },
             password: {
                 required: true,
                 minlength: 8,
@@ -29,19 +15,6 @@ $(document).ready(() => {
             }
         },
         messages: {
-            firstName: {
-                required: "Vui lòng nhập tên của bạn",
-            },
-            lastName: {
-                required: "Vui lòng nhập họ của bạn",
-            },
-            phone: {
-                required: "Vui lòng nhập số điện thoại của bạn",
-            },
-            email: {
-                required: "Vui lòng nhập email của bạn",
-                email: "Vui lòng nhập email hợp lệ"
-            },
             password: {
                 required: "Vui lòng nhập mật khẩu",
                 minlength: "Vui lòng nhập ít nhất 8 ký tự"
@@ -52,43 +25,7 @@ $(document).ready(() => {
             }
         },
         submitHandler: function (form) {
-            Swal.fire({
-                title: "Loading...",
-                didOpen: () => {
-                    Swal.showLoading();
-                },
-            });
-            $.ajax({
-                url: './api/auth/register',
-                type: 'POST',
-                dataType: 'json',
-                data: $(form).serialize(),
-                success: function (response) {
-                    sessionStorage.setItem("email", response.data.email)
-                    Swal.close();
-                    Swal.fire({
-                        title: "Đăng ký thành công!",
-                        text: `${response.message}`,
-                        icon: "success",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    }).then((result) => {
-                        window.location.href = "verify.html";
-                    });
-                },
-                error: function (xhr, status, error) {
-                    sessionStorage.setItem("email", $(form).email)
-                    Swal.fire({
-                        title: `${xhr.responseJSON.message}`,
-                        icon: "error",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    }).then((result) => {
-                        window.location.href = url + "verify.html";
-                    });
-                }
-            });
-            return false; // Prevent default form submission
+            return true; // Prevent default form submission
         }
     });
 

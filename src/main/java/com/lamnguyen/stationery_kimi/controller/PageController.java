@@ -4,16 +4,23 @@ import com.lamnguyen.stationery_kimi.dto.CartItemDisplay;
 import com.lamnguyen.stationery_kimi.dto.ProductDisplayDTO;
 import com.lamnguyen.stationery_kimi.dto.ProductSeeMoreDTO;
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
+import com.lamnguyen.stationery_kimi.request.ForgetPasswordRequest;
+import com.lamnguyen.stationery_kimi.request.ResetPasswordRequest;
+import com.lamnguyen.stationery_kimi.response.ApiResponse;
+import com.lamnguyen.stationery_kimi.service.IAuthenticationService;
 import com.lamnguyen.stationery_kimi.service.IProductService;
 import com.lamnguyen.stationery_kimi.service.IShoppingCartService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +31,8 @@ public class PageController {
     private IProductService service;
     @Autowired
     private IShoppingCartService shoppingCartService;
+    @Autowired
+    private IAuthenticationService authenticationService;
 
     @GetMapping({"/", "/index.html", "/home"})
     public String home(Model model) {
@@ -93,5 +102,42 @@ public class PageController {
         ProductSeeMoreDTO result = service.seeMore(id);
         model.addAttribute("data", result);
         return "component/see_more";
+    }
+
+    @GetMapping("/verify.html")
+    public String verify() {
+        return "verify";
+    }
+
+
+    @PostMapping("/reset-password")
+    public String changePassword(Model model, @Valid @ModelAttribute ResetPasswordRequest resetPasswordRequest) {
+        String password = resetPasswordRequest.getPassword();
+        Long id = resetPasswordRequest.getId();
+        try {
+            authenticationService.resetPassword(id, password);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "reset-password";
+        }
+
+        return "sign-in";
+    }
+
+    @GetMapping("verify-forget-password.html")
+    public String verifyForgetPassword() {
+        return "verify-forget-password";
+    }
+
+    @GetMapping("reset-password.html")
+    public String resetPassword() {
+        return "reset-password";
+    }
+
+    @PostMapping("/forget-password")
+    public String forgetPassword(HttpSession session, @Valid @ModelAttribute ForgetPasswordRequest forgetPasswordRequest) {
+        String email = forgetPasswordRequest.getEmail();
+        session.setAttribute("email", authenticationService.forgotPassword(email));
+        return "redirect:/verify-forget-password.html";
     }
 }

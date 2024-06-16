@@ -49,7 +49,7 @@ public class VerifyEmailStatusServiceImpl implements IVerifyEmailStatusService {
     }
 
     @Override
-    public void verify(VerifyUserRequest verifyUserRequest) {
+    public Long verify(VerifyUserRequest verifyUserRequest) {
         User user = userService.findUserByEmail(verifyUserRequest.getEmail());
         VerifyEmailStatus verifyEmailStatus = user.getVerifyEmailStatus();
         if (!verifyEmailStatus.getCode().equals(verifyUserRequest.getVerificationCode()))
@@ -72,6 +72,8 @@ public class VerifyEmailStatusServiceImpl implements IVerifyEmailStatusService {
         verifyEmailStatus.setExpiredAt(null);
         verifyEmailStatus.setType(VerifyEmailStatusType.VERIFY_SUCCESS.toString());
         verifyEmailStatusRepository.saveAndFlush(verifyEmailStatus);
+
+        return user.getId();
     }
 
     @Override

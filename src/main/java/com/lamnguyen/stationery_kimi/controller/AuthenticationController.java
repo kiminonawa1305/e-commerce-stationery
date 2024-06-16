@@ -1,15 +1,18 @@
 package com.lamnguyen.stationery_kimi.controller;
 
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
-import com.lamnguyen.stationery_kimi.request.*;
+import com.lamnguyen.stationery_kimi.request.LoginRequest;
+import com.lamnguyen.stationery_kimi.request.UserRegisterRequest;
+import com.lamnguyen.stationery_kimi.request.VerifyUserRequest;
 import com.lamnguyen.stationery_kimi.response.ApiResponse;
 import com.lamnguyen.stationery_kimi.service.IAuthenticationService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,6 +39,15 @@ public class AuthenticationController {
                 .build();
     }
 
+    @PostMapping("/verify-email-forget-password")
+    public ApiResponse<Void> verifyEmailForgetPassword(HttpSession session, @ModelAttribute @Valid VerifyUserRequest verifyUserRequest) {
+        UserDTO result = authenticationService.verify(verifyUserRequest);
+        session.setAttribute("id", result.getId());
+        return ApiResponse.<Void>builder()
+                .message("Xác thực thành công!")
+                .build();
+    }
+
     @PostMapping("/login")
     public ApiResponse<UserDTO> login(@Valid @ModelAttribute LoginRequest request, HttpSession httpSession) {
         String email = request.getEmail();
@@ -45,27 +57,6 @@ public class AuthenticationController {
         return ApiResponse.<UserDTO>builder()
                 .message("Đăng nhập thành công!")
                 .data(userDTO)
-                .build();
-    }
-
-    @PostMapping("/forget-password")
-    public ApiResponse<Long> forgetPassword(@Valid @ModelAttribute ForgetPasswordRequest forgetPasswordRequest) {
-        String email = forgetPasswordRequest.getEmail();
-        return ApiResponse.<Long>builder()
-                .message("Vui lòng kiểm tra email để đặt lại mật khẩu!")
-                .code(202)
-                .data(authenticationService.forgotPassword(email))
-                .build();
-    }
-
-    @PostMapping("/reset-password")
-    public ApiResponse<Void> changePassword(@Valid @ModelAttribute ResetPasswordRequest resetPasswordRequest) {
-        String password = resetPasswordRequest.getPassword();
-        Long id = resetPasswordRequest.getId();
-        authenticationService.resetPassword(id, password);
-        return ApiResponse.<Void>builder()
-                .message("Đặt lại mật khẩu thành công!")
-                .code(202)
                 .build();
     }
 }

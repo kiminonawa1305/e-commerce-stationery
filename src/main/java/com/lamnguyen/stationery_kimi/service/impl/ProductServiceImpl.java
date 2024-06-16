@@ -67,7 +67,12 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductDisplayDTO> findByCategory(Long id, Integer limit, Integer page) {
-        return convertToDisplayDTO(productRepository.findAllByLockFalseAndCategory_Id(id, Pageable.ofSize(limit).withPage(page)));
+        List<Product> products = productRepository.findAllByLockFalseAndCategory_Id(id, Pageable.ofSize(limit).withPage(page))
+                .stream()
+                .filter(product -> product.getProductOptions()
+                        .stream().anyMatch(productOption -> productOption.getQuantity() > 0)
+                ).toList();
+        return convertToDisplayDTO(products);
     }
 
     @Override

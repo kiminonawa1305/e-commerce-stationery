@@ -9,7 +9,7 @@ public interface IVerifyEmailStatusService {
 
     VerifyEmailStatus save(VerifyEmailStatus emailStatus);
 
-    void verify(VerifyUserRequest verifyUserRequest);
+    Long verify(VerifyUserRequest verifyUserRequest);
 
     Boolean isVerify(User user);
 }

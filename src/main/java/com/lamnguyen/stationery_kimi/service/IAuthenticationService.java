@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 public interface IAuthenticationService {
     UserDTO login(@Valid String userName, @Valid String password);
 
-    Long forgotPassword(@Valid String email);
+    String forgotPassword(@Valid String email);
 
     UserDTO register(UserRegisterRequest user);
 

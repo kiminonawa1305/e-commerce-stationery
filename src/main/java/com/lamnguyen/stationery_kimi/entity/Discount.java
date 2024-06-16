@@ -26,9 +26,9 @@ public class Discount {
     @Column
     private LocalDateTime endDate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "discount")
     private List<Product> products;
 
-    @OneToMany
+    @OneToMany(mappedBy = "discount")
     private List<ComboProduct> comboProducts;
 }

@@ -31,7 +31,6 @@ $(document).ready(() => {
                 dataType: 'json',
                 data: $(form).serialize(),
                 success: function (response) {
-                    sessionStorage.setItem("user", JSON.stringify(response.data))
                     Swal.close();
                     Swal.fire({
                         title: "Đăng nhập thành công!",
@@ -65,7 +64,7 @@ $(document).ready(() => {
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                 }).then((result) => {
-                                    window.location.href = url + "verify.html";
+                                    window.location.href = "verify.html";
                                 });
                                 break
                         }

@@ -30,10 +30,10 @@ $(document).ready(() => {
                 }
             });
             $.ajax({
-                url: "./api/auth/verify-email",
+                url: "./api/auth/verify-email-forget-password",
                 type: "POST",
                 data: {
-                    email: `${sessionStorage.getItem("email")}`,
+                    email: $("#input-email").val(),
                     verificationCode: key
                 },
                 success: (data) => {
@@ -47,7 +47,7 @@ $(document).ready(() => {
                     }).then((result) => {
                         sessionStorage.removeItem("email")
 
-                        window.location.href = "sign-in.html"
+                        window.location.href = "reset-password.html"
                     });
                 },
                 error: (xhr, status, err) => {
