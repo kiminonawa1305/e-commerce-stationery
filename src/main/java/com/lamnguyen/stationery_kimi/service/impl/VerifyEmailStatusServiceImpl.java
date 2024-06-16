@@ -10,13 +10,11 @@ import com.lamnguyen.stationery_kimi.request.VerifyUserRequest;
 import com.lamnguyen.stationery_kimi.service.IEmailService;
 import com.lamnguyen.stationery_kimi.service.IUserService;
 import com.lamnguyen.stationery_kimi.service.IVerifyEmailStatusService;
-import jakarta.mail.MessagingException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 
 @Service
@@ -31,8 +29,7 @@ public class VerifyEmailStatusServiceImpl implements IVerifyEmailStatusService {
     private ModelMapper modelMapper;
     @Value("${email.time-out}")
     private int timeOut;
-    @Value("${email.title-verify-register}")
-    private String titleEmailVerifyRegister;
+    private String titleEmailVerifyRegister = "Xác thực tài khoản";
 
     public String generateVerificationCode() {
         int numberCode = (int) (Math.random() * 999999);
@@ -63,11 +60,7 @@ public class VerifyEmailStatusServiceImpl implements IVerifyEmailStatusService {
                 throw new ApplicationException(ErrorCode.TEST_ERROR);
 
             String code = generateVerificationCode();
-            try {
-                emailService.sendMessage(verifyUserRequest.getEmail(), titleEmailVerifyRegister, emailService.getTemplate(user.getLastName() + " " + user.getFirstName(), code));
-            } catch (MessagingException | FileNotFoundException e) {
-                System.out.println(e.toString());
-            }
+            emailService.sendMessage(verifyUserRequest.getEmail(), titleEmailVerifyRegister, emailService.getTemplate(user.getLastName() + " " + user.getFirstName(), code));
 
             verifyEmailStatus.setExpiredAt(LocalDateTime.now().plusMinutes(timeOut));
             verifyEmailStatus.setCode(code);

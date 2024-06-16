@@ -25,12 +25,18 @@ public class EmailServiceImpl implements IEmailService {
     @Value("${email.time-out}")
     private int timeOut;
 
-    public void sendMessage(String to, String subject, String text) throws MessagingException, FileNotFoundException {
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(text, true);
-        helper.addInline("email_open", ResourceUtils.getFile("classpath:static/images/email_open.png"));
-        emailSender.send(message);
+    public void sendMessage(String to, String subject, String text) {
+        try {
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(text, true);
+
+            helper.addInline("email_open", ResourceUtils.getFile("classpath:static/images/email_open.png"));
+
+            emailSender.send(message);
+        } catch (MessagingException | RuntimeException | FileNotFoundException e) {
+            System.out.println(e);
+        }
     }
 
     public String getTemplate(String name, String code) {

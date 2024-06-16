@@ -9,15 +9,17 @@ import jakarta.validation.Valid;
 public interface IAuthenticationService {
     UserDTO login(@Valid String userName, @Valid String password);
 
-    String forgotPassword(@Valid String email);
+    Long forgotPassword(@Valid String email);
 
     UserDTO register(UserRegisterRequest user);
 
-    UserDTO changePassword(User user,@Valid String newPassword);
+    UserDTO changePassword(User user, @Valid String newPassword);
 
     UserDTO changeProfile(User user);
 
     User checkUserExist(@Valid String email);
 
     UserDTO verify(VerifyUserRequest verifyUserRequest);
+
+    void resetPassword(Long id, String password);
 }

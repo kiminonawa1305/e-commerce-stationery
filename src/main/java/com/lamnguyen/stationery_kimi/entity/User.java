@@ -27,10 +27,8 @@ public class User {
     private String firstName;
     @Column
     private String lastName;
-
     @Column
     private String phone;
-
     @Column
     @Email(message = "Email không hợp lệ!")
     private String email;

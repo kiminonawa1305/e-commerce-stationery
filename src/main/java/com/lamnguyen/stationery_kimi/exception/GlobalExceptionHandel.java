@@ -32,7 +32,7 @@ public class GlobalExceptionHandel {
     public ResponseEntity<ApiResponse<String>> handleRuntimeException(RuntimeException e) {
         ApiResponse<String> body = ApiResponse.<String>builder()
                 .code(HttpServletResponse.SC_BAD_REQUEST)
-                .message("Bad request")
+                .message("Lỗi hệ thống")
                 .build();
         return ResponseEntity.badRequest().body(body);
     }

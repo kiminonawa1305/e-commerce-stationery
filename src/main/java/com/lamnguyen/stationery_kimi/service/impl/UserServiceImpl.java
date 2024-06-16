@@ -47,10 +47,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO findById(Long id) {
+    public UserDTO findDTOById(Long id) {
+        return convertToDTO(findById(id));
+    }
+
+    @Override
+    public User findById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) throw new ApplicationException(ErrorCode.USER_NOT_FOUND);
-        return convertToDTO(user);
+        return user;
     }
 
     @Override

@@ -12,7 +12,9 @@ public interface IUserService {
 
     UserDTO save(User user);
 
-    UserDTO findById(Long id);
+    UserDTO findDTOById(Long id);
+
+    User findById(Long id);
 
     User findUserByEmail(String email);
 }
