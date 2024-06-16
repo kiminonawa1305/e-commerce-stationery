@@ -1,5 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="cartItem(cartItemId, urlImage, name, option, price, quantity)"
+     th:data-cart-item-id="${cartItemId}"
      class="cart-item border-1 border rounded-2 border-secondary-subtle p-3 position-relative">
     <div class=" row justify-content-between align-items-center">
         <div class="col-8 d-flex flex-row">
@@ -10,21 +11,26 @@
             </div>
         </div>
         <div class="col-4 d-flex flex-row justify-content-end pe-5">
-            <span class="cart-item-price" th:text="${price}"></span>
-            <input type="text" th:value="${cartItemId}" hidden name="cartItemId">
+            <span th:data-cart-item-id="${cartItemId}" class="cart-item-price" th:text="${price}"></span>
+            <input type="text" hidden name="cartItemId">
             <div class="d-flex justify-content-center">
                 <button type="button"
                         class="decrease rounded-start-2 rounded-end-0  border-1 border-end-0 border-secondary"
                         style="width: 30px; height: 30px">
                     -
                 </button>
-                <input name="quantity" type="number" class="border-1 border-secondary text-center"
+                <input th:data-cart-item-id="${cartItemId}" name="quantity" type="number"
+                       class="border-1 border-secondary text-center"
                        style="width: 75px;height: 30px" th:value="${quantity}">
-                <button class="button increase rounded-start-0 rounded-end-2 border-1 border-start-0 border-secondary"
+                <button type="button"
+                        class="button increase rounded-start-0 rounded-end-2 border-1 border-start-0 border-secondary"
                         style="width: 30px; height: 30px">
                     +
                 </button>
-                <button class="position-absolute rounded-circle bg-black text-white m-2 top-0" style="right: 0">X
+                <button th:data-cart-item-id="${cartItemId}"
+                        type="button"
+                        class="delete-cart-item position-absolute rounded-circle bg-black text-white m-2 top-0"
+                        style="right: 0">X
                 </button>
             </div>
         </div>

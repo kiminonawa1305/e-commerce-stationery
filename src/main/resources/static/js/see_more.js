@@ -68,9 +68,10 @@ $(document).ready(function () {
             method: "POST",
             contentType: "application/json",
             success: (response) => {
+                console.log(response.data)
                 Toastify({
                     text: "Thêm vào giỏ hàng thành công!",
-                    duration: 3000,
+                    duration: 1000,
                     backgroundColor: "#4cea06"
                 }).showToast();
 
@@ -80,7 +81,7 @@ $(document).ready(function () {
                 console.log(error)
                 Toastify({
                     text: "Lỗi thêm vào giỏ hàng!",
-                    duration: 3000,
+                    duration: 1000,
                     backgroundColor: "#ea0606"
                 }).showToast();
             }

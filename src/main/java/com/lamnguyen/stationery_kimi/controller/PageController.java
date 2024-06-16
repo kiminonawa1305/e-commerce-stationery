@@ -76,10 +76,12 @@ public class PageController {
         return "redirect:/";
     }
 
-    @GetMapping("/cart")
+    @GetMapping("/cart.html")
     public String cart(HttpSession session, Model model) {
         List<CartItemDisplay> cartItemDisplays = shoppingCartService.loadCart(session);
+
         model.addAttribute("cartItems", cartItemDisplays);
+        model.addAttribute("totalPrice", cartItemDisplays.stream().mapToInt(CartItemDisplay::getPrice).sum());
         return "cart";
     }
 
@@ -109,21 +111,6 @@ public class PageController {
         return "verify";
     }
 
-
-    @PostMapping("/reset-password")
-    public String changePassword(Model model, @Valid @ModelAttribute ResetPasswordRequest resetPasswordRequest) {
-        String password = resetPasswordRequest.getPassword();
-        Long id = resetPasswordRequest.getId();
-        try {
-            authenticationService.resetPassword(id, password);
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-            return "reset-password";
-        }
-
-        return "sign-in";
-    }
-
     @GetMapping("verify-forget-password.html")
     public String verifyForgetPassword() {
         return "verify-forget-password";
@@ -132,12 +119,5 @@ public class PageController {
     @GetMapping("reset-password.html")
     public String resetPassword() {
         return "reset-password";
-    }
-
-    @PostMapping("/forget-password")
-    public String forgetPassword(HttpSession session, @Valid @ModelAttribute ForgetPasswordRequest forgetPasswordRequest) {
-        String email = forgetPasswordRequest.getEmail();
-        session.setAttribute("email", authenticationService.forgotPassword(email));
-        return "redirect:/verify-forget-password.html";
     }
 }

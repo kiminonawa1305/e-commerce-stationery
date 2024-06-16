@@ -102,7 +102,7 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 
             cartItemDisplay.setCartItemId(cartItem.getCartItemId());
             cartItemDisplay.setUrl(productImageService.findFirstByProductId(productId).getUrl());
-            cartItemDisplay.setPrice((int) (1.0 - discountPercent) * cartItemDisplay.getPrice());
+            cartItemDisplay.setPrice((int) ((1.0 - discountPercent) * cartItemDisplay.getPrice()));
             cartItemDisplay.setOption(option.getName());
             cartItemDisplay.setQuantity(cartItem.getQuantity());
 

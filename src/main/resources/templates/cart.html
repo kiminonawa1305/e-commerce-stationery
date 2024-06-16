@@ -23,6 +23,9 @@
 
     <link rel="stylesheet" th:href="@{/css/cart-item.css}">
     <link rel="stylesheet" th:href="@{/css/cart.css}">
+
+    <link rel="stylesheet" type="text/css" th:href="${'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css'}">
+    <script type="text/javascript" th:src="${'https://cdn.jsdelivr.net/npm/toastify-js'}"></script>
 </head>
 <body>
 <header>
@@ -35,7 +38,8 @@
                 <form action="#" method="post" class="needs-validation">
                     <div class="header-cart">Giỏ hàng</div>
                     <div class="alert alert-success d-inline-block note-cart">
-                        Quý khách vui lòng đợi 5s - 10s trước khi ấn "Tiến hành đặt hàng" để giỏ hàng cập nhật quà tặng (nếu
+                        Quý khách vui lòng đợi 5s - 10s trước khi ấn "Tiến hành đặt hàng" để giỏ hàng cập nhật quà tặng
+                        (nếu
                         có). Cảm ơn quý khách đã tin tưởng và ủng hộ Kimi Shop!
                     </div>
                     <div></div>
@@ -48,7 +52,7 @@
                         <div class="cart-price card py-3">
                             <div class="d-flex justify-content-between">
                                 <div class="mb-3">Tổng tiền</div>
-                                <div class="cart-price-total"><span>49000</span>đ</div>
+                                <div class="cart-price-total" th:text="${#numbers.formatCurrency(totalPrice)}"/>
                             </div>
                             <input class="btn btn-primary rounded-2" type="submit" id="btn-submit"
                                    value="Tiến hành đặt hàng"/>
@@ -66,10 +70,12 @@
                         </div>
                         <div class="d-none" id="bill-field">
                             <div class="input-group mb-3">
-                                <input class="form-control" type="text" placeholder="Tên công ty" aria-label="Tên công ty">
+                                <input class="form-control" type="text" placeholder="Tên công ty"
+                                       aria-label="Tên công ty">
                             </div>
                             <div class="input-group mb-3">
-                                <input class="form-control" type="text" placeholder="Mã số thuế" aria-label="Mã số thuế">
+                                <input class="form-control" type="text" placeholder="Mã số thuế"
+                                       aria-label="Mã số thuế">
                             </div>
                             <div class="input-group mb-3">
                                 <input class="form-control" type="text" placeholder="Địa chỉ công ty"
@@ -92,18 +98,21 @@
         </section>
         <section class="relation-product">
             <div class="relation-product-title">
-                <button class="px-3 py-1 bg-primary fs-4 text-white fw-medium border-0 rounded-2">Sản phẩm bán chạy</button>
+                <button class="px-3 py-1 bg-primary fs-4 text-white fw-medium border-0 rounded-2">Sản phẩm bán chạy
+                </button>
             </div>
             <div class="relation-product-body">
                 <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
                     <div class="carousel-inner">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                        data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                        data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>

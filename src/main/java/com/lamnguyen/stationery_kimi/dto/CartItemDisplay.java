@@ -19,4 +19,8 @@ public class CartItemDisplay implements Serializable {
     private Integer price;
     private String url;
     private String name;
+
+    public Integer getTotalPrice() {
+        return price * quantity;
+    }
 }
