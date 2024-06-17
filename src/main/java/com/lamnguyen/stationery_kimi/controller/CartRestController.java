@@ -21,10 +21,7 @@ public class CartRestController {
 
     @PostMapping("/add")
     public ApiResponse<Integer> addCartItem(HttpSession session, @RequestBody @Valid AddCartItemRequest request) {
-        return ApiResponse.<Integer>builder()
-                .message("Thêm sản phẩm vào giỏ hàng thành công!")
-                .data(shoppingCartService.addCartItem(session, request))
-                .build();
+        return ApiResponse.<Integer>builder().message("Thêm sản phẩm vào giỏ hàng thành công!").data(shoppingCartService.addCartItem(session, request)).build();
     }
 
     @PostMapping("/increase")
@@ -32,13 +29,7 @@ public class CartRestController {
         shoppingCartService.increaseCartItemQuantity(session, request);
         List<CartItemDisplay> cart = shoppingCartService.loadCart(session);
         CartItemDisplay item = cart.stream().filter(cartItemDisplay -> cartItemDisplay.getCartItemId().equals(request.getCartItemId())).findFirst().orElse(CartItemDisplay.builder().build());
-        return ApiResponse.<EditCartItemResponse>builder()
-                .message("Thêm sản phẩm vào giỏ hàng thành công!")
-                .data(new EditCartItemResponse(
-                        item.getPrice() * item.getQuantity(),
-                        cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum()
-                ))
-                .build();
+        return ApiResponse.<EditCartItemResponse>builder().message("Thêm sản phẩm vào giỏ hàng thành công!").data(new EditCartItemResponse(item.getPrice() * item.getQuantity(), cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum())).build();
     }
 
     @PostMapping("/decrease")
@@ -46,24 +37,17 @@ public class CartRestController {
         shoppingCartService.decreaseCartItemQuantity(session, request);
         List<CartItemDisplay> cart = shoppingCartService.loadCart(session);
         CartItemDisplay item = cart.stream().filter(cartItemDisplay -> cartItemDisplay.getCartItemId().equals(request.getCartItemId())).findFirst().orElse(CartItemDisplay.builder().build());
-        return ApiResponse.<EditCartItemResponse>builder()
-                .message("Giảm số lượng sản phẩm trong giỏ hàng thành công!")
-                .data(new EditCartItemResponse(
-                        item.getPrice() * item.getQuantity(),
-                        cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum()
-                ))
-                .build();
+        return ApiResponse.<EditCartItemResponse>builder().message("Giảm số lượng sản phẩm trong giỏ hàng thành công!").data(new EditCartItemResponse(item.getPrice() * item.getQuantity(), cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum())).build();
     }
 
     @DeleteMapping("/delete")
     public ApiResponse<Integer> removeCartItem(HttpSession session, @RequestBody DeleteCartItemRequest request) {
         shoppingCartService.deleteCartItem(session, request);
-        return ApiResponse.<Integer>builder()
-                .message("Xóa sản phẩm khỏi giỏ hàng thành công!")
-                .data(shoppingCartService.loadCart(session).stream().mapToInt(CartItemDisplay::getTotalPrice).sum())
-                .build();
+        return ApiResponse.<Integer>builder().message("Xóa sản phẩm khỏi giỏ hàng thành công!")
+                .data(shoppingCartService.loadCart(session).stream().mapToInt(CartItemDisplay::getTotalPrice).sum()).build();
+    }
+
+    record EditCartItemResponse(Integer totalPriceCartItem, Integer totalPriceCart) {
     }
 }
 
-record EditCartItemResponse(Integer totalPriceCartItem, Integer totalPriceCart) {
-}

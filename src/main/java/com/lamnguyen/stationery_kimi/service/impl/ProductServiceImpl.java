@@ -100,6 +100,15 @@ public class ProductServiceImpl implements IProductService {
                 .build();
     }
 
+    @Override
+    public ProductDetailDTO findProductDetailById(Long id) {
+        ProductSeeMoreDTO seeMoreDTO = seeMore(id);
+        Product product = productRepository.findById(id).orElse(Product.builder().build());
+        ProductDetailDTO productDetailDTO = modelMapper.map(seeMoreDTO, ProductDetailDTO.class);
+        productDetailDTO.setDescription(product.getDescription());
+        return productDetailDTO;
+    }
+
     private ProductDTO convertToDTO(Product product) {
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         DiscountDTO discountDTO = discountService.getDiscount(product.getId());

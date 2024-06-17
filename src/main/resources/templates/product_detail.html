@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +15,13 @@
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/fontawesome.js}"></script>
     <script th:src="@{/js/jquery.js}"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="${'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css'}">
+    <script type="text/javascript" th:src="${'https://cdn.jsdelivr.net/npm/toastify-js'}"></script>
 </head>
 <body>
 <header>
+    <div th:replace="fragments/header_fragment::header"></div>
 </header>
 <main class="container mt-4 main-color_product">
     <div class="row">
@@ -25,99 +29,113 @@
             <div class="product-detail-left col-xl-4 pe-5 col-xs-12 col-sm-12 col-md-8">
                 <div class="product-wrap-sticky">
                     <div class="image-product-item pb-3 pt-0 ">
-                        <img src="image/product/sp.webp" id="large-product-image" alt="Bút bi Thiên Long"
+                        <img th:src="@{__${productDetail.productImageDTOS.get(0).url}__}" id="large-product-image"
+                             alt="Bút bi Thiên Long"
                              class="img-fluid">
                     </div>
                     <div class="product-image-list">
-                        <div class="product-image-item">
-                            <img src="image/product/sp.webp" alt="Bút bi Thiên Long" class="img-product-s">
-                        </div>
-                        <div class="product-image-item">
-                            <img src="image/product/gel1.webp" alt="Bút bi Thiên Long" class="img-product-s">
-                        </div>
-                        <div class="product-image-item">
-                            <img src="image/product/demo_product.webp" alt="Bút bi Thiên Long" class="img-product-s">
-                        </div>
-                        <div class="product-image-item">
-                            <img src="image/product/demo_product.webp" alt="Bút bi Thiên Long" class="img-product-s">
+                        <div class="product-image-item" th:each="productImage: ${productDetail.productImageDTOS}">
+                            <img th:src="@{__${productImage.url}__}" alt="Bút bi Thiên Long"
+                                 class="img-product-s">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="product-detail-right col-xl-8 col-xs-12 col-sm-12">
-                <h1 class="fw-light">Bút bi Thiên Long</h1>
+                <h1 class="fw-light" th:text="${productDetail.name}"/>
                 <div class="row">
                     <div class="col-12 col-md-8">
-                        <p class="fw-medium">Thương hiệu: <span class="text-primary">Thiên Long</span> |
+                        <p class="fw-medium">Thương hiệu: <!--<span class="text-primary" th:text="${'asdfasdf'}"/>-->|
                             Tình trạng: <span class="text-primary">Còn hàng</span></p>
-                        <p class="fw-medium">Mã sản phẩm: <span class="text-primary">32130</span></p>
-
+                        <p class="fw-medium">Mã sản phẩm: <span class="text-primary" th:text="${productDetail.id}"/></p>
                         <div class="product-price">
-                            <div class="row">
-                                <div class="col-9 d-flex">
-                                    <span class="fs-2 text-primary fw-medium">15,000đ</span>
-                                    <del class="f2-3 text-body-tertiary fw-medium">20000đ</del>
+                            <div class="row"
+                                 th:if="${productDetail.discountPercent != null and productDetail.discountPercent != 0.0}">
+                                <div class="col-9 d-flex gap-2 align-items-center">
+                                    <span class="fs-2 text-primary fw-medium fw-bold"
+                                          th:text="${#numbers.formatCurrency(productDetail.price * (1 - productDetail.discountPercent))}"/>
+                                    <del class="f2-3 text-body-tertiary fw-medium"
+                                         th:text="${#numbers.formatCurrency(productDetail.price)}"/>
                                 </div>
                                 <div class="col-3">
-                                    <div class="product-discount">
-                                        <div class="product-save">Tiết kiệm <strong>10%</strong></div>
+                                    <div class="product-discount d-flex justify-content-center align-items-center">
+                                        <div>
+                                            <span>Tiết kiệm </span>
+                                            <strong th:text="${#numbers.formatInteger(productDetail.discountPercent * 100, 0)} + '%'"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row " style="width: 68px"
+                                 th:unless="${productDetail.discountPercent != null and productDetail.discountPercent != 0.0}">
+                                <div class="col-12 d-flex gap-2 align-items-center">
+                                    <span class="fs-2 text-primary fw-medium"
+                                          th:text="${#numbers.formatCurrency(productDetail.price)}"/>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-prodcut">
+                        <div class="form-product">
+                            <input type="text" hidden name="productId" th:value="${productDetail.id}">
                             <div class="product-classify">
                                 <label for="product-classify" class="form-label">Phân loại</label>
-                                <select class="form-select" id="product-classify">
-                                    <option selected>Chọn loại màu sắc</option>
-                                    <option value="1">Mực đỏ</option>
-                                    <option value="2">Mực xanh</option>
-                                    <option value="3">Mực vàng</option>
+                                <select name="productOptionId" class="form-select" id="product-classify">
+                                    <option selected disabled>Chọn loại màu sắc</option>
+                                    <option th:each="option: ${productDetail.productOptionDTOS}"
+                                            th:data-max-quantity="${option.quantity}"
+                                            th:value="${option.id}"
+                                            th:text="${option.name}">
                                 </select>
                             </div>
                             <div class="form-button">
                                 <div class="product-amount">
                                     <label>Số lượng</label>
                                     <div class="pt-2 d-flex w-25 ">
-                                        <button class="btn btn-primary rounded-0">-</button>
-                                        <input type="text" class="text-center w-50" value="1">
-                                        <button class="btn btn-primary rounded-0">+</button>
+                                        <button class="decrease-quantity btn btn-primary rounded-1 rounded-end-0">
+                                            -
+                                        </button>
+                                        <input disabled th:data-max-quantity="0" type="text" name="quantity"
+                                               class="quantity text-center w-50" value="1">
+                                        <button class="increase-quantity btn btn-primary rounded-1 rounded-start-0">
+                                            +
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="product-cart_button d-flex pt-3">
-                                    <button class="btn btn-primary w-50 p-2 me-2">Thêm vào giỏ hàng <i
-                                            class="fa-solid fa-cart-shopping"></i></button>
+                                    <button class="btn-add-cart btn btn-primary w-50 p-2 me-2">
+                                        <span>Thêm vào giỏ hàng</span>
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </button>
                                     <button class="btn btn-warning w-50 p-2">Mua ngay</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2 promolist">
-                            <div class="promolist-item">
-                                <div class="promolist-item-header d-flex">
-                                    <h6 class="promolist-item-icon fw-light pe-3">
-                                        <i class="fa-solid fa-gift"></i>
-                                    </h6>
-                                    <h6 class="promolist-item-title fw-light">Nhận quà tặng khi mua sản phẩm thỏa điều
-                                        kiện</h6>
-                                </div>
-                                <div class="promolist-item-content pt-2 d-flex">
-                                    <img src="image/giftbook.webp" alt="" class="img-promolist me-2">
-                                    <p class="promolist-item-content-text">Nhận ngay Quà tặng bộ 2 sticker trang trí
-                                        nhãn vở Thiên Long x1 khi số lượng mua đạt 2 sản phẩm.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="promolist-note">
-                            <h6 class="fw-bold text-primary mb-0">Lưu ý</h6>
-                            <ul>
-                                <li class="fw-light text-primary">Sản phẩm quà tặng có giới hạn, chương trình có thể kết
-                                    thúc sớm hơn nếu hết số lượng quà
-                                </li>
-                                <li class="fw-light text-primary">Đối với các chương trình có nhiều mốc điều kiện giá
-                                    trị mua/số lượng mua thì chỉ áp dụng quà mốc cao nhất đơn hàng đạt được
-                                </li>
-                            </ul>
-                        </div>
+                        <!--   <div class="p-2 promolist">
+                               <div class="promolist-item">
+                                   <div class="promolist-item-header d-flex">
+                                       <h6 class="promolist-item-icon fw-light pe-3">
+                                           <i class="fa-solid fa-gift"></i>
+                                       </h6>
+                                       <h6 class="promolist-item-title fw-light">Nhận quà tặng khi mua sản phẩm thỏa điều
+                                           kiện</h6>
+                                   </div>
+                                   <div class="promolist-item-content pt-2 d-flex">
+                                       <img src="image/giftbook.webp" alt="" class="img-promolist me-2">
+                                       <p class="promolist-item-content-text">Nhận ngay Quà tặng bộ 2 sticker trang trí
+                                           nhãn vở Thiên Long x1 khi số lượng mua đạt 2 sản phẩm.</p>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="promolist-note">
+                               <h6 class="fw-bold text-primary mb-0">Lưu ý</h6>
+                               <ul>
+                                   <li class="fw-light text-primary">Sản phẩm quà tặng có giới hạn, chương trình có thể kết
+                                       thúc sớm hơn nếu hết số lượng quà
+                                   </li>
+                                   <li class="fw-light text-primary">Đối với các chương trình có nhiều mốc điều kiện giá
+                                       trị mua/số lượng mua thì chỉ áp dụng quà mốc cao nhất đơn hàng đạt được
+                                   </li>
+                               </ul>
+                           </div>-->
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="promolist-note">
@@ -206,48 +224,48 @@
             <h5 class="fw-bold px-2 py-2">Mô tả sản phẩm</h5>
             <div class="rte product_getcontent py-3 pos-relative">
                 <div id="content" class="">
-                    <p><strong>Thông số kĩ thuật :</strong></p>
-                    <table class="table table-striped">
-                        <tbody style="box-sizing: border-box;">
-                        <tr>
-                            <td><span>Thương hiệu</span></td>
-                            <td>Thiên Long</td>
-                        </tr>
-                        <tr>
-                            <td>Lực bấm</td>
-                            <td>Bấm được 12 tờ A4</td>
-                        </tr>
-                        <tr>
-                            <td>Kim bấm</td>
-                            <td>Số 10</td>
-                        </tr>
-                        <tr>
-                            <td>Xuất xứ</td>
-                            <td>Việt Nam</td>
-                        </tr>
-                        <tr>
-                            <td>Sản xuất</td>
-                            <td>Trung Quốc</td>
-                        </tr>
-                        <tr>
-                            <td>Khuyến cáo</td>
-                            <td>Tránh nguồn nhiệt, hóa chất. Không thích hợp cho trẻ dưới 3 tuổi.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <p style="text-align: center"><img
-                            src="//product.hstatic.net/1000230347/product/st-023_st-024_8d53abdf82514893ae6364239f4c6d45.jpg">
-                    </p>
-                    <p style="text-align: center"><img
-                            src="//product.hstatic.net/1000230347/product/st-023_b76039034ba94fb5aa3d6e7297bb81ad.jpg">
-                    </p>
-                    <p style="text-align: center"><img
-                            src="//product.hstatic.net/1000230347/product/st-024_4865ebe4087344f9b9add895d9865616.jpg">
-                    </p>
-
+                    <div th:text="${productDetail.description}"/>
+                    <!-- <p><strong>Thông số kĩ thuật :</strong></p>
+                     <table class="table table-striped">
+                         <tbody style="box-sizing: border-box;">
+                         <tr>
+                             <td><span>Thương hiệu</span></td>
+                             <td>Thiên Long</td>
+                         </tr>
+                         <tr>
+                             <td>Lực bấm</td>
+                             <td>Bấm được 12 tờ A4</td>
+                         </tr>
+                         <tr>
+                             <td>Kim bấm</td>
+                             <td>Số 10</td>
+                         </tr>
+                         <tr>
+                             <td>Xuất xứ</td>
+                             <td>Việt Nam</td>
+                         </tr>
+                         <tr>
+                             <td>Sản xuất</td>
+                             <td>Trung Quốc</td>
+                         </tr>
+                         <tr>
+                             <td>Khuyến cáo</td>
+                             <td>Tránh nguồn nhiệt, hóa chất. Không thích hợp cho trẻ dưới 3 tuổi.</td>
+                         </tr>
+                         </tbody>
+                     </table>
+                     <p style="text-align: center"><img
+                             src="//product.hstatic.net/1000230347/product/st-023_st-024_8d53abdf82514893ae6364239f4c6d45.jpg">
+                     </p>
+                     <p style="text-align: center"><img
+                             src="//product.hstatic.net/1000230347/product/st-023_b76039034ba94fb5aa3d6e7297bb81ad.jpg">
+                     </p>
+                     <p style="text-align: center"><img
+                             src="//product.hstatic.net/1000230347/product/st-024_4865ebe4087344f9b9add895d9865616.jpg">
+                     </p>-->
                 </div>
                 <div class="text-center">
-                    <button id="show-hiddenbtn" class="btn border border-primary">
+                    <button id="btn-show-hidden" class="btn border border-primary">
                         Xem thêm
                     </button>
                 </div>
@@ -306,8 +324,7 @@
                         <!--                        </div>-->
                     </div>
                     <button class="btn btn-primary" id="review-submit-btn" data-bs-toggle="modal" href="#review-modal"
-                            role="button">Viết
-                        đánh giá
+                            role="button">Viết đánh giá
                     </button>
                 </div>
             </div>
@@ -337,7 +354,7 @@
                             <div class="row">
                                 <div class="p-1 rounded border-1 col-4">
                                     <div class="w-100">
-                                        <img src="image/product/demo_product.webp" alt="Bút bi Thiên Long"
+                                        <img th:src="@{/images/product/demo_product.webp}" alt="Bút bi Thiên Long"
                                              class="rounded img-fluid">
                                     </div>
                                 </div>
@@ -410,59 +427,57 @@
     </div>
 </main>
 <footer>
+    <div th:replace="fragments/footer_fragment::foother"></div>
 </footer>
-</body>
 <script>
-    $('header').load("layout/header.html")
-    $('product').load("component/product.html")
-    $('footer').load("layout/footer.html")
-    var items = document.querySelectorAll('.product-image-item');
-    var selectedItem = null;
-    var productImage = document.querySelector('#large-product-image');
-
-    items.forEach(function (item, index) {
-        item.addEventListener('click', function () {
-            if (selectedItem != null) {
-                selectedItem.style.border = 'none';
-            }
-            item.style.border = '1px solid #000';
-            selectedItem = item;
-
-            console.log(selectedItem);
-
-            const selectedItemImage = selectedItem.children[0];
-            productImage.src = selectedItemImage.src;
-        });
-    });
-
-    // Initially hide all <p> elements except the first one
-    var content = document.getElementById('content');
-    var pElements = content.getElementsByTagName('p');
-    for (var i = 0; i < pElements.length; i++) {
-        pElements[i].style.display = 'none';
-    }
-
-    // Add event listener to the "show more/less" button
-    var button = document.getElementById('show-hiddenbtn');
-    button.addEventListener('click', function () {
-        let i;
-        if (button.textContent === 'Xem thêm') {
-            // Show all <p> elements
-            for (i = 0; i < pElements.length; i++) {
-                pElements[i].style.display = 'block';
-            }
-            button.textContent = 'Thu gọn';
-        } else {
-            // Hide all <p> elements except the first one
-            for (i = 1; i < pElements.length; i++) {
-                pElements[i].style.display = 'none';
-            }
-            button.textContent = 'Xem thêm';
-        }
-    });
-
     $(document).ready(function () {
         const reviewStars = $('.review-star');
+        const btnDecreaseQuantity = $(".decrease-quantity");
+        const btnIncreaseQuantity = $(".increase-quantity");
+        const inputQuantity = $("input.quantity");
+        const selectOption = $("#product-classify");
+        const btnAddCart = $(".btn-add-cart")
+        let selectedItem = null;
+        let items = $('.product-image-item');
+        let productImage = $('#large-product-image');
+        let content = $('content');
+        let pElements = $('.product_getcontent').find("p");
+        let button = $('#btn-show-hidden');
+
+        items.each(function (index, item) {
+            $(item).on('click', function () {
+                if (selectedItem != null) {
+                    selectedItem.style.border = 'none';
+                }
+                item.style.border = '1px solid #000';
+                selectedItem = item;
+
+                const selectedItemImage = selectedItem.children[0];
+                productImage.attr("src", selectedItemImage.src);
+            });
+        });
+
+        for (let i = 0; i < pElements.length; i++) {
+            pElements.eq(i).hide();
+        }
+
+        // Add event listener to the "show more/less" button
+        button.on('click', function () {
+            let i;
+            if (button.text() === 'Xem thêm') {
+                // Show all <p> elements
+                for (i = 0; i < pElements.length; i++) {
+                    pElements.eq(i).show();
+                }
+                button.text('Thu gọn');
+            } else {
+                // Hide all <p> elements except the first one
+                for (i = 1; i < pElements.length; i++) {
+                    pElements.eq(i).hide();
+                }
+                button.text('Xem thêm');
+            }
+        });
 
         // reviewStars.on('mouseenter', function () {
         //     let currentStarId = $(this).attr('id') //star-1
@@ -485,7 +500,6 @@
         //     for (let reviewStar of reviewStars)
         //         $(reviewStar).removeClass('review-star-active');
         // })
-
         reviewStars.on('click', function () {
             for (let reviewStar of reviewStars)
                 $(reviewStar).removeClass('review-star-active');
@@ -502,7 +516,66 @@
                 }
             }
         })
-    })
 
+        selectOption.on("change", function () {
+            const maxQuantity = $(this).find(':selected').data('max-quantity');
+            inputQuantity.data('max-quantity', maxQuantity);
+            inputQuantity.val(1)
+        });
+
+        btnDecreaseQuantity.on("click", function () {
+            if (parseInt((inputQuantity.val())) > 1)
+                inputQuantity.val(parseInt(inputQuantity.val()) - 1);
+        });
+
+        btnIncreaseQuantity.on("click", function () {
+            const max = inputQuantity.data("max-quantity");
+            if (!max) alert("Vui lòng chọn phân loại sản phẩm");
+            if (parseInt((inputQuantity.val())) < parseInt(max)) {
+                inputQuantity.val(parseInt(inputQuantity.val()) + 1);
+            }
+        })
+
+        btnAddCart.on("click", function () {
+            const productId = $("input[name=productId]").val()
+            const quantity = inputQuantity.val()
+            const productOptionId = $("select[name=productOptionId]").val()
+            if (!productOptionId) {
+                alert("Vui lòng chọn phân loại sản phẩm")
+                return
+            }
+
+            const data = JSON.stringify({
+                productId: productId,
+                quantity: quantity,
+                productOptionId: productOptionId
+            })
+            $.ajax({
+                data: data,
+                url: "../api/cart/add",
+                method: "POST",
+                contentType: "application/json",
+                success: (response) => {
+                    console.log(response.data)
+                    Toastify({
+                        text: "Thêm vào giỏ hàng thành công!",
+                        duration: 1000,
+                        backgroundColor: "#4cea06"
+                    }).showToast();
+
+                    $(".cart-menu-amount").text(response.data)
+                },
+                error: (error) => {
+                    console.log(error)
+                    Toastify({
+                        text: "Lỗi thêm vào giỏ hàng!",
+                        duration: 1000,
+                        backgroundColor: "#ea0606"
+                    }).showToast();
+                }
+            })
+        })
+    })
 </script>
+</body>
 </html>

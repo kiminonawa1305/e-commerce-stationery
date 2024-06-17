@@ -1,7 +1,7 @@
 <html th:fragment="product(id, name, urlImage, price, discountPercent, productNew)" lang="vi"
       xmlns:th="http://www.thymeleaf.org">
 <div class="card product rounded-4">
-    <a th:href="@{/detail/__${id}__}" class="text-decoration-none">
+    <a th:href="@{/product/__${id}__}" class="text-decoration-none">
         <div class="card-img overflow-hidden rounded-bottom-0 rounded-4">
             <img th:src="@{__${urlImage}__}" class="card-img-top" alt="san_pham.png">
         </div>

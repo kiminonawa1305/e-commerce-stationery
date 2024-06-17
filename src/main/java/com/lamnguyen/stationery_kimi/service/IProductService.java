@@ -22,4 +22,6 @@ public interface IProductService {
     ProductSeeMoreDTO seeMore(Long id);
 
     CartItemDisplay findCartItemById(Long id);
+
+    ProductDetailDTO findProductDetailById(Long id);
 }
