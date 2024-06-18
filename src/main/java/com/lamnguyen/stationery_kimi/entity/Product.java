@@ -29,6 +29,9 @@ public class Product {
     @Column(name = "`new`")
     private Boolean productNew;
 
+    @Column(name = "`brand`")
+    private String brand;
+
     @Column(name = "`lock`")
     @ColumnDefault("0")
     private Boolean lock;
@@ -40,9 +43,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "provider_id")
-    private Provider provider;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductImage> image;

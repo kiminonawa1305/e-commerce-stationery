@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${category.name}"/>
+
+    <link rel="icon" th:href="@{/images/logo/logo.jpg}">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/js/fontawesome.js}" crossorigin="anonymous"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/frame_sale_product.css}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <script th:src="@{/js/menu.js}"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="${'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css'}">
+    <script type="text/javascript" th:src="${'https://cdn.jsdelivr.net/npm/toastify-js'}"></script>
+
+    <style>
+        input[type="checkbox"] {
+            height: 20px;
+            width: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header_fragment::header"></div>
+</header>
+<main style="background-color: #f1f1f1" class="p-5" th:data-category-id="${category.id}">
+    <section class="d-flex gap-2 rounded-3 p-3">
+        <nav style="flex: 1" class="bg-white rounded-3 p-3">
+            <h5 class="text-primary">Thương hiệu</h5>
+            <ul class="list-unstyled">
+                <li class="d-flex align-items-center gap-2" th:each="brand: ${brands}">
+                    <input class="p-1 filter-by-brand filter-sort" type="checkbox" name="brand"
+                           th:id="'filter-by-' + ${brand}" th:value="${brand}">
+                    <label th:for="'filter-by-' + ${brand}" th:text="${brand}"/>
+                </li>
+            </ul>
+            <h5 class="text-primary">Mức giá</h5>
+            <ul class="list-unstyled">
+                <li class="d-flex align-items-center gap-2">
+                    <input class="filter-by-price filter-sort" type="checkbox" name="price" id="filter-by-price-1"
+                           value="0-200000">
+                    <label for="filter-by-price-1" th:text="'Dưới '+${#numbers.formatCurrency(200000)}"/>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                    <input class="filter-by-price filter-sort" type="checkbox" name="price" id="filter-by-price-2"
+                           value="200000-500000">
+                    <label for="filter-by-price-2"
+                           th:text="${#numbers.formatCurrency(200000)}+' - ' + ${#numbers.formatCurrency(500000)}"/>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                    <input class="filter-by-price filter-sort" type="checkbox" name="price" id="filter-by-price-3"
+                           value="500000-750000">
+                    <label for="filter-by-price-3"
+                           th:text="${#numbers.formatCurrency(500000)}+' - ' + ${#numbers.formatCurrency(750000)}"/>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                    <input class="filter-by-price filter-sort" type="checkbox" name="price" id="filter-by-price-4"
+                           value="1000000">
+                    <label for="filter-by-price-4" th:text="'Trên '+${#numbers.formatCurrency(1000000)}"/>
+                </li>
+            </ul>
+        </nav>
+
+        <article style="flex: 3; background-color: #dedede" class="rounded-3 p-3">
+            <h2 th:text="${category.name}"/>
+            <div class="d-flex gap-4">
+                <span class="fw-bold">Sắp xếp:</span>
+                <label for="sort-by-name-asc" class="text-secondary">
+                    Tên A → Z
+                    <input class="filter-sort" hidden type="checkbox" id="sort-by-name-asc" value="asc"
+                           name="sort-name">
+                </label>
+                <label for="sort-by-name-desc" class="text-secondary">
+                    Tên Z → A
+                    <input class="filter-sort" hidden type="checkbox" id="sort-by-name-desc" value="desc"
+                           name="sort-name">
+                </label>
+                <label for="sort-by-price-asc" class="text-secondary">
+                    Giá tăng dần
+                    <input class="filter-sort" hidden type="checkbox" id="sort-by-price-asc" value="asc" name="sort-price">
+                </label>
+                <label for="sort-by-price-desc" class="text-secondary">
+                    Giá giảm dần
+                    <input class="filter-sort" hidden type="checkbox" id="sort-by-price-desc" value="desc"
+                           name="sort-price">
+                </label>
+                <label for="sort-by-new-product" class="text-secondary">
+                    Hàng mới
+                    <input value="true" class="filter-sort" hidden type="checkbox" id="sort-by-new-product" name="sort-new-product">
+                </label>
+            </div>
+            <div class="d-flex flex-wrap justify-content-between row-gap-4 mt-3" id="display-product">
+                <div th:each="product : ${products}">
+                    <div
+                            th:replace="component/product::product(id=${product.id}, name=${product.name}, urlImage=${product.productImageDTO.url}, price=${product.price}, discountPercent=${product.discountPercent},  productNew=${product.productNew})">
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+</main>
+<footer>
+    <div th:replace="fragments/footer_fragment::foother"></div>
+</footer>
+<div id="see-more"></div>
+<script type="module" th:src="@{/js/product.js}"></script>
+<script type="module" th:src="@{/js/booth.js}"></script>
+</body>
+</html>

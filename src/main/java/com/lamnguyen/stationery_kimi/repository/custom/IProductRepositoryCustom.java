@@ -15,4 +15,8 @@ public interface IProductRepositoryCustom {
     @Transactional
     @Query("UPDATE Product p SET p.lock = :lock WHERE p.id = :productId")
     Integer lockProductById(@Param("productId") Long productId, @Param("lock") Boolean lock);
+
+    @Transactional
+    @Query("SELECT distinct p.brand FROM Product p WHERE p.category.id = :categoryId")
+    List<String> findBrandsByCategory_Id(@Param("categoryId") Long categoryId);
 }

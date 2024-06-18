@@ -13,7 +13,7 @@
                     th:text="${name}" style="height: 45px; text-indent: 45px"/>
                 <h5 th:if="${productNew} == null or ${productNew} == false"
                     class="title d-inline-block text-secondary overflow-hidden mb-0" th:text="${name}"
-                    style="height: 45px"/>
+                    style="max-height: 45px"/>
             </div>
             <div class="card-text">
                 <span class="new-price text-primary fs-5 fw-bold" th:if="${discountPercent} == null or ${discountPercent} == 0.0"

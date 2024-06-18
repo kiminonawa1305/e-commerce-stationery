@@ -21,7 +21,6 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
-
     @GetMapping("/{id}")
     public String productDetail(Model model, @PathVariable("id") Long id) {
         ProductDetailDTO productDetailDTO = productService.findProductDetailById(id);

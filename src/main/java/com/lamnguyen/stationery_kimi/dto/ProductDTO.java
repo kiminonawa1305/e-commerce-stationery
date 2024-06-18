@@ -20,6 +20,6 @@ public class ProductDTO implements Serializable {
     private Integer price;
     private Double discountPercent;
     private String type;
+    private String brand;
     private Boolean productNew;
-
 }

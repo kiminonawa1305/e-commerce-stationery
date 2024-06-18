@@ -24,4 +24,6 @@ public interface IProductService {
     CartItemDisplay findCartItemById(Long id);
 
     ProductDetailDTO findProductDetailById(Long id);
+
+    List<String> findBrandsByCategoryId(Long categoryId);
 }
