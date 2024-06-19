@@ -80,7 +80,10 @@ public class PageController {
         List<CartItemDisplay> cartItemDisplays = shoppingCartService.loadCart(session);
 
         model.addAttribute("cartItems", cartItemDisplays);
-        model.addAttribute("totalPrice", cartItemDisplays.stream().mapToInt(CartItemDisplay::getPrice).sum());
+        model.addAttribute("totalPrice", cartItemDisplays.stream().mapToInt(CartItemDisplay::getTotalPrice).sum());
+        model.addAttribute("totalDiscount", cartItemDisplays.stream().mapToInt(CartItemDisplay::getTotalDiscount).sum());
+        model.addAttribute("totalPay", cartItemDisplays.stream().mapToInt(CartItemDisplay::getTotalPay).sum());
+        model.addAttribute("payment", new PaymentRestController.PaymentRequest());
         return "cart";
     }
 

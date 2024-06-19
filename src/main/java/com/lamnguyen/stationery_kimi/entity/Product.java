@@ -50,9 +50,6 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ComboProductDetail> comboProducts;
 
-    @OneToMany(mappedBy = "product")
-    private List<BillDetail> billDetails;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
     private Discount discount;

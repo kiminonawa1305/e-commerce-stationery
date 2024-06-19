@@ -4,7 +4,7 @@ import com.lamnguyen.stationery_kimi.dto.ProductDTO;
 import com.lamnguyen.stationery_kimi.dto.ProductDisplayDTO;
 import com.lamnguyen.stationery_kimi.exception.ApplicationException;
 import com.lamnguyen.stationery_kimi.exception.ErrorCode;
-import com.lamnguyen.stationery_kimi.response.ApiResponse;
+import com.lamnguyen.stationery_kimi.dto.ApiResponse;
 import com.lamnguyen.stationery_kimi.service.ICategoryService;
 import com.lamnguyen.stationery_kimi.service.IProductService;
 import org.slf4j.Logger;

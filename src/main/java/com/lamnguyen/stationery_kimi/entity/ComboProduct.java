@@ -29,8 +29,6 @@ public class ComboProduct {
     @OneToMany(mappedBy = "comboProduct")
     private List<ComboProductDetail> comboProduct;
 
-    @OneToMany(mappedBy = "comboProduct")
-    private List<BillDetail> billDetails;
 
     @ManyToOne
     @JoinColumn(name = "discount_id")

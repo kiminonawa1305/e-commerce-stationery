@@ -12,7 +12,7 @@
         </div>
         <div class="col-4 d-flex flex-row justify-content-end pe-5">
             <span th:data-cart-item-id="${cartItemId}" class="cart-item-price" th:text="${price}"></span>
-            <input type="text" hidden name="cartItemId">
+            <input type="text" hidden name="cartItemId" th:value="${cartItemId}">
             <div class="d-flex justify-content-center">
                 <button type="button"
                         class="decrease rounded-start-2 rounded-end-0  border-1 border-end-0 border-secondary"

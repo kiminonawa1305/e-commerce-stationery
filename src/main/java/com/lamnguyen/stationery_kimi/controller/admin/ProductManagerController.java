@@ -2,14 +2,10 @@ package com.lamnguyen.stationery_kimi.controller.admin;
 
 import com.lamnguyen.stationery_kimi.dto.ProductDTO;
 import com.lamnguyen.stationery_kimi.entity.Product;
-import com.lamnguyen.stationery_kimi.exception.ApplicationException;
-import com.lamnguyen.stationery_kimi.exception.ErrorCode;
-import com.lamnguyen.stationery_kimi.response.ApiResponse;
+import com.lamnguyen.stationery_kimi.dto.ApiResponse;
 import com.lamnguyen.stationery_kimi.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/products")

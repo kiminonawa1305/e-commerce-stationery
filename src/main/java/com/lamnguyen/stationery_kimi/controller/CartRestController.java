@@ -4,10 +4,11 @@ import com.lamnguyen.stationery_kimi.dto.CartItemDisplay;
 import com.lamnguyen.stationery_kimi.request.AddCartItemRequest;
 import com.lamnguyen.stationery_kimi.request.DeleteCartItemRequest;
 import com.lamnguyen.stationery_kimi.request.EditQuantityCartItemRequest;
-import com.lamnguyen.stationery_kimi.response.ApiResponse;
+import com.lamnguyen.stationery_kimi.dto.ApiResponse;
 import com.lamnguyen.stationery_kimi.service.IShoppingCartService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,16 @@ public class CartRestController {
         shoppingCartService.increaseCartItemQuantity(session, request);
         List<CartItemDisplay> cart = shoppingCartService.loadCart(session);
         CartItemDisplay item = cart.stream().filter(cartItemDisplay -> cartItemDisplay.getCartItemId().equals(request.getCartItemId())).findFirst().orElse(CartItemDisplay.builder().build());
-        return ApiResponse.<EditCartItemResponse>builder().message("Thêm sản phẩm vào giỏ hàng thành công!").data(new EditCartItemResponse(item.getPrice() * item.getQuantity(), cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum())).build();
+        return ApiResponse.<EditCartItemResponse>builder()
+                .message("Thêm sản phẩm vào giỏ hàng thành công!")
+                .data(EditCartItemResponse.builder()
+                        .totalAmount(cart.size())
+                        .totalPay(cart.stream().mapToInt(CartItemDisplay::getTotalPay).sum())
+                        .totalDiscount(cart.stream().mapToInt(CartItemDisplay::getTotalDiscount).sum())
+                        .totalPrice(cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum())
+                        .totalPayItem(item.getTotalPay())
+                        .build())
+                .build();
     }
 
     @PostMapping("/decrease")
@@ -37,17 +47,38 @@ public class CartRestController {
         shoppingCartService.decreaseCartItemQuantity(session, request);
         List<CartItemDisplay> cart = shoppingCartService.loadCart(session);
         CartItemDisplay item = cart.stream().filter(cartItemDisplay -> cartItemDisplay.getCartItemId().equals(request.getCartItemId())).findFirst().orElse(CartItemDisplay.builder().build());
-        return ApiResponse.<EditCartItemResponse>builder().message("Giảm số lượng sản phẩm trong giỏ hàng thành công!").data(new EditCartItemResponse(item.getPrice() * item.getQuantity(), cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum())).build();
+        return ApiResponse.<EditCartItemResponse>builder()
+                .message("Giảm số lượng sản phẩm trong giỏ hàng thành công!")
+                .data(EditCartItemResponse.builder()
+                        .totalAmount(cart.size())
+                        .totalPay(cart.stream().mapToInt(CartItemDisplay::getTotalPay).sum())
+                        .totalDiscount(cart.stream().mapToInt(CartItemDisplay::getTotalDiscount).sum())
+                        .totalPrice(cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum())
+                        .totalPayItem(item.getTotalPay())
+                        .build())
+                .build();
     }
 
     @DeleteMapping("/delete")
-    public ApiResponse<Integer> removeCartItem(HttpSession session, @RequestBody DeleteCartItemRequest request) {
+    public ApiResponse<EditCartItemResponse> removeCartItem(HttpSession session, @RequestBody DeleteCartItemRequest request) {
         shoppingCartService.deleteCartItem(session, request);
-        return ApiResponse.<Integer>builder().message("Xóa sản phẩm khỏi giỏ hàng thành công!")
-                .data(shoppingCartService.loadCart(session).stream().mapToInt(CartItemDisplay::getTotalPrice).sum()).build();
+        List<CartItemDisplay> cart = shoppingCartService.loadCart(session);
+        return ApiResponse.<EditCartItemResponse>builder().message("Xóa sản phẩm khỏi giỏ hàng thành công!")
+                .data(EditCartItemResponse.builder()
+                        .totalAmount(cart.size())
+                        .totalPay(cart.stream().mapToInt(CartItemDisplay::getTotalPay).sum())
+                        .totalDiscount(cart.stream().mapToInt(CartItemDisplay::getTotalDiscount).sum())
+                        .totalPrice(cart.stream().mapToInt(CartItemDisplay::getTotalPrice).sum())
+                        .build())
+                .build();
     }
 
-    record EditCartItemResponse(Integer totalPriceCartItem, Integer totalPriceCart) {
+    @Builder
+    record EditCartItemResponse(Integer totalPrice,
+                                Integer totalDiscount,
+                                Integer totalPay,
+                                Integer totalAmount,
+                                Integer totalPayItem) {
     }
 }
 

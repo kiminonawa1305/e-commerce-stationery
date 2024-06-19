@@ -1,6 +1,9 @@
 package com.lamnguyen.stationery_kimi.service.impl;
 
 import com.lamnguyen.stationery_kimi.dto.*;
+import com.lamnguyen.stationery_kimi.entity.Bill;
+import com.lamnguyen.stationery_kimi.entity.BillDetail;
+import com.lamnguyen.stationery_kimi.entity.ProductOption;
 import com.lamnguyen.stationery_kimi.exception.ApplicationException;
 import com.lamnguyen.stationery_kimi.exception.ErrorCode;
 import com.lamnguyen.stationery_kimi.request.AddCartItemRequest;
@@ -102,7 +105,7 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 
             cartItemDisplay.setCartItemId(cartItem.getCartItemId());
             cartItemDisplay.setUrl(productImageService.findFirstByProductId(productId).getUrl());
-            cartItemDisplay.setPrice((int) ((1.0 - discountPercent) * cartItemDisplay.getPrice()));
+            cartItemDisplay.setPercentDiscount(discountPercent);
             cartItemDisplay.setOption(option.getName());
             cartItemDisplay.setQuantity(cartItem.getQuantity());
 
@@ -111,7 +114,23 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         return cartItemDisplays;
     }
 
-    private Cart getCart(HttpSession session) {
+    public List<BillDetail> getBillDetails(HttpSession session, Bill bill) {
+        List<CartItemDisplay> cartItemDisplays = loadCart(session);
+        List<BillDetail> billDetails = cartItemDisplays
+                .stream()
+                .map(item -> BillDetail.builder()
+                        .price(item.getTotalPrice())
+                        .quantity(item.getQuantity())
+                        .productOption(ProductOption.builder()
+                                .id(getCart(session).getProductOptionId(item.getCartItemId()))
+                                .build())
+                        .bill(bill)
+                        .build())
+                .toList();
+        return billDetails;
+    }
+
+    public Cart getCart(HttpSession session) {
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) cart = new Cart();
         return cart;

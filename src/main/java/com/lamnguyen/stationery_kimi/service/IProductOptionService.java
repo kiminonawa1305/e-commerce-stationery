@@ -8,4 +8,6 @@ public interface IProductOptionService {
     List<ProductOptionDTO> findByProductId(Long productId);
 
     ProductOptionDTO findById(Long id);
+
+    ProductOptionDTO buy(Long id, Integer quantity);
 }

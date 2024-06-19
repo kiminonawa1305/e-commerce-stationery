@@ -1,4 +1,4 @@
-package com.lamnguyen.stationery_kimi.response;
+package com.lamnguyen.stationery_kimi.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

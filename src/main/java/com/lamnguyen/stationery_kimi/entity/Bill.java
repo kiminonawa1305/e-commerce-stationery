@@ -1,31 +1,34 @@
 package com.lamnguyen.stationery_kimi.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "bills")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
-    private String description;
-    @Column
-    private Double discount;
-    @Column
-    private Double total;
+    private String name;
+    private String phone;
+    private String email;
     @Column
     private String paymentMethod;
     @Column
     private String shippingAddress;
     @Column
-    private String shippingDate;
-    @Column
     private String shippingNote;
     @Column
-    private String shippingFee;
+    private Integer shippingFee;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

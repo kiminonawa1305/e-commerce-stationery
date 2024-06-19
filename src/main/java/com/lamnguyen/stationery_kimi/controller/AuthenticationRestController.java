@@ -4,7 +4,7 @@ import com.lamnguyen.stationery_kimi.dto.UserDTO;
 import com.lamnguyen.stationery_kimi.request.LoginRequest;
 import com.lamnguyen.stationery_kimi.request.UserRegisterRequest;
 import com.lamnguyen.stationery_kimi.request.VerifyUserRequest;
-import com.lamnguyen.stationery_kimi.response.ApiResponse;
+import com.lamnguyen.stationery_kimi.dto.ApiResponse;
 import com.lamnguyen.stationery_kimi.service.IAuthenticationService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;

@@ -39,7 +39,6 @@ $(document).ready(function () {
     $("#increase").click(function () {
             const maxQuantity = $("input[name='product-option']:checked").attr("data-quantity")
             let quantity = $(this).prev().val();
-            console.log(maxQuantity, quantity, maxQuantity > quantity)
             if (parseInt(maxQuantity) > quantity)
                 $("input[name='quantity']").val(++quantity);
         }
@@ -76,6 +75,7 @@ $(document).ready(function () {
                 }).showToast();
 
                 $(".cart-menu-amount").text(response.data)
+                $("#quantity").val(1)
             },
             error: (error) => {
                 console.log(error)

@@ -35,27 +35,99 @@
     <div class="container py-5">
         <section class="d-flex justify-content-center align-items-lg-center">
             <div class="container py-3 card d-flex justify-content-center">
-                <form action="#" method="post" class="needs-validation">
+                <form id="form" th:action="@{/pay}" method="post" th:object="${payment}" class="needs-validation">
                     <div class="header-cart">Giỏ hàng</div>
                     <div class="alert alert-success d-inline-block note-cart">
                         Quý khách vui lòng đợi 5s - 10s trước khi ấn "Tiến hành đặt hàng" để giỏ hàng cập nhật quà tặng
                         (nếu
                         có). Cảm ơn quý khách đã tin tưởng và ủng hộ Kimi Shop!
                     </div>
-                    <div></div>
                     <div class="cart-content row ">
                         <div class="cart-product-list" th:if="cartItems != null">
                             <div th:each="cartItem: ${cartItems}">
                                 <div th:replace="component/cart_item::cartItem(cartItemId=${cartItem.cartItemId}, urlImage=${cartItem.url}, name=${cartItem.name}, option=${cartItem.option}, price=${#numbers.formatCurrency(cartItem.price * cartItem.quantity)}, quantity=${cartItem.quantity})"></div>
                             </div>
                         </div>
-                        <div class="cart-price card py-3">
-                            <div class="d-flex justify-content-between">
-                                <div class="mb-3">Tổng tiền</div>
-                                <div class="cart-price-total" th:text="${#numbers.formatCurrency(totalPrice)}"/>
+                        <div>
+                            <div class="info-bill py-3 px-2 rounded-3 border border-1 border-secondary d-flex flex-column gap-2 mb-2">
+                                <h5>Thông tin thanh toán</h5>
+                                <label for="input-name">
+                                    <span>Họ và tên </span> <span class="fw-bold text-danger">*</span>
+                                    <input required type="text" name="name" id="input-name" class="w-100 rounded-3">
+                                </label>
+                                <label for="input-phone">
+                                    <span>Số điện thoại </span> <span class="fw-bold text-danger">*</span>
+                                    <input required type="tel" name="phone" id="input-phone" class="w-100 rounded-3">
+                                </label>
+                                <label for="input-email" class="w-100">
+                                    <span>Email </span> <span class="fw-bold text-danger">*</span>
+                                    <input required type="email" name="email" id="input-email" class="w-100 rounded-3">
+                                </label>
+
+                                <label for="select-province" class="w-100">
+                                    <span>Tỉnh/Thành phố </span> <span class="fw-bold text-danger">*</span>
+                                    <select required type="email" name="province" id="select-province"
+                                            class="w-100 rounded-3 p-2">
+                                        <option readonly selected>Chọn tỉnh/thành phố</option>
+                                    </select>
+                                </label>
+
+                                <label for="select-district" class="w-100">
+                                    <span>Quận/Huyện </span> <span class="fw-bold text-danger">*</span>
+                                    <select required type="email" name="district" id="select-district"
+                                            class="w-100 rounded-3 p-2">
+                                        <option disabled selected>Chọn quận/huyện</option>
+                                    </select>
+                                </label>
+
+                                <label for="select-commune" class="w-100">
+                                    <span>Xã/Phường </span> <span class="fw-bold text-danger">*</span>
+                                    <select required type="email" name="commune" id="select-commune"
+                                            class="w-100 rounded-3 p-2">
+                                        <option disabled selected>Chọn xã/phường</option>
+                                    </select>
+                                </label>
+
+                                <label for="input-full-address" class="w-100">
+                                    <span>Địa chỉ cụ thể </span> <span class="fw-bold text-danger">*</span>
+                                    <input type="text" name="fullAddress" id="input-full-address"
+                                           class="w-100 rounded-3">
+                                </label>
                             </div>
-                            <input class="btn btn-primary rounded-2" type="submit" id="btn-submit"
-                                   value="Tiến hành đặt hàng"/>
+                            <div class="payment py-3 px-2 rounded-3 border border-1 border-secondary d-flex flex-column gap-2 mb-2">
+                                <h5>Phương thức thanh toán</h5>
+                                <div class="d-flex gap-4">
+                                    <label class="p-2 border border-2 border-primary rounded-3 flex-grow-1 text-center">
+                                        <i class="fa-solid fa-money-bill fs-2"></i>
+                                        <input checked type="radio" name="payment" hidden value="cash">
+                                    </label>
+                                    <label class="p-2 border border-1 border-secondary rounded-3 flex-grow-1 text-center">
+                                        <i class="fa-solid fa-qrcode fs-2"></i>
+                                        <input type="radio" name="payment" hidden id="qr-pay" value="qr">
+                                    </label>
+                                </div>
+                                <div id="display-qr">
+                                </div>
+                            </div>
+
+                            <div class="cart-price card py-3 px-2">
+                                <div class="d-flex justify-content-between">
+                                    <div class="mb-3">Tổng tiền</div>
+                                    <div class="total-price-cart" th:text="${#numbers.formatCurrency(totalPrice)}"/>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="mb-3">Tổng giảm</div>
+                                    <div class="total-discount-cart"
+                                         th:text="${#numbers.formatCurrency(totalDiscount)}"/>
+                                </div>
+                                <hr/>
+                                <div class="d-flex justify-content-between">
+                                    <div class="mb-3">Tổng thanh toán</div>
+                                    <div class="total-pay-cart" th:text="${#numbers.formatCurrency(totalPay)}"/>
+                                </div>
+                                <input class="btn btn-primary rounded-2" type="submit" id="btn-submit"
+                                       value="Tiến hành đặt hàng"/>
+                            </div>
                         </div>
                     </div>
                     <div class="cart-title-ship mb-lg-3">
@@ -127,5 +199,8 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/cart.js}"></script>
 <script th:src="@{/js/menu.js}"></script>
+<script>
+
+</script>
 </body>
 </html>

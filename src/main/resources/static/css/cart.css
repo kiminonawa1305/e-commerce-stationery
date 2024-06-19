@@ -15,11 +15,11 @@ section {
     font-size: 17px;
 }
 
-.cart-price-total {
+.total-price-cart {
     font-weight: bold;
 }
 
-.cart-price-total span {
+.total-price-cart span {
     font-size: 18px;
 }
 
