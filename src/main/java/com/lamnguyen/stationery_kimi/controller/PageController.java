@@ -134,4 +134,9 @@ public class PageController {
         model.addAttribute("brands", productService.findBrandsByCategoryId(categoryId));
         return "booth";
     }
+
+    @GetMapping("/profile.html")
+    public String profile(HttpSession session) {
+        return "profile";
+    }
 }
