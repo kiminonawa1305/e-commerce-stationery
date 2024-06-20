@@ -2,6 +2,7 @@ package com.lamnguyen.stationery_kimi.service.impl;
 
 import com.lamnguyen.stationery_kimi.controller.PaymentRestController;
 import com.lamnguyen.stationery_kimi.dto.BillDisplay;
+import com.lamnguyen.stationery_kimi.dto.BillStatusDTO;
 import com.lamnguyen.stationery_kimi.entity.Bill;
 import com.lamnguyen.stationery_kimi.entity.BillDetail;
 import com.lamnguyen.stationery_kimi.entity.BillStatus;
@@ -68,8 +69,10 @@ public class BillServiceImpl implements IBillService {
 
         if (status.equalsIgnoreCase(BillStatusEnum.DELIVERED.name().toLowerCase()))
             bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()))).toList();
+        else if (status.equalsIgnoreCase(BillStatusEnum.CANCELED.name().toLowerCase()))
+            bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.CANCELED.getStatus()))).toList();
         else
-            bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().noneMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()))).toList();
+            bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().noneMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()) || billStatus.getStatus().equals(BillStatusEnum.CANCELED.getStatus()))).toList();
 
         return bills.stream().map(bill -> {
             BillDisplay billDisplay = convertToBillDisplay(bill);
@@ -78,6 +81,19 @@ public class BillServiceImpl implements IBillService {
             billDisplay.setTotalPay(bill.getBillDetails().stream().mapToInt(billDetail -> billDetail.getQuantity() * billDetail.getPrice()).sum() + bill.getShippingFee() - bill.getBillDetails().stream().mapToInt(BillDetail::getDiscount).sum());
             return billDisplay;
         }).toList();
+    }
+
+    @Override
+    public BillStatusDTO cancelBill(Long id, Long billId) {
+        List<Bill> bills = iBillRepository.findByUser_Id(id);
+        Bill bill = bills.stream().filter(b -> b.getId().equals(billId)).findFirst().orElse(null);
+        if (bill == null) return null;
+        BillStatus billStatus = BillStatus.builder()
+                .bill(bill)
+                .status(BillStatusEnum.CANCELED.getStatus())
+                .data(LocalDateTime.now())
+                .build();
+        return iBillStatusService.save(billStatus);
     }
 
     private BillDTO convertToDTO(Bill bill) {
