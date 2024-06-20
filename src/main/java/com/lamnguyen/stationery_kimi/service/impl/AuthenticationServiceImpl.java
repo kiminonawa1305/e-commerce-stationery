@@ -120,17 +120,6 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     }
 
     @Override
-    public UserDTO changePassword(User user, String newPassword) {
-        return userService.changeProfile(user);
-    }
-
-    @Override
-    public UserDTO changeProfile(User user) {
-        return userService.changeProfile(user);
-    }
-
-
-    @Override
     public User checkUserExist(String email) {
         return userService.checkUserExist(email);
     }

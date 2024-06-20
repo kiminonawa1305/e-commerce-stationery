@@ -137,9 +137,8 @@ public class PageController {
 
     @GetMapping("/profile.html")
     public String profile(HttpSession session) {
-        if (session.getAttribute("user") == null) {
-            return "redirect:/";
-        }
+        /*if (session.getAttribute("user") == null)
+            return "redirect:/";*/
         return "profile";
     }
 }

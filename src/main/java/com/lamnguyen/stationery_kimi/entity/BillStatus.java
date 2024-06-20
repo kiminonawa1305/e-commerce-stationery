@@ -1,11 +1,19 @@
 package com.lamnguyen.stationery_kimi.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bill_status")
+@Table(name = "bill_statuses")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BillStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +24,6 @@ public class BillStatus {
     private String description;
     @Column
     private LocalDateTime data;
-    @Column
-    private String address;
 
     @ManyToOne
     @JoinColumn(name = "bill_id")

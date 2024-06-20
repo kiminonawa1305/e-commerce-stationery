@@ -15,16 +15,33 @@ public class UserRestController {
     private IUserService iUserService;
 
     @PutMapping("/update-profile")
-    public ApiResponse<UserDTO> userDTOApiResponse(HttpSession session, @RequestBody User user) {
+    public ApiResponse<UserDTO> updateProfile(HttpSession session, @RequestBody User user) {
         UserDTO currentUser = (UserDTO) session.getAttribute("user");
-        user.setId(currentUser.getId());
-        user.setEmail(currentUser.getEmail());
-        UserDTO userDTO = iUserService.save(user);
-        session.setAttribute("user", user);
+
+        UserDTO userDTO = iUserService.changeProfile(currentUser.getId(), user);
+        session.setAttribute("user", userDTO);
         return ApiResponse.<UserDTO>builder()
                 .code(200)
                 .message("Update profile successfully")
                 .data(userDTO)
                 .build();
+    }
+
+    @PutMapping("/update-password")
+    public ApiResponse<UserDTO> updatePassword(HttpSession session, @RequestBody UpdatePasswordRequest user) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("user");
+        UserDTO userDTO = iUserService.updatePassword(currentUser.getId(), user);
+        session.setAttribute("user", userDTO);
+        return ApiResponse.<UserDTO>builder()
+                .code(200)
+                .message("Update profile successfully")
+                .data(userDTO)
+                .build();
+    }
+
+    public record UpdatePasswordRequest(
+            String oldPassword,
+            String newPassword,
+            String confirmNewPassword) {
     }
 }

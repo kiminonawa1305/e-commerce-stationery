@@ -28,6 +28,7 @@ public enum ErrorCode {
     EMAIL_EXISTED(HttpServletResponse.SC_NOT_ACCEPTABLE, "Email đã tồn tại."),
     USER_NOT_REGISTERED(HttpServletResponse.SC_NOT_ACCEPTABLE, "Người dùng chưa đăng ký."),
     WRONG_PASSWORD(HttpServletResponse.SC_NOT_ACCEPTABLE, "Mật khẩu không chính xác."),
+    PASSWORD_NOT_MATCH(HttpServletResponse.SC_NOT_ACCEPTABLE, "Mật khẩu không trùng khớp."),
     WRONG_VERIFY_CODE(HttpServletResponse.SC_NOT_ACCEPTABLE, "Mã xác thực không chính xác."),
     VERIFY_CODE_EXPIRED(HttpServletResponse.SC_NOT_ACCEPTABLE, "Mã xác thực đã hết hạn. Vui lòng kiểm tra mail và nhập mã mới."),
     VERIFY_EMAIL(HttpServletResponse.SC_UNAUTHORIZED, "Vui lòng kiểm tra email để nhận mã xác thực!"),

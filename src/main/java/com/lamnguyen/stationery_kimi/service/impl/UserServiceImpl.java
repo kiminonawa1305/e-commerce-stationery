@@ -1,5 +1,6 @@
 package com.lamnguyen.stationery_kimi.service.impl;
 
+import com.lamnguyen.stationery_kimi.controller.UserRestController;
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
 import com.lamnguyen.stationery_kimi.entity.User;
 import com.lamnguyen.stationery_kimi.exception.ApplicationException;
@@ -8,6 +9,7 @@ import com.lamnguyen.stationery_kimi.repository.IUserRepository;
 import com.lamnguyen.stationery_kimi.service.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,8 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -29,9 +33,27 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO changeProfile(User user) {
-        User result = userRepository.saveAndFlush(user);
+    public UserDTO changeProfile(Long id, User user) {
+        User oldUser = userRepository.findById(id).orElse(null);
+        if (oldUser == null) throw new ApplicationException(ErrorCode.USER_NOT_FOUND);
+        oldUser.setFirstName(user.getFirstName());
+        oldUser.setLastName(user.getLastName());
+        oldUser.setPhone(user.getPhone());
+        oldUser.setPhone(user.getPhone());
+        User result = userRepository.saveAndFlush(oldUser);
         return convertToDTO(result);
+    }
+
+    @Override
+    public UserDTO updatePassword(Long id, UserRestController.UpdatePasswordRequest user) {
+        User oldUser = userRepository.findById(id).orElse(null);
+        if (oldUser == null) throw new ApplicationException(ErrorCode.USER_NOT_FOUND);
+        if (!passwordEncoder.matches(user.oldPassword(), oldUser.getPassword()))
+            throw new ApplicationException(ErrorCode.WRONG_PASSWORD);
+        if (!user.newPassword().equals(user.confirmNewPassword()))
+            throw new ApplicationException(ErrorCode.PASSWORD_NOT_MATCH);
+        oldUser.setPassword(passwordEncoder.encode(user.newPassword()));
+        return save(oldUser);
     }
 
     @Override

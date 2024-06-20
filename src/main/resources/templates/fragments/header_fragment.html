@@ -50,14 +50,14 @@
                     </a>
                 </div>
                 <div id="have-user" class="sign-button-display" th:if="${session.user} != null">
-                    <div id="user-id" th:data-user-id="${session.user.id}" hidden> </div>
+                    <div id="user-id" th:data-user-id="${session.user.id}" hidden></div>
                     <a th:href="@{profile.html}" id="name-user"
                        class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start fs-5"
                        style="line-height: 18px">
                         <span>Xin chào </span>
-                        <span th:text="${session.user.getFirstName()}"></span>
+                        <span class="btn-user-first-name" th:text="${session.user.getFirstName()}"></span>
                         <span>, </span>
-                        <span th:text="${session.user.getLastName()}"></span>
+                        <span class="btn-user-last-name" th:text="${session.user.getLastName()}"></span>
                     </a>
                     <a th:href="@{/sign-out}">
                           <span id="login-out"

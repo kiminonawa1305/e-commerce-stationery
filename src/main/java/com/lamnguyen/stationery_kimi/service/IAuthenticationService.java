@@ -13,10 +13,6 @@ public interface IAuthenticationService {
 
     UserDTO register(UserRegisterRequest user);
 
-    UserDTO changePassword(User user, @Valid String newPassword);
-
-    UserDTO changeProfile(User user);
-
     User checkUserExist(@Valid String email);
 
     UserDTO verify(VerifyUserRequest verifyUserRequest);
