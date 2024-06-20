@@ -21,6 +21,7 @@ public class BillDetail {
     @Column
     private Integer quantity;
     private Integer price;
+    private Integer discount;
 
     @ManyToOne
     @JoinColumn(name = "bill_id")

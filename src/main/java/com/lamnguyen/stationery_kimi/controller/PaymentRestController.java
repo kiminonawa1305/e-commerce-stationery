@@ -23,10 +23,10 @@ public class PaymentRestController {
     private IBillService iBillService;
     @Autowired
     private IShoppingCartService iShoppingCartService;
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     @PostMapping("/pay")
     public String payment(HttpSession session, @ModelAttribute PaymentRequest request, Model model) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         request.setPayment(request.getPayment().equals("qr") ? "Chuyển khoản qua QR Code" : "Thanh toán khi nhận hàng");
         List<CartItemDisplay> cart = iShoppingCartService.loadCart(session);
         model.addAttribute("bill", iBillService.createBill(session, request));

@@ -1,3 +1,8 @@
+const format = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+})
+
 $(document).ready(function () {
     const profileMenu = $('.profile-menu'),
         userFirstName = $('.user-first-name'),
@@ -6,7 +11,10 @@ $(document).ready(function () {
         oldPassword = $('input[name="oldPassword"]'),
         newPassword = $('input[name="newPassword"]'),
         confirmNewPassword = $('input[name="confirmNewPassword"]'),
-        btnStatusBill = $(".btn-status-bill");
+        btnStatusBill = $(".btn-status-bill"),
+        delivering = $("#delivering"),
+        delivered = $("#delivered"),
+        displayBills = $("#display-bills")
 
 
     profileMenu.click(function () {
@@ -16,6 +24,7 @@ $(document).ready(function () {
         const index = $(this).data("index-slide");
         $(".slide").hide();
         $(`.slide[data-slide="${index}"]`).show();
+        btnStatusBill.eq(0).click();
     });
 
     profileMenu.eq(0).click()
@@ -85,6 +94,15 @@ $(document).ready(function () {
         });
     });
 
+    delivering.on("click", function () {
+        if ($(this).hasClass("active")) return
+        updateListBill(displayBills, "delivering")
+    });
+    delivered.on("click", function () {
+        if ($(this).hasClass("active")) return
+        updateListBill(displayBills, "delivered")
+    });
+
     btnStatusBill.on("click", function () {
         btnStatusBill.removeClass("active").removeClass("bg-primary").removeClass("text-white");
         $(this).addClass("active").addClass("bg-primary").addClass("text-white");
@@ -141,4 +159,60 @@ const updateDataProfile = (userFirstName, userLastName, userPhone, data) => {
     userFirstName.text(data.firstName);
     userLastName.text(data.lastName);
     userPhone.text(data.phone);
+}
+
+const updateListBill = (displayBills, status) => {
+    displayBills.empty()
+    $.ajax({
+        url: '/stationery_kimi/api/bill/' + status,
+        type: 'GET',
+        success: function (response) {
+            const data = response.data;
+            if (data) data.forEach(bill => {
+                displayBills.append(loadBill(bill))
+            });
+        },
+        error: function (data) {
+            Toastify({
+                text: "Cập nhật thông tin thất bại",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: 'right',
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+            }).showToast();
+        }
+    });
+}
+
+const loadBill = (bill) => {
+    return `   <div class="row align-items-center mx-0 border border-1 border-secondary border-end-0 border-start-0">
+                        <div class="col-2 border border-start-0 border-top-0 border-bottom-0 border-1 border-secondary text-primary"
+                             style="padding-block: 20px">
+                            #${bill.id}
+                        </div>
+                        <div class="col-2 border border-top-0 border-bottom-0 border-1 border-secondary"
+                             style="padding-block: 8px">
+                            <span>${bill.date}</span>
+                        </div>
+                        <div class="col-4 py-2 border border-top-0 border-bottom-0 border-1 border-secondary">
+                            <p class="m-0">${bill.name}</p>
+                            <p class="m-0">${bill.phone}</p>
+                        </div>
+                        <div class="col-2 border border-top-0 border-bottom-0 border-1 border-secondary text-center"
+                             style="padding-block: 20px">
+                            ${format.format(bill.totalPay)}
+                        </div>
+                        <div class="col-2 d-flex gap-2 justify-content-center border border-end-0 border-top-0 border-bottom-0 border-1 border-secondary"
+                             style="padding-block: 12px">
+                            <button class="active btn btn-primary d-inline-flex justify-content-center align-items-center"
+                                    style="width: 40px; height: 40px">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button class="btn btn-danger"
+                                    style="width: 40px; height: 40px">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>`
 }

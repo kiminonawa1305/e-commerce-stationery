@@ -1,19 +1,20 @@
-package com.lamnguyen.stationery_kimi.response;
+package com.lamnguyen.stationery_kimi.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BillDTO {
-    private Integer id;
+    private Long id;
+    private Integer totalDiscount;
     private String name,
             phone,
             email,
-            fullAddress,
-            payment;
+            shippingAddress,
+            paymentMethod;
 }
