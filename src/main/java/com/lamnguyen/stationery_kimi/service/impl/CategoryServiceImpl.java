@@ -49,6 +49,11 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public List<CategoryManager> findAll(DatatableApiRequest request) {
         List<CategoryManager> categories = new ArrayList<>(iCategoryRepository.findAll().stream().map(this::convertToManager).toList());
+
+        String searchValue = request.getSearch().getValue();
+        if (searchValue != null && !searchValue.isBlank())
+            categories.removeIf(category -> !category.getName().toLowerCase().contains(searchValue.toLowerCase()) && !category.getId().toString().contains(searchValue.toLowerCase()));
+
         if (categories.size() > 1) {
             request.getOrder().forEach(order -> {
                 switch (order.getName()) {
@@ -74,10 +79,6 @@ public class CategoryServiceImpl implements ICategoryService {
                 }
             });
         }
-
-        String searchValue = request.getSearch().getValue();
-        if (searchValue != null && !searchValue.isBlank())
-            categories.removeIf(category -> !category.getName().toLowerCase().contains(searchValue.toLowerCase()) && !category.getId().toString().contains(searchValue.toLowerCase()));
 
         return categories.stream().skip(request.getStart()).limit(request.getLength()).toList();
     }

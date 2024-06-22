@@ -1,4 +1,11 @@
+const format = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+})
+
 $(document).ready(function (event) {
+    let dataTableBill, dataTableAccount, dataTableCategory, dataTableProduct;
+
     if (!location.hash) location.hash = "#dashboard"
     const menuItems = $('.menu-item-manager'), frames = $('.frame'), dashboard = $("#dashboard"),
         productManager = $("#product-manager"), billManager = $("#bill-manager"),
@@ -22,18 +29,21 @@ $(document).ready(function (event) {
         menuItems.removeClass("active").removeClass("bg-primary").addClass("bg-warning")
         $(this).addClass("active").addClass("bg-primary").removeClass("bg-warning")
         $("title").text(title)
-
         const manager = $(this).attr("data-manager")
         switch (manager) {
             case "product":
                 break;
             case "bill":
+                if (dataTableBill) dataTableBill.ajax.reload()
+                else dataTableBill = loadBills()
                 break;
             case "account":
-                loadAccount()
+                if (dataTableAccount) dataTableAccount.ajax.reload()
+                else dataTableAccount = loadAccount()
                 break;
             case "category":
-                loadCategory()
+                if (dataTableCategory) dataTableCategory.ajax.reload()
+                else dataTableCategory = loadCategory()
                 break;
             default:
         }
@@ -86,40 +96,6 @@ const loadCategory = () => {
 }
 
 const loadAccount = () => {
-    /*    const editor = new DataTable.Editor({
-            ajax: {
-                create: {
-                    type: 'POST',
-                    url: '/stationery_kimi/admin/api/accounts/create',
-                    contentType: false,
-                    processData: false,
-                    data: function (d) {
-                        return getFromData(d);
-                    }
-                },
-                edit: {
-                    type: 'PUT',
-                    url: '/stationery_kimi/admin/api/accounts/edit/_id_',
-                    contentType: 'application/json', // Đặt Content-Type là application/json
-                    data: function (d) {
-                        return JSON.stringify(d.data); // Chuyển dữ liệu sang JSON
-                    }
-                },
-                remove: {
-                    type: 'DELETE',
-                    url: '/stationery_kimi/admin/api/accounts/delete/_id_'
-                }
-            },
-            fields: [
-                {
-                    label: 'Name:',
-                    name: 'name'
-                },
-            ],
-            idSrc: 'id',
-            table: '#category-manager-table'
-        });*/
-
     const dataTable = new DataTable('#account-manager-table', {
         ajax: {
             url: '/stationery_kimi/admin/api/accounts/get',
@@ -183,4 +159,37 @@ const getFromData = (d) => {
         });
     });
     return formData;
+}
+
+
+const loadBills = () => {
+    const dataTable = new DataTable('#bill-manager-table', {
+        ajax: {
+            url: '/stationery_kimi/admin/api/bills/get',
+        }, columns: [{
+            title: 'ID: ', name: 'id', data: 'id',
+        }, {
+            title: 'User ID: ', name: 'userId', data: 'userId',
+        }, {
+            title: 'Tên khách hàng: ', name: 'name', data: 'name',
+        }, {
+            title: 'Email: ', name: 'email', data: 'email',
+        }, {
+            title: 'Số điện thoại: ', name: 'phone', data: 'phone',
+        }, {
+            title: 'Địa chỉ giao hàng: ', name: 'shippingAddress', data: 'shippingAddress', orderable: false,
+        }, {
+            title: 'Hình thức thanh toán: ', name: 'paymentMethod', data: 'paymentMethod', orderable: false,
+        }, {
+            title: 'Tổng số tiền được giảm: ', name: 'totalDiscount', data: null, render: function (data, type, row) {
+                return format.format(data.totalDiscount)
+            }
+        }, {
+            title: 'Tổng số tiền thanh toán: ', name: 'totalPay', data: null, render: function (data, type, row) {
+                return format.format(data.totalPay)
+            }
+        },], processing: true, serverSide: true, search: true, select: true, scrollX: true,
+    });
+
+    return dataTable;
 }

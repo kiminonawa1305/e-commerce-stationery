@@ -1,9 +1,7 @@
 package com.lamnguyen.stationery_kimi.service;
 
 import com.lamnguyen.stationery_kimi.controller.PaymentRestController;
-import com.lamnguyen.stationery_kimi.dto.BillDTO;
-import com.lamnguyen.stationery_kimi.dto.BillDisplay;
-import com.lamnguyen.stationery_kimi.dto.BillStatusDTO;
+import com.lamnguyen.stationery_kimi.dto.*;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
@@ -11,7 +9,9 @@ import java.util.List;
 public interface IBillService {
     BillDTO createBill(HttpSession session, PaymentRestController.PaymentRequest request);
 
-    List<BillDisplay> getBillByStatus(Long id, String status);
+    List<BillDisplay> getBillByStatusAndUserId(Long id, String status);
+
+    List<BillManager> getBillManager(String status, DatatableApiRequest request);
 
     BillStatusDTO cancelBill(Long id, Long billId);
 }

@@ -161,6 +161,6 @@ public class UserServiceImpl implements IUserService {
     private void searchProduct(List<UserDTO> users, DatatableApiRequest request) {
         String searchValue = request.getSearch().getValue();
         if (searchValue != null && !searchValue.isBlank())
-            users.removeIf(product -> !product.getPhone().toLowerCase().contains(searchValue.toLowerCase()) && !product.getId().toString().contains(searchValue.toLowerCase()) && !product.getEmail().toLowerCase().contains(searchValue.toLowerCase()) && !product.getLastName().toLowerCase().contains(searchValue.toLowerCase()) && !product.getFirstName().toLowerCase().contains(searchValue.toLowerCase()) && !product.getRole().toLowerCase().contains(searchValue.toLowerCase()));
+            users.removeIf(user -> !user.getPhone().toLowerCase().contains(searchValue.toLowerCase()) && !user.getId().toString().contains(searchValue.toLowerCase()) && !user.getEmail().toLowerCase().contains(searchValue.toLowerCase()) && !user.getLastName().toLowerCase().contains(searchValue.toLowerCase()) && !user.getFirstName().toLowerCase().contains(searchValue.toLowerCase()) && !user.getRole().toLowerCase().contains(searchValue.toLowerCase()));
     }
 }

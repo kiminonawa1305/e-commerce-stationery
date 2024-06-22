@@ -1,9 +1,7 @@
 package com.lamnguyen.stationery_kimi.service.impl;
 
 import com.lamnguyen.stationery_kimi.controller.PaymentRestController;
-import com.lamnguyen.stationery_kimi.dto.BillDisplay;
-import com.lamnguyen.stationery_kimi.dto.BillStatusDTO;
-import com.lamnguyen.stationery_kimi.dto.UserDTO;
+import com.lamnguyen.stationery_kimi.dto.*;
 import com.lamnguyen.stationery_kimi.entity.Bill;
 import com.lamnguyen.stationery_kimi.entity.BillDetail;
 import com.lamnguyen.stationery_kimi.entity.BillStatus;
@@ -11,7 +9,6 @@ import com.lamnguyen.stationery_kimi.entity.User;
 import com.lamnguyen.stationery_kimi.enums.BillStatusEnum;
 import com.lamnguyen.stationery_kimi.repository.IBillDetailRepository;
 import com.lamnguyen.stationery_kimi.repository.IBillRepository;
-import com.lamnguyen.stationery_kimi.dto.BillDTO;
 import com.lamnguyen.stationery_kimi.service.IBillService;
 import com.lamnguyen.stationery_kimi.service.IBillStatusService;
 import com.lamnguyen.stationery_kimi.service.IProductOptionService;
@@ -23,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -70,23 +69,20 @@ public class BillServiceImpl implements IBillService {
     }
 
     @Override
-    public List<BillDisplay> getBillByStatus(Long id, String status) {
+    public List<BillDisplay> getBillByStatusAndUserId(Long id, String status) {
         List<Bill> bills = iBillRepository.findByUser_Id(id);
+        bills = filterBillByStatus(bills, status);
+        return bills.stream().map(this::convertToBillDisplay).toList();
+    }
 
-        if (status.equalsIgnoreCase(BillStatusEnum.DELIVERED.name().toLowerCase()))
-            bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()))).toList();
-        else if (status.equalsIgnoreCase(BillStatusEnum.CANCELED.name().toLowerCase()))
-            bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.CANCELED.getStatus()))).toList();
-        else
-            bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().noneMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()) || billStatus.getStatus().equals(BillStatusEnum.CANCELED.getStatus()))).toList();
-
-        return bills.stream().map(bill -> {
-            BillDisplay billDisplay = convertToBillDisplay(bill);
-            BillStatus orderedBill = bill.getBillStatuses().stream().filter(billStatus -> billStatus.getStatus().equals(BillStatusEnum.ORDERED.getStatus())).findFirst().orElse(null);
-            billDisplay.setDate(dateTimeFormatter.format(orderedBill.getData()));
-            billDisplay.setTotalPay(bill.getBillDetails().stream().mapToInt(billDetail -> billDetail.getQuantity() * billDetail.getPrice()).sum() + bill.getShippingFee() - bill.getBillDetails().stream().mapToInt(BillDetail::getDiscount).sum());
-            return billDisplay;
-        }).toList();
+    @Override
+    public List<BillManager> getBillManager(String status, DatatableApiRequest request) {
+        List<Bill> bills = iBillRepository.findAll();
+        bills = filterBillByStatus(bills, status);
+        List<BillManager> billManagers = new ArrayList<>(bills.stream().map(this::convertToBillManager).toList());
+        searchBill(billManagers, request);
+        sortBill(billManagers, request);
+        return billManagers;
     }
 
     @Override
@@ -107,6 +103,104 @@ public class BillServiceImpl implements IBillService {
     }
 
     private BillDisplay convertToBillDisplay(Bill bill) {
-        return modelMapper.map(bill, BillDisplay.class);
+        BillDisplay billDisplay = modelMapper.map(bill, BillDisplay.class);
+        billDisplay.setDate(dateTimeFormatter.format(getBillStatusOrder(bill).getData()));
+        billDisplay.setTotalPay(bill.getBillDetails().stream().mapToInt(billDetail -> billDetail.getQuantity() * billDetail.getPrice()).sum() + bill.getShippingFee() - bill.getBillDetails().stream().mapToInt(BillDetail::getDiscount).sum());
+        billDisplay.setTotalDiscount(bill.getBillDetails().stream().mapToInt(BillDetail::getDiscount).sum());
+        return billDisplay;
+    }
+
+    private BillManager convertToBillManager(Bill bill) {
+        BillDisplay billDisplay = convertToBillDisplay(bill);
+        BillManager billManager = modelMapper.map(billDisplay, BillManager.class);
+        billManager.setUserId(bill.getUser().getId());
+        return billManager;
+    }
+
+    private BillStatus getBillStatusOrder(Bill bill) {
+        return bill.getBillStatuses().stream().filter(billStatus -> billStatus.getStatus().equals(BillStatusEnum.ORDERED.getStatus())).findFirst().orElse(null);
+    }
+
+    private List<Bill> filterBillByStatus(List<Bill> bills, String status) {
+        if (!status.equalsIgnoreCase(BillStatusEnum.ALL.name().toLowerCase()))
+            if (status.equalsIgnoreCase(BillStatusEnum.DELIVERED.name().toLowerCase()))
+                return bills.stream().filter(bill -> bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()))).toList();
+            else if (status.equalsIgnoreCase(BillStatusEnum.CANCELED.name().toLowerCase()))
+                return bills.stream().filter(bill -> bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.CANCELED.getStatus()))).toList();
+            else
+                return bills.stream().filter(bill -> bill.getBillStatuses().stream().noneMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()) || billStatus.getStatus().equals(BillStatusEnum.CANCELED.getStatus()))).toList();
+        else return bills;
+    }
+
+    private void sortBill(List<BillManager> bills, DatatableApiRequest request) {
+        if (bills.size() > 1) {
+            request.getOrder().forEach(order -> {
+                switch (order.getName()) {
+                    case "id" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparingLong(BillManager::getId));
+                            case "desc" -> bills.sort((c1, c2) -> Long.compare(c2.getId(), c1.getId()));
+                        }
+                    }
+                    case "email" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparing(BillManager::getEmail));
+                            case "desc" -> bills.sort((c1, c2) -> c2.getEmail().compareTo(c1.getEmail()));
+                        }
+                    }
+                    case "name" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparing(BillManager::getName));
+                            case "desc" -> bills.sort((c1, c2) -> c2.getName().compareTo(c1.getName()));
+                        }
+                    }
+                    case "date" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparing(BillManager::getDate));
+                            case "desc" -> bills.sort((c1, c2) -> c2.getDate().compareTo(c1.getDate()));
+                        }
+                    }
+                    case "phone" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparing(BillManager::getPhone));
+                            case "desc" -> bills.sort((c1, c2) -> c2.getPhone().compareTo(c1.getPhone()));
+                        }
+                    }
+                    case "userId" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparing(BillManager::getUserId));
+                            case "desc" -> bills.sort((c1, c2) -> c2.getUserId().compareTo(c1.getUserId()));
+                        }
+                    }
+                    case "totalPay" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparing(BillManager::getTotalPay));
+                            case "desc" -> bills.sort((c1, c2) -> c2.getTotalPay().compareTo(c1.getTotalPay()));
+                        }
+                    }
+                    case "totalDiscount" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> bills.sort(Comparator.comparing(BillManager::getTotalDiscount));
+                            case "desc" ->
+                                    bills.sort((c1, c2) -> c2.getTotalDiscount().compareTo(c1.getTotalDiscount()));
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void searchBill(List<BillManager> bills, DatatableApiRequest request) {
+        String searchValue = request.getSearch().getValue();
+        if (searchValue != null && !searchValue.isBlank())
+            bills.removeIf(bill -> !bill.getPhone().toLowerCase().contains(searchValue.toLowerCase())
+                    && !bill.getId().toString().contains(searchValue.toLowerCase())
+                    && !bill.getEmail().toLowerCase().contains(searchValue.toLowerCase())
+                    && !bill.getUserId().toString().contains(searchValue.toLowerCase())
+                    && !bill.getName().toLowerCase().contains(searchValue.toLowerCase())
+                    && !bill.getShippingAddress().toLowerCase().contains(searchValue.toLowerCase())
+                    && !bill.getPaymentMethod().toLowerCase().contains(searchValue.toLowerCase())
+                    && !bill.getDate().contains(searchValue.toLowerCase())
+            );
     }
 }
