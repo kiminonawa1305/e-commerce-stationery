@@ -166,30 +166,90 @@ const loadBills = () => {
     const dataTable = new DataTable('#bill-manager-table', {
         ajax: {
             url: '/stationery_kimi/admin/api/bills/get',
-        }, columns: [{
-            title: 'ID: ', name: 'id', data: 'id',
-        }, {
-            title: 'User ID: ', name: 'userId', data: 'userId',
-        }, {
-            title: 'Tên khách hàng: ', name: 'name', data: 'name',
-        }, {
-            title: 'Email: ', name: 'email', data: 'email',
-        }, {
-            title: 'Số điện thoại: ', name: 'phone', data: 'phone',
-        }, {
-            title: 'Địa chỉ giao hàng: ', name: 'shippingAddress', data: 'shippingAddress', orderable: false,
-        }, {
-            title: 'Hình thức thanh toán: ', name: 'paymentMethod', data: 'paymentMethod', orderable: false,
-        }, {
-            title: 'Tổng số tiền được giảm: ', name: 'totalDiscount', data: null, render: function (data, type, row) {
-                return format.format(data.totalDiscount)
+        }, columns: [
+            {
+                className: 'dt-control',
+                orderable: false,
+                data: null,
+                defaultContent: ''
+            },
+            {
+                title: 'ID: ', name: 'id', data: 'id',
+            }, {
+                title: 'User ID: ', name: 'userId', data: 'userId',
+            }, {
+                title: 'Tên khách hàng: ', name: 'name', data: 'name',
+            }, {
+                title: 'Email: ', name: 'email', data: 'email',
+            }, {
+                title: 'Số điện thoại: ', name: 'phone', data: 'phone',
+            }, {
+                title: 'Địa chỉ giao hàng: ', name: 'shippingAddress', data: 'shippingAddress', orderable: false,
+            }, {
+                title: 'Hình thức thanh toán: ', name: 'paymentMethod', data: 'paymentMethod', orderable: false,
+            }, {
+                title: 'Tổng số tiền được giảm: ',
+                name: 'totalDiscount',
+                data: null,
+                render: function (data, type, row) {
+                    return format.format(data.totalDiscount)
+                }
+            }, {
+                title: 'Tổng số tiền thanh toán: ', name: 'totalPay', data: null, render: function (data, type, row) {
+                    return format.format(data.totalPay)
+                }
+            },], processing: true, serverSide: true, search: true, select: true, scrollX: true,
+    });
+
+    // Add event listener for opening and closing details
+    dataTable.on('click', 'td.dt-control', function (e) {
+        let tr = e.target.closest('tr');
+        let row = dataTable.row(tr);
+        const id = row.data().id;
+
+        $.ajax({
+            url: "/stationery_kimi/admin/api/bills/bill-detail/" + id,
+            method: "GET",
+            contentType: "application/json",
+            success: function (response) {
+                if (row.child.isShown()) {
+                    row.child.hide();
+                } else {
+                    // Open this row
+                    row.child(renderBillDetail(response.data)).show();
+                }
+            },
+            error: function (e) {
+
             }
-        }, {
-            title: 'Tổng số tiền thanh toán: ', name: 'totalPay', data: null, render: function (data, type, row) {
-                return format.format(data.totalPay)
-            }
-        },], processing: true, serverSide: true, search: true, select: true, scrollX: true,
+        })
     });
 
     return dataTable;
+}
+
+const renderBillDetail = (data) => {
+    let table = `<table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+    data.forEach((item) => {
+        table += `<tr>
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${format.format(item.price)}</td>
+                  </tr>`;
+    });
+
+    table += `</tbody></table>`;
+
+    return table;
 }

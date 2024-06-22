@@ -39,7 +39,4 @@ public class Bill {
 
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<BillStatus> billStatuses;
-
-    @OneToMany(mappedBy = "bill")
-    private List<BillVoucher> vouchers;
 }

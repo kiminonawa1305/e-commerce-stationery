@@ -43,17 +43,10 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductImage> image;
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<ComboProductDetail> comboProducts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
     private Discount discount;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private List<TimeGoldPrice> timeGoldPrices;
 }

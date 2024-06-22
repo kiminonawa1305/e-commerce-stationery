@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Table(name = "bill_details")
 @Data
@@ -30,8 +28,4 @@ public class BillDetail {
     @ManyToOne
     @JoinColumn(name = "product_option_id")
     private ProductOption productOption;
-
-    @ManyToOne
-    @JoinColumn(name = "combo_product_detail_id")
-    private ComboProductDetail comboProductDetail;
 }

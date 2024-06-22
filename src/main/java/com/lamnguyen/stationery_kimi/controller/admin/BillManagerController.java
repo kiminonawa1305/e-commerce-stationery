@@ -1,14 +1,10 @@
 package com.lamnguyen.stationery_kimi.controller.admin;
 
-import com.lamnguyen.stationery_kimi.dto.BillManager;
-import com.lamnguyen.stationery_kimi.dto.DatatableApiRequest;
-import com.lamnguyen.stationery_kimi.dto.DatatableApiResponse;
+import com.lamnguyen.stationery_kimi.dto.*;
+import com.lamnguyen.stationery_kimi.service.IBillDetailService;
 import com.lamnguyen.stationery_kimi.service.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +14,9 @@ import java.util.Map;
 public class BillManagerController {
     @Autowired
     private IBillService iBillService;
+
+    @Autowired
+    private IBillDetailService iBillDetailService;
 
     @GetMapping("/get")
     public DatatableApiResponse<List<BillManager>> get(@RequestParam(required = false) Map<String, Object> query) {
@@ -29,6 +28,16 @@ public class BillManagerController {
                 .draw(request.getDraw())
                 .recordsTotal(bills.size())
                 .recordsFiltered(bills.size())
+                .build();
+    }
+
+    @GetMapping("/bill-detail/{billId}")
+    public ApiResponse<List<BillDetailDTO>> getBillDetail(@PathVariable("billId") Long billId) {
+        List<BillDetailDTO> billdetails = iBillDetailService.findById(billId);
+
+        return ApiResponse.<List<BillDetailDTO>>builder()
+                .data(billdetails)
+                .message("Thành công!")
                 .build();
     }
 

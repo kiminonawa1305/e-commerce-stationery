@@ -44,9 +44,6 @@ public class User {
     private Boolean lock;
 
     @OneToMany(mappedBy = "user")
-    private List<VoucherUser> vouchers;
-
-    @OneToMany(mappedBy = "user")
     private List<Bill> bills;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

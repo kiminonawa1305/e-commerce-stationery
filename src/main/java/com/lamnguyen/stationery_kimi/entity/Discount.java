@@ -28,7 +28,4 @@ public class Discount {
 
     @OneToMany(mappedBy = "discount")
     private List<Product> products;
-
-    @OneToMany(mappedBy = "discount")
-    private List<ComboProduct> comboProducts;
 }
