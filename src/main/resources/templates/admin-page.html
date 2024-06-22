@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+
+    <link rel="icon" th:href="@{/images/logo/logo.jpg}">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/frame_sale_product.css}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <link rel="stylesheet" type="text/css" th:href="${'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css'}">
+    <link rel="stylesheet" th:href="@{/css/datatables.min.css}">
+
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/js/fontawesome.js}" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="${'https://cdn.jsdelivr.net/npm/toastify-js'}"></script>
+    <script th:src="@{/js/datatables.min.js}"></script>
+    <script th:src="@{/js/dataTables.bootstrap5.js}"></script>
+    <script th:src="@{/js/dataTables.bootstrap5.js}"></script>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header_fragment::header"></div>
+</header>
+<main class="pb-5 pt-4" style="background-color: #f1f1f1">
+    <div class="d-flex p-3 gap-3 rounded-2 bg-white container">
+        <nav class="rounded-2 overflow-hidden" style="flex: 1;background-color: #f1f1f1">
+            <a href="#dashboard" data-hook="dashboard" data-frame="1"
+               data-manager="dashboard"
+               class="d-block p-2 w-100 menu-item-manager text-decoration-none text-white bg-primary">
+                Thống kê
+            </a>
+            <a href="#quan-ly-danh-muc" data-hook="quan-ly-danh-muc" data-frame="2"
+               data-manager="category"
+               class="category-manager d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                Quản lý danh mục
+            </a>
+            <a href="#quan-ly-san-pham" data-hook="quan-ly-san-pham" data-frame="3"
+               data-manager="product"
+               class="d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                Quản lý sản phẩm
+            </a>
+            <a href="#quan-ly-tai-khoan" data-hook="quan-ly-tai-khoan" data-frame="4"
+               data-manager="account"
+               class="d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                Quản lý tài khoản
+            </a>
+            <a href="#quan-ly-hoa-don" data-hook="quan-ly-hoa-don" data-frame="5"
+               data-manager="bill"
+               class="d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                Quản lý hóa đơn
+            </a>
+        </nav>
+        <div class="rounded-2 overflow-hidden p-2" style="flex: 4;background-color: #f1f1f1">
+            <section class="frame" id="dashboard" data-frame-id="1">
+                <h2>Thống kê</h2>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Số lượng sản phẩm</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="frame" id="category-manager" data-frame-id="1">
+                <h2>Quản lý danh mục</h2>
+                <table id="category-manager-table"
+                       class="display nowrap row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                       style="width:100%">
+                </table>
+            </section>
+            <section class="frame" id="product-manager" data-frame-id="1">
+                <h2>Quản lý sản phẩm</h2>
+                <table id="product-manager-table"
+                       class="display nowrap row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                       style="width:100%">
+                    <thead>
+                    </thead>
+                </table>
+            </section>
+            <section class="frame" id="account-manager" data-frame-id="1">
+                <h2>Quản lý tài khoản</h2>
+                <table id="account-manager-table"
+                       class="display nowrap row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                       style="width:100%">
+                </table>
+            </section>
+            <section class="frame" id="bill-manager" data-frame-id="1">
+                <h2>Quản lý hóa đơn</h2>
+                <table id="bill-manager-table"
+                       class="display nowrap row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                       style="width:100%">
+                </table>
+            </section>
+        </div>
+    </div>
+</main>
+<footer>
+    <div th:replace="fragments/footer_fragment::foother"></div>
+</footer>
+<script th:src="@{/js/menu.js}"></script>
+<script type="module" th:src="@{/js/admin.js}"></script>
+</body>
+</html>

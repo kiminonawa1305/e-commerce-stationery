@@ -3,7 +3,6 @@ package com.lamnguyen.stationery_kimi.service;
 import com.lamnguyen.stationery_kimi.dto.*;
 import com.lamnguyen.stationery_kimi.entity.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface IProductService {
@@ -26,4 +25,6 @@ public interface IProductService {
     ProductDetailDTO findProductDetailById(Long id);
 
     List<String> findBrandsByCategoryId(Long categoryId);
+
+    List<ProductDetailDTO> findAll(DatatableApiRequest request);
 }

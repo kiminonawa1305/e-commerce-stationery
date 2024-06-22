@@ -91,10 +91,12 @@
         <div class="row py-3 m-0">
             <div th:replace="component/menu::menu"></div>
             <div class="col-9 d-flex gap-2">
-                <div class="col m-0">
-                    <a href="#" class="text-decoration-none fs-5  d-flex align-items-center gap-1">
-                        <img th:src="@{/images/icon/hot_percent.webp}" alt="hot_percent">
-                        <span>Cẩm nang ưu đãi</span>
+                <div class="col m-0"
+                     th:unless="${session.user} == null or ${session.user.role} == 'user' or ${session.user.role} == 'USER'">
+                    <a th:href="@{/admin}" class="text-decoration-none fs-5  d-flex align-items-center gap-2"
+                       style="width: 32px">
+                        <img th:src="@{/images/icon/admin.png}" alt="hot_percent" class="w-100">
+                        <span>Admin</span>
                     </a>
                 </div>
                 <div class="col m-0">

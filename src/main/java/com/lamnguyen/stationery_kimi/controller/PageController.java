@@ -87,7 +87,7 @@ public class PageController {
         return "cart";
     }
 
-    @GetMapping("/login/google")
+    @GetMapping("/login/google/success")
     public String login(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession session) {
         DefaultOAuth2User oidcUser = (DefaultOAuth2User) oAuth2AuthenticationToken.getPrincipal();
         Map<String, Object> attributes = oidcUser.getAttributes();
@@ -140,5 +140,13 @@ public class PageController {
         if (session.getAttribute("user") == null)
             return "redirect:/";
         return "profile";
+    }
+
+    @GetMapping("/admin")
+    public String admin(HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if (userDTO == null || !userDTO.getRole().equalsIgnoreCase("admin"))
+            return "redirect:/";
+        return "admin-page";
     }
 }

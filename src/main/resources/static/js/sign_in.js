@@ -31,6 +31,7 @@ $(document).ready(() => {
                 dataType: 'json',
                 data: $(form).serialize(),
                 success: function (response) {
+                    const role = response.data.role;
                     Swal.close();
                     Swal.fire({
                         title: "Đăng nhập thành công!",
@@ -39,7 +40,10 @@ $(document).ready(() => {
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                     }).then((result) => {
-                        window.location.href = "./";
+                        if (role === "ADMIN" || role === "admin") {
+                            window.location.href = "./admin";
+                        } else
+                            window.location.href = "./";
                     });
                 },
                 error: function (xhr, status, error) {
@@ -64,6 +68,7 @@ $(document).ready(() => {
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                 }).then((result) => {
+
                                     window.location.href = "verify.html";
                                 });
                                 break

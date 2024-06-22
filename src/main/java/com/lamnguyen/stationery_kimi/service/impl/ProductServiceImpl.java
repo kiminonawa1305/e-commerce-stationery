@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -113,6 +115,14 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findBrandsByCategory_Id(categoryId);
     }
 
+    @Override
+    public List<ProductDetailDTO> findAll(DatatableApiRequest request) {
+        List<ProductDetailDTO> products = new ArrayList<>(productRepository.findAll().stream().map(product -> this.findProductDetailById(product.getId())).toList());
+        sortProduct(products, request);
+        searchProduct(products, request);
+        return products.stream().skip(request.getStart()).limit(request.getLength()).toList();
+    }
+
     private ProductDTO convertToDTO(Product product) {
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         DiscountDTO discountDTO = discountService.getDiscount(product.getId());
@@ -142,5 +152,53 @@ public class ProductServiceImpl implements IProductService {
                 .toList();
     }
 
+    private void sortProduct(List<ProductDetailDTO> products, DatatableApiRequest request) {
+        if (products.size() > 1) {
+            request.getOrder().forEach(order -> {
+                switch (order.getName()) {
+                    case "id" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> products.sort(Comparator.comparingLong(ProductDTO::getId));
+                            case "desc" -> products.sort((c1, c2) -> Long.compare(c2.getId(), c1.getId()));
+                        }
+                    }
+                    case "name" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getName));
+                            case "desc" -> products.sort((c1, c2) -> c2.getName().compareTo(c1.getName()));
+                        }
+                    }
+                    case "price" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getPrice));
+                            case "desc" -> products.sort((c1, c2) -> c2.getPrice().compareTo(c1.getPrice()));
+                        }
+                    }
+                    case "type" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getType));
+                            case "desc" -> products.sort((c1, c2) -> c2.getType().compareTo(c1.getType()));
+                        }
+                    }
+                    case "brand" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getBrand));
+                            case "desc" -> products.sort((c1, c2) -> c2.getType().compareTo(c1.getBrand()));
+                        }
+                    }
+                }
+            });
+        }
+    }
 
+    private void searchProduct(List<ProductDetailDTO> products, DatatableApiRequest request) {
+        String searchValue = request.getSearch().getValue();
+        if (searchValue != null && !searchValue.isBlank())
+            products.removeIf(product ->
+                    !product.getName().toLowerCase().contains(searchValue.toLowerCase())
+                            && !product.getId().toString().contains(searchValue.toLowerCase())
+                            && !product.getType().toLowerCase().contains(searchValue.toLowerCase())
+                            && !product.getBrand().toLowerCase().contains(searchValue.toLowerCase())
+            );
+    }
 }

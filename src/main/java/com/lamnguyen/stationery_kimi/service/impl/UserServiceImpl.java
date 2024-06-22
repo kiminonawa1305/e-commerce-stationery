@@ -1,6 +1,7 @@
 package com.lamnguyen.stationery_kimi.service.impl;
 
 import com.lamnguyen.stationery_kimi.controller.UserRestController;
+import com.lamnguyen.stationery_kimi.dto.DatatableApiRequest;
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
 import com.lamnguyen.stationery_kimi.entity.User;
 import com.lamnguyen.stationery_kimi.exception.ApplicationException;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -87,11 +90,77 @@ public class UserServiceImpl implements IUserService {
         return user;
     }
 
+    @Override
+    public List<UserDTO> findAll(DatatableApiRequest request) {
+        List<UserDTO> users = new ArrayList<>(convertToDTOList(userRepository.findAll()));
+        searchProduct(users, request);
+        sortProduct(users, request);
+        return users;
+    }
+
     private UserDTO convertToDTO(User user) {
         return modelMapper.map(user, UserDTO.class);
     }
 
     private List<UserDTO> convertToDTOList(List<User> users) {
         return users.stream().map(this::convertToDTO).toList();
+    }
+
+    private void sortProduct(List<UserDTO> users, DatatableApiRequest request) {
+        if (users.size() > 1) {
+            request.getOrder().forEach(order -> {
+                switch (order.getName()) {
+                    case "id" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> users.sort(Comparator.comparingLong(UserDTO::getId));
+                            case "desc" -> users.sort((c1, c2) -> Long.compare(c2.getId(), c1.getId()));
+                        }
+                    }
+                    case "email" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> users.sort(Comparator.comparing(UserDTO::getEmail));
+                            case "desc" -> users.sort((c1, c2) -> c2.getEmail().compareTo(c1.getEmail()));
+                        }
+                    }
+                    case "firstName" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> users.sort(Comparator.comparing(UserDTO::getFirstName));
+                            case "desc" -> users.sort((c1, c2) -> c2.getFirstName().compareTo(c1.getFirstName()));
+                        }
+                    }
+                    case "lastName" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> users.sort(Comparator.comparing(UserDTO::getLastName));
+                            case "desc" -> users.sort((c1, c2) -> c2.getLastName().compareTo(c1.getLastName()));
+                        }
+                    }
+                    case "phone" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> users.sort(Comparator.comparing(UserDTO::getPhone));
+                            case "desc" -> users.sort((c1, c2) -> c2.getPhone().compareTo(c1.getPhone()));
+                        }
+                    }
+                    case "role" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> users.sort(Comparator.comparing(UserDTO::getRole));
+                            case "desc" -> users.sort((c1, c2) -> c2.getRole().compareTo(c1.getRole()));
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void searchProduct(List<UserDTO> users, DatatableApiRequest request) {
+        String searchValue = request.getSearch().getValue();
+        if (searchValue != null && !searchValue.isBlank())
+            users.removeIf(product ->
+                    !product.getPhone().toLowerCase().contains(searchValue.toLowerCase())
+                            && !product.getId().toString().contains(searchValue.toLowerCase())
+                            && !product.getEmail().toLowerCase().contains(searchValue.toLowerCase())
+                            && !product.getLastName().toLowerCase().contains(searchValue.toLowerCase())
+                            && !product.getFirstName().toLowerCase().contains(searchValue.toLowerCase())
+                            && !product.getRole().toLowerCase().contains(searchValue.toLowerCase())
+            );
     }
 }

@@ -18,18 +18,16 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests
-                                .anyRequest().permitAll()
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .anyRequest()
+                        .permitAll()
                 )
-                .oauth2Login(auth2 ->
-                        auth2
-                                .loginPage("/sign-in.html")
-                                .loginPage("/sign-up.html")
-                                .successHandler(new SimpleUrlAuthenticationSuccessHandler("/login/google"))
-                                .userInfoEndpoint(userInfoEndpoint ->
-                                        userInfoEndpoint.oidcUserService(oidcUserService())
-                                )
+                .oauth2Login(auth2 -> auth2
+                        .loginPage("/sign-in.html")
+                        .successHandler(new SimpleUrlAuthenticationSuccessHandler("/login/google/success"))
+                        .userInfoEndpoint(userInfoEndpoint ->
+                                userInfoEndpoint.oidcUserService(oidcUserService())
+                        )
                 )
                 .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
