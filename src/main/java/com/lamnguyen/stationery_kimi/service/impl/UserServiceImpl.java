@@ -98,6 +98,13 @@ public class UserServiceImpl implements IUserService {
         return users;
     }
 
+    @Override
+    public UserDTO lock(Long id) {
+        User user = findById(id);
+        user.setLock(!user.getLock());
+        return convertToDTO(userRepository.save(user));
+    }
+
     private UserDTO convertToDTO(User user) {
         return modelMapper.map(user, UserDTO.class);
     }
@@ -154,13 +161,6 @@ public class UserServiceImpl implements IUserService {
     private void searchProduct(List<UserDTO> users, DatatableApiRequest request) {
         String searchValue = request.getSearch().getValue();
         if (searchValue != null && !searchValue.isBlank())
-            users.removeIf(product ->
-                    !product.getPhone().toLowerCase().contains(searchValue.toLowerCase())
-                            && !product.getId().toString().contains(searchValue.toLowerCase())
-                            && !product.getEmail().toLowerCase().contains(searchValue.toLowerCase())
-                            && !product.getLastName().toLowerCase().contains(searchValue.toLowerCase())
-                            && !product.getFirstName().toLowerCase().contains(searchValue.toLowerCase())
-                            && !product.getRole().toLowerCase().contains(searchValue.toLowerCase())
-            );
+            users.removeIf(product -> !product.getPhone().toLowerCase().contains(searchValue.toLowerCase()) && !product.getId().toString().contains(searchValue.toLowerCase()) && !product.getEmail().toLowerCase().contains(searchValue.toLowerCase()) && !product.getLastName().toLowerCase().contains(searchValue.toLowerCase()) && !product.getFirstName().toLowerCase().contains(searchValue.toLowerCase()) && !product.getRole().toLowerCase().contains(searchValue.toLowerCase()));
     }
 }

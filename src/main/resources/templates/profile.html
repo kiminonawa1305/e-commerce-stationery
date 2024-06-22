@@ -71,7 +71,7 @@
                        <input class="border border-1 border-secondary rounded rounded-3 p-2 w-100 user-first-name"
                               name="firstName"
                               required
-                              placeholder="Họ" th:value="${user.getFirstName()}"/>
+                              placeholder="Họ" th:value="${user.getLastName()}"/>
                    </label>
                </div>
                <div class="d-flex mb-2">
@@ -80,7 +80,7 @@
                        <input class="border border-1 border-secondary rounded rounded-3 p-2 w-100 user-last-name"
                               name="lastName"
                               required
-                              placeholder="Tên" th:value="${user.getLastName()}"/>
+                              placeholder="Tên" th:value="${user.getFirstName()}"/>
                    </label>
                </div>
                <div class="d-flex mb-2">

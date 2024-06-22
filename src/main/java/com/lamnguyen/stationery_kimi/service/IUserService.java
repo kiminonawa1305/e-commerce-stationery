@@ -25,4 +25,6 @@ public interface IUserService {
     User findUserByEmail(String email);
 
     List<UserDTO> findAll(DatatableApiRequest request);
+
+    UserDTO lock(Long id);
 }

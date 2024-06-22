@@ -1,6 +1,7 @@
 package com.lamnguyen.stationery_kimi.service.impl;
 
 import com.lamnguyen.stationery_kimi.dto.CategoryDTO;
+import com.lamnguyen.stationery_kimi.dto.CategoryManager;
 import com.lamnguyen.stationery_kimi.dto.DatatableApiRequest;
 import com.lamnguyen.stationery_kimi.entity.Category;
 import com.lamnguyen.stationery_kimi.repository.ICategoryRepository;
@@ -31,13 +32,13 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO addCategory(Category category) {
-        return null;
+    public CategoryManager addCategory(Category category) {
+        return convertToManager(iCategoryRepository.save(category));
     }
 
     @Override
-    public CategoryDTO updateCategory(Category category) {
-        return null;
+    public CategoryManager updateCategory(Category category) {
+        return convertToManager(iCategoryRepository.save(category));
     }
 
     @Override
@@ -46,22 +47,28 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public List<CategoryDTO> findAll(DatatableApiRequest request) {
-        List<CategoryDTO> categories = new ArrayList<>(findAll());
+    public List<CategoryManager> findAll(DatatableApiRequest request) {
+        List<CategoryManager> categories = new ArrayList<>(iCategoryRepository.findAll().stream().map(this::convertToManager).toList());
         if (categories.size() > 1) {
             request.getOrder().forEach(order -> {
                 switch (order.getName()) {
                     case "id" -> {
                         switch (order.getDir()) {
-                            case "asc" -> categories.sort(Comparator.comparingLong(CategoryDTO::getId));
+                            case "asc" -> categories.sort(Comparator.comparingLong(CategoryManager::getId));
                             case "desc" -> categories.sort((c1, c2) -> Long.compare(c2.getId(), c1.getId()));
                         }
                     }
-
                     case "name" -> {
                         switch (order.getDir()) {
-                            case "asc" -> categories.sort(Comparator.comparing(CategoryDTO::getName));
+                            case "asc" -> categories.sort(Comparator.comparing(CategoryManager::getName));
                             case "desc" -> categories.sort((c1, c2) -> c2.getName().compareTo(c1.getName()));
+                        }
+                    }
+                    case "totalProduct" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> categories.sort(Comparator.comparing(CategoryManager::getTotalProduct));
+                            case "desc" ->
+                                    categories.sort((c1, c2) -> c2.getTotalProduct().compareTo(c1.getTotalProduct()));
                         }
                     }
                 }
@@ -77,5 +84,11 @@ public class CategoryServiceImpl implements ICategoryService {
 
     private CategoryDTO convertToDTO(Category category) {
         return modelMapper.map(category, CategoryDTO.class);
+    }
+
+    private CategoryManager convertToManager(Category category) {
+        CategoryManager categoryManager = modelMapper.map(category, CategoryManager.class);
+        categoryManager.setTotalProduct(category.getProducts() == null ? 0 : category.getProducts().size());
+        return categoryManager;
     }
 }

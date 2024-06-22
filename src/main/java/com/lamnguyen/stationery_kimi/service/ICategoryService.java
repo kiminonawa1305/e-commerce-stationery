@@ -1,6 +1,7 @@
 package com.lamnguyen.stationery_kimi.service;
 
 import com.lamnguyen.stationery_kimi.dto.CategoryDTO;
+import com.lamnguyen.stationery_kimi.dto.CategoryManager;
 import com.lamnguyen.stationery_kimi.dto.DatatableApiRequest;
 import com.lamnguyen.stationery_kimi.entity.Category;
 
@@ -11,11 +12,11 @@ public interface ICategoryService {
 
     CategoryDTO findCategoryById(Long id);
 
-    CategoryDTO addCategory(Category category);
+    CategoryManager addCategory(Category category);
 
-    CategoryDTO updateCategory(Category category);
+    CategoryManager updateCategory(Category category);
 
     CategoryDTO lockCategoryById(Category category);
 
-    List<CategoryDTO> findAll(DatatableApiRequest request);
+    List<CategoryManager> findAll(DatatableApiRequest request);
 }

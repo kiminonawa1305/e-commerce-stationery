@@ -1,13 +1,12 @@
 package com.lamnguyen.stationery_kimi.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -36,9 +35,13 @@ public class User {
     @Column
     private String password;
 
-    @Column(columnDefinition="enum")
+    @Column(columnDefinition = "enum")
     @ColumnDefault("'user'")
     private String role;
+
+    @Column(name = "`lock`")
+    @ColumnDefault(value = "false")
+    private Boolean lock;
 
     @OneToMany(mappedBy = "user")
     private List<VoucherUser> vouchers;

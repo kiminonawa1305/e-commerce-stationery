@@ -1,16 +1,12 @@
 package com.lamnguyen.stationery_kimi.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lamnguyen.stationery_kimi.entity.Bill;
-import com.lamnguyen.stationery_kimi.entity.VerifyEmailStatus;
-import com.lamnguyen.stationery_kimi.entity.VoucherUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -25,4 +21,5 @@ public class UserDTO implements Serializable {
     private String email;
     private String role;
     private String phone;
+    private Boolean lock;
 }

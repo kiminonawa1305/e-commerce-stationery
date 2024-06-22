@@ -1,12 +1,8 @@
 $(document).ready(function (event) {
     if (!location.hash) location.hash = "#dashboard"
-    const menuItems = $('.menu-item-manager'),
-        frames = $('.frame'),
-        dashboard = $("#dashboard"),
-        productManager = $("#product-manager"),
-        billManager = $("#bill-manager"),
-        accountManager = $("#account-manager"),
-        categoryManager = $("#category-manager")
+    const menuItems = $('.menu-item-manager'), frames = $('.frame'), dashboard = $("#dashboard"),
+        productManager = $("#product-manager"), billManager = $("#bill-manager"),
+        accountManager = $("#account-manager"), categoryManager = $("#category-manager")
 
 
     menuItems.on("mouseenter", function (e) {
@@ -34,6 +30,7 @@ $(document).ready(function (event) {
             case "bill":
                 break;
             case "account":
+                loadAccount()
                 break;
             case "category":
                 loadCategory()
@@ -50,44 +47,140 @@ $(document).ready(function (event) {
 const loadCategory = () => {
     const editor = new DataTable.Editor({
         ajax: {
-            url: '/stationery_kimi/admin/api/categories/get',
-        },
-        fields: [
-            {
-                label: 'Name:',
-                name: 'last_name'
-            },
-        ],
-        table: '#category-manager-table'
+            create: {
+                type: 'POST',
+                url: '/stationery_kimi/admin/api/categories/create',
+                contentType: false,
+                processData: false,
+                data: function (d) {
+                    return getFromData(d);
+                }
+            }, edit: {
+                type: 'PUT', url: '/stationery_kimi/admin/api/categories/edit/_id_', contentType: 'application/json', // Đặt Content-Type là application/json
+                data: function (d) {
+                    return JSON.stringify(d.data); // Chuyển dữ liệu sang JSON
+                }
+            }, remove: {
+                type: 'DELETE', url: '/stationery_kimi/admin/api/categories/delete/_id_'
+            }
+        }, fields: [{
+            label: 'Name:', name: 'name'
+        },], idSrc: 'id', table: '#category-manager-table'
     });
 
     return new DataTable('#category-manager-table', {
         ajax: {
             url: '/stationery_kimi/admin/api/categories/get',
-        },
-        columns: [
-            {
-                title: 'ID',
-                name: 'id',
-                data: 'id',
-            },
-            {
-                title: 'Name',
-                name: 'name',
-                data: 'name',
-            },
-            {
-                title: 'Tùy chọn',
-                data: null,
-                orderable: false,
-                render: function (data, type) {
-                    return `<button data-category-id="${data.id}" class="btn btn-primary">Sửa</button>`;
-                }
+        }, columns: [{
+            title: 'ID: ', name: 'id', data: 'id',
+        }, {
+            title: 'Tên: ', name: 'name', data: 'name',
+        }, {
+            title: 'Tổng số lượng sản phẩm: ', name: 'totalProduct', data: 'totalProduct',
+        },], layout: {
+            topStart: {
+                buttons: [{extend: 'create', editor: editor}, {extend: 'edit', editor: editor},]
             }
-        ],
-        processing: true,
-        serverSide: true,
-        search: true,
-        select: true
+        }, processing: true, serverSide: true, search: true, select: true
     });
+}
+
+const loadAccount = () => {
+    /*    const editor = new DataTable.Editor({
+            ajax: {
+                create: {
+                    type: 'POST',
+                    url: '/stationery_kimi/admin/api/accounts/create',
+                    contentType: false,
+                    processData: false,
+                    data: function (d) {
+                        return getFromData(d);
+                    }
+                },
+                edit: {
+                    type: 'PUT',
+                    url: '/stationery_kimi/admin/api/accounts/edit/_id_',
+                    contentType: 'application/json', // Đặt Content-Type là application/json
+                    data: function (d) {
+                        return JSON.stringify(d.data); // Chuyển dữ liệu sang JSON
+                    }
+                },
+                remove: {
+                    type: 'DELETE',
+                    url: '/stationery_kimi/admin/api/accounts/delete/_id_'
+                }
+            },
+            fields: [
+                {
+                    label: 'Name:',
+                    name: 'name'
+                },
+            ],
+            idSrc: 'id',
+            table: '#category-manager-table'
+        });*/
+
+    const dataTable = new DataTable('#account-manager-table', {
+        ajax: {
+            url: '/stationery_kimi/admin/api/accounts/get',
+        }, columns: [{
+            title: 'ID: ', name: 'id', data: 'id',
+        }, {
+            title: 'Họ: ', name: 'lastName', data: 'lastName',
+        }, {
+            title: 'Tên: ', name: 'firstName', data: 'firstName',
+        }, {
+            title: 'Email: ', name: 'email', data: 'email',
+        }, {
+            title: 'Số điện thoại: ', name: 'phone', data: 'phone',
+        }, {
+            title: 'Quyền: ', name: 'role', data: 'role',
+        }, {
+            title: 'Khóa: ', name: 'lock', data: null, render: function (data, type, row) {
+                if (data.lock) {
+                    return `<button class="btn btn-sm btn-warning btn-lock" data-value="unlock" data-id="${row.id}">
+                                    <i class="fa-solid fa-lock"></i>
+                                </button>`;
+                } else return `<button class="btn btn-sm btn-warning btn-lock" data-value="lock" data-id="${row.id}">
+                                    <i class="fa-solid fa-lock-open"></i>
+                                </button>`;
+            }
+        },], processing: true, serverSide: true, search: true, select: true, scrollX: true,
+    });
+
+
+    $('#account-manager-table').on('click', 'button.btn-lock', function () {
+        let accountId = $(this).attr('data-id');
+        $.ajax({
+            url: `/stationery_kimi/admin/api/accounts/lock/${accountId}`,
+            type: 'POST',
+            success: function (response) {
+                Toastify({
+                    text: "Thành công!",
+                    duration: 1000,
+                    "backgroundColor": "#4cea06"
+                }).showToast()
+                $('#account-manager-table').DataTable().ajax.reload();
+            },
+            error: function (err) {
+                Toastify({
+                    text: err.response.message,
+                    duration: 1000,
+                    backgroundColor: "#ea0606"
+                }).showToast();
+            }
+        });
+    });
+
+    return dataTable;
+}
+
+const getFromData = (d) => {
+    let formData = new FormData();
+    $.each(d.data, function (key, value) {
+        $.each(value, function (field, fieldValue) {
+            formData.append(field, fieldValue); // append các trường dữ liệu
+        });
+    });
+    return formData;
 }

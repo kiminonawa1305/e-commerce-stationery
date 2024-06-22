@@ -1,15 +1,17 @@
 package com.lamnguyen.stationery_kimi.controller.admin;
 
-import com.lamnguyen.stationery_kimi.dto.ApiResponse;
-import com.lamnguyen.stationery_kimi.dto.CategoryDTO;
+import com.lamnguyen.stationery_kimi.dto.CategoryManager;
 import com.lamnguyen.stationery_kimi.dto.DatatableApiRequest;
 import com.lamnguyen.stationery_kimi.dto.DatatableApiResponse;
-import com.lamnguyen.stationery_kimi.entity.Product;
+import com.lamnguyen.stationery_kimi.entity.Category;
 import com.lamnguyen.stationery_kimi.service.ICategoryService;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -19,11 +21,11 @@ public class CategoryManagerRestController {
     private ICategoryService iCategoryService;
 
     @GetMapping("/get")
-    public DatatableApiResponse<List<CategoryDTO>> get(@RequestParam(required = false) Map<String, Object> query) {
+    public DatatableApiResponse<List<CategoryManager>> get(@RequestParam(required = false) Map<String, Object> query) {
         DatatableApiRequest request = DatatableApiRequest.newInstance(query);
-        List<CategoryDTO> categories = iCategoryService.findAll(request);
+        List<CategoryManager> categories = iCategoryService.findAll(request);
 
-        return DatatableApiResponse.<List<CategoryDTO>>builder()
+        return DatatableApiResponse.<List<CategoryManager>>builder()
                 .data(categories)
                 .draw(request.getDraw())
                 .recordsTotal(categories.size())
@@ -31,24 +33,33 @@ public class CategoryManagerRestController {
                 .build();
     }
 
-    @PostMapping("/add")
-    public ApiResponse<CategoryDTO> add(@ModelAttribute Product product) {
-        return ApiResponse.<CategoryDTO>builder()
-                .message("Cập nhật sản phẩm thành công!")
+    @PostMapping("/create")
+    public EditResponse create(@RequestParam Map<String, Object> request) {
+        String name = (String) request.get("name");
+        CategoryManager categoryManager = iCategoryService.addCategory(Category.builder()
+                .name(name)
+                .build());
+        return EditResponse.builder()
+                .data(categoryManager)
                 .build();
     }
 
-    @PutMapping("/update")
-    public ApiResponse<CategoryDTO> update(@ModelAttribute Product product) {
-        return ApiResponse.<CategoryDTO>builder()
-                .message("Cập nhật sản phẩm thành công!")
+    @PutMapping(value = "/edit/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public EditResponse update(@RequestBody(required = false) Map<String, Object> request, @PathVariable("id") Long id) {
+        Map<String, String> data = (Map<String, String>) request.get(id.toString());
+        String name = data.get("name");
+        Category category = Category.builder()
+                .id(id)
+                .name(name)
+                .build();
+        CategoryManager categoryDTO = iCategoryService.updateCategory(category);
+        return EditResponse.builder()
+                .data(categoryDTO)
                 .build();
     }
 
-    @PutMapping("/lock")
-    public ApiResponse<CategoryDTO> lock(@ModelAttribute Product product) {
-        return ApiResponse.<CategoryDTO>builder()
-                .message("Khóa sản phẩm thành công!")
-                .build();
+
+    @Builder
+    record EditResponse<T>(T data) {
     }
 }
