@@ -17,6 +17,11 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy sản phẩm."),
     NULL_ID_PRODUCT(HttpServletResponse.SC_NOT_FOUND, "Mã sản phẩm không được để trống."),
     PRODUCT_NOT_ENOUGH(HttpServletResponse.SC_UNAUTHORIZED, "Số lượng sản phẩm không đủ."),
+    PRODUCT_OPTION_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy tùy chọn sản phẩm."),
+    PRODUCT_OPTION_NOT_ENOUGH(HttpServletResponse.SC_NOT_ACCEPTABLE, "Số lượng tùy chọn sản phẩm không đủ."),
+    CART_ITEM_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy sản phẩm trong giỏ hàng."),
+    IMAGE_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy hình ảnh."),
+    INVALID_QUANTITY(HttpServletResponse.SC_NOT_ACCEPTABLE, "Số lượng không hợp lệ."),
 
     /*Provider error code*/
     NULL_ID_PROVIDER(HttpServletResponse.SC_NOT_FOUND, "Mã nhà cung cấp không được để trống."),
@@ -32,11 +37,7 @@ public enum ErrorCode {
     WRONG_VERIFY_CODE(HttpServletResponse.SC_NOT_ACCEPTABLE, "Mã xác thực không chính xác."),
     VERIFY_CODE_EXPIRED(HttpServletResponse.SC_NOT_ACCEPTABLE, "Mã xác thực đã hết hạn. Vui lòng kiểm tra mail và nhập mã mới."),
     VERIFY_EMAIL(HttpServletResponse.SC_UNAUTHORIZED, "Vui lòng kiểm tra email để nhận mã xác thực!"),
-    PRODUCT_OPTION_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy tùy chọn sản phẩm."),
-    PRODUCT_OPTION_NOT_ENOUGH(HttpServletResponse.SC_NOT_ACCEPTABLE, "Số lượng tùy chọn sản phẩm không đủ."),
-    CART_ITEM_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy sản phẩm trong giỏ hàng."),
-    IMAGE_NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy hình ảnh."),
-    INVALID_QUANTITY(HttpServletResponse.SC_NOT_ACCEPTABLE, "Số lượng không hợp lệ."),
+    LOCK_ACCOUNT(HttpServletResponse.SC_NOT_ACCEPTABLE, "Tài khoản của bạn đã bị khóa."),
     ;
 
     private int code;

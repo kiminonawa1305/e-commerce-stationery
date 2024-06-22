@@ -3,9 +3,11 @@ package com.lamnguyen.stationery_kimi.service.impl;
 import com.lamnguyen.stationery_kimi.controller.PaymentRestController;
 import com.lamnguyen.stationery_kimi.dto.BillDisplay;
 import com.lamnguyen.stationery_kimi.dto.BillStatusDTO;
+import com.lamnguyen.stationery_kimi.dto.UserDTO;
 import com.lamnguyen.stationery_kimi.entity.Bill;
 import com.lamnguyen.stationery_kimi.entity.BillDetail;
 import com.lamnguyen.stationery_kimi.entity.BillStatus;
+import com.lamnguyen.stationery_kimi.entity.User;
 import com.lamnguyen.stationery_kimi.enums.BillStatusEnum;
 import com.lamnguyen.stationery_kimi.repository.IBillDetailRepository;
 import com.lamnguyen.stationery_kimi.repository.IBillRepository;
@@ -41,6 +43,7 @@ public class BillServiceImpl implements IBillService {
 
     @Override
     public BillDTO createBill(HttpSession session, PaymentRestController.PaymentRequest request) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
         Bill bill = Bill.builder()
                 .name(request.getName())
                 .phone(request.getPhone())
@@ -48,12 +51,15 @@ public class BillServiceImpl implements IBillService {
                 .paymentMethod(request.getPayment())
                 .shippingAddress(request.getFullAddress())
                 .shippingFee(10000)
+                .user(User.builder()
+                        .id(userDTO.getId())
+                        .build())
                 .shippingNote(request.getNote())
                 .build();
         bill = iBillRepository.save(bill);
         List<BillDetail> billDetailList = iShoppingCartService.getBillDetails(session, bill);
         billDetailList = iBillDetailRepository.saveAllAndFlush(billDetailList);
-        billDetailList.forEach(billDetail -> iProductOptionService.buy(billDetail.getId(), billDetail.getQuantity()));
+        billDetailList.forEach(billDetail -> iProductOptionService.buy(billDetail.getProductOption().getId(), billDetail.getQuantity()));
         BillStatus billStatus = BillStatus.builder()
                 .bill(bill)
                 .status(BillStatusEnum.ORDERED.getStatus())

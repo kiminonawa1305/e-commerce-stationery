@@ -24,5 +24,7 @@ public interface IShoppingCartService {
 
     Cart getCart(HttpSession session);
 
+    void clearCart(HttpSession session);
+
     List<BillDetail> getBillDetails(HttpSession session, Bill bill);
 }

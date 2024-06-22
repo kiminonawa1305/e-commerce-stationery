@@ -32,6 +32,7 @@ public class PaymentRestController {
         model.addAttribute("bill", iBillService.createBill(session, request));
         model.addAttribute("totalPrice", cart.stream().mapToInt(CartItemDisplay::getTotalPay).sum());
         model.addAttribute("time", dateTimeFormatter.format(java.time.LocalDateTime.now()));
+        iShoppingCartService.clearCart(session);
         return "payment-success";
     }
 

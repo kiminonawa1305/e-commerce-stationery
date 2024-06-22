@@ -51,6 +51,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         String passwordUse = user.getPassword();
         if (!passwordEncoder.matches(password, passwordUse)) throw new ApplicationException(ErrorCode.WRONG_PASSWORD);
         if (!verifyEmailStatusService.isVerify(user)) throw new ApplicationException(ErrorCode.VERIFY_EMAIL);
+        if (user.getLock()) throw new ApplicationException(ErrorCode.LOCK_ACCOUNT);
         return userService.login(email, password);
     }
 

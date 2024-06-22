@@ -119,8 +119,9 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         List<BillDetail> billDetails = cartItemDisplays
                 .stream()
                 .map(item -> BillDetail.builder()
-                        .price(item.getTotalPrice())
+                        .price(item.getPrice())
                         .quantity(item.getQuantity())
+                        .discount(item.getTotalDiscount())
                         .productOption(ProductOption.builder()
                                 .id(getCart(session).getProductOptionId(item.getCartItemId()))
                                 .build())
@@ -134,6 +135,12 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) cart = new Cart();
         return cart;
+    }
+
+    @Override
+    public void clearCart(HttpSession session) {
+        Cart cart = new Cart();
+        session.setAttribute("cart", cart);
     }
 
 
