@@ -61,14 +61,14 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductDisplayDTO> findAllByLockFalse(Integer limit, Integer page) {
-        List<Product> result = productRepository.findAllByLockFalse(Pageable.ofSize(limit).withPage(page)).getContent();
+        List<Product> result = productRepository.findAllByLockFalseAndCategory_LockFalse(Pageable.ofSize(limit).withPage(page)).getContent();
         if (result.isEmpty()) throw new ApplicationException(ErrorCode.PRODUCT_NOT_FOUND);
         return convertToDisplayDTO(result);
     }
 
     @Override
     public List<ProductDisplayDTO> findByCategory(Long id, Integer limit, Integer page) {
-        List<Product> products = productRepository.findAllByLockFalseAndCategory_Id(id, Pageable.ofSize(limit).withPage(page))
+        List<Product> products = productRepository.findAllByLockFalseAndCategory_IdAndLockFalse(id, Pageable.ofSize(limit).withPage(page))
                 .stream()
                 .filter(product -> product.getProductOptions()
                         .stream().anyMatch(productOption -> productOption.getQuantity() > 0)

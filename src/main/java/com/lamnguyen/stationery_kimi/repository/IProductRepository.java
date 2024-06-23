@@ -5,14 +5,13 @@ import com.lamnguyen.stationery_kimi.repository.custom.IProductRepositoryCustom;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long>, IProductRepositoryCustom {
-    Slice<Product> findAllByLockFalse(Pageable pageable);
+    Slice<Product> findAllByLockFalseAndCategory_LockFalse(Pageable pageable);
 
-    List<Product> findAllByLockFalseAndCategory_Id(Long categoryId, Pageable pageable);
+    List<Product> findAllByLockFalseAndCategory_IdAndLockFalse(Long categoryId, Pageable pageable);
 }

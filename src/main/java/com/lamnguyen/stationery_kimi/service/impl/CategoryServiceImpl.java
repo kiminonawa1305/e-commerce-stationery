@@ -42,18 +42,42 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO lockCategoryById(Category category) {
-        return null;
-    }
-
-    @Override
     public List<CategoryManager> findAll(DatatableApiRequest request) {
         List<CategoryManager> categories = new ArrayList<>(iCategoryRepository.findAll().stream().map(this::convertToManager).toList());
 
+        searchCategoryManager(categories, request);
+        sortCategoryManager(categories, request);
+
+        return categories.stream().skip(request.getStart()).limit(request.getLength()).toList();
+    }
+
+    @Override
+    public CategoryManager lock(Long id) {
+        Category category = iCategoryRepository.findById(id).orElse(null);
+        if (category != null) {
+            category.setLock(!category.getLock());
+            return convertToManager(iCategoryRepository.save(category));
+        }
+        return null;
+    }
+
+    private CategoryDTO convertToDTO(Category category) {
+        return modelMapper.map(category, CategoryDTO.class);
+    }
+
+    private CategoryManager convertToManager(Category category) {
+        CategoryManager categoryManager = modelMapper.map(category, CategoryManager.class);
+        categoryManager.setTotalProduct(category.getProducts() == null ? 0 : category.getProducts().size());
+        return categoryManager;
+    }
+
+    private void searchCategoryManager(List<CategoryManager> categories, DatatableApiRequest request) {
         String searchValue = request.getSearch().getValue();
         if (searchValue != null && !searchValue.isBlank())
             categories.removeIf(category -> !category.getName().toLowerCase().contains(searchValue.toLowerCase()) && !category.getId().toString().contains(searchValue.toLowerCase()));
+    }
 
+    private void sortCategoryManager(List<CategoryManager> categories, DatatableApiRequest request) {
         if (categories.size() > 1) {
             request.getOrder().forEach(order -> {
                 switch (order.getName()) {
@@ -79,17 +103,5 @@ public class CategoryServiceImpl implements ICategoryService {
                 }
             });
         }
-
-        return categories.stream().skip(request.getStart()).limit(request.getLength()).toList();
-    }
-
-    private CategoryDTO convertToDTO(Category category) {
-        return modelMapper.map(category, CategoryDTO.class);
-    }
-
-    private CategoryManager convertToManager(Category category) {
-        CategoryManager categoryManager = modelMapper.map(category, CategoryManager.class);
-        categoryManager.setTotalProduct(category.getProducts() == null ? 0 : category.getProducts().size());
-        return categoryManager;
     }
 }

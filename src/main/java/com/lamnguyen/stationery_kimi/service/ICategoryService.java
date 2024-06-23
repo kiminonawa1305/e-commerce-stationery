@@ -16,7 +16,8 @@ public interface ICategoryService {
 
     CategoryManager updateCategory(Category category);
 
-    CategoryDTO lockCategoryById(Category category);
 
     List<CategoryManager> findAll(DatatableApiRequest request);
+
+    CategoryManager lock(Long id);
 }

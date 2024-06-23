@@ -1,9 +1,6 @@
 package com.lamnguyen.stationery_kimi.controller.admin;
 
-import com.lamnguyen.stationery_kimi.dto.CategoryManager;
-import com.lamnguyen.stationery_kimi.dto.DatatableApiRequest;
-import com.lamnguyen.stationery_kimi.dto.DatatableApiResponse;
-import com.lamnguyen.stationery_kimi.dto.EditDataTableResponse;
+import com.lamnguyen.stationery_kimi.dto.*;
 import com.lamnguyen.stationery_kimi.entity.Category;
 import com.lamnguyen.stationery_kimi.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +55,12 @@ public class CategoryManagerRestController {
                 .build();
     }
 
+    @PostMapping("/lock/{id}")
+    public ApiResponse<CategoryManager> lockProduct(@PathVariable("id") Long id) {
+        CategoryManager result = iCategoryService.lock(id);
+        return ApiResponse.<CategoryManager>builder()
+                .message("Thành công!")
+                .data(result)
+                .build();
+    }
 }

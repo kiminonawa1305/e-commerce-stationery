@@ -78,7 +78,6 @@ public class PageController {
     @GetMapping("/cart.html")
     public String cart(HttpSession session, Model model) {
         List<CartItemDisplay> cartItemDisplays = shoppingCartService.loadCart(session);
-
         model.addAttribute("cartItems", cartItemDisplays);
         model.addAttribute("totalPrice", cartItemDisplays.stream().mapToInt(CartItemDisplay::getTotalPrice).sum());
         model.addAttribute("totalDiscount", cartItemDisplays.stream().mapToInt(CartItemDisplay::getTotalDiscount).sum());

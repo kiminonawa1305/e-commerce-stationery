@@ -2,6 +2,7 @@ package com.lamnguyen.stationery_kimi.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class Category {
 
     @Column
     private String name;
+
+    @Column(name = "`lock`")
+    @ColumnDefault(value = "false")
+    private Boolean lock;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;

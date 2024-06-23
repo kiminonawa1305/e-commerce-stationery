@@ -82,21 +82,57 @@ const loadCategory = () => {
         },], idSrc: 'id', table: '#category-manager-table'
     });
 
-    return new DataTable('#category-manager-table', {
+    const dataTable = new DataTable('#category-manager-table', {
         ajax: {
             url: '/stationery_kimi/admin/api/categories/get',
-        }, columns: [{
-            title: 'ID: ', name: 'id', data: 'id',
-        }, {
-            title: 'Tên: ', name: 'name', data: 'name',
-        }, {
-            title: 'Tổng số lượng sản phẩm: ', name: 'totalProduct', data: 'totalProduct',
-        },], layout: {
+        }, columns: [
+            {
+                title: 'ID: ', name: 'id', data: 'id',
+            },
+            {
+                title: 'Tên: ', name: 'name', data: 'name',
+            },
+            {
+                title: 'Tổng số lượng sản phẩm: ', name: 'totalProduct', data: 'totalProduct',
+            },
+            {
+                title: 'Khóa: ', name: 'lock', data: null, render: function (data, type, row) {
+                    if (data.lock) {
+                        return `<button class="btn btn-sm btn-warning btn-lock" data-value="unlock" data-id="${row.id}">
+                                    <i class="fa-solid fa-lock"></i>
+                                </button>`;
+                    } else return `<button class="btn btn-sm btn-warning btn-lock" data-value="lock" data-id="${row.id}">
+                                    <i class="fa-solid fa-lock-open"></i>
+                                </button>`;
+                }
+            }
+        ], layout: {
             topStart: {
                 buttons: [{extend: 'create', editor: editor}, {extend: 'edit', editor: editor},]
             }
         }, processing: true, serverSide: true, search: true, select: true
     });
+
+    dataTable.on('click', 'button.btn-lock', function () {
+        let categoryId = $(this).attr('data-id');
+        $.ajax({
+            url: `/stationery_kimi/admin/api/categories/lock/${categoryId}`,
+            type: 'POST',
+            success: function (response) {
+                Toastify({
+                    text: "Thành công!", duration: 1000, "backgroundColor": "#4cea06"
+                }).showToast()
+                dataTable.ajax.reload();
+            },
+            error: function (err) {
+                Toastify({
+                    text: err.response.message, duration: 1000, backgroundColor: "#ea0606"
+                }).showToast();
+            }
+        });
+    });
+
+    return dataTable;
 }
 
 const loadAccount = () => {
@@ -129,14 +165,14 @@ const loadAccount = () => {
     });
 
 
-    $('#account-manager-table').on('click', 'button.btn-lock', function () {
+    dataTable.on('click', 'button.btn-lock', function () {
         let accountId = $(this).attr('data-id');
         $.ajax({
             url: `/stationery_kimi/admin/api/accounts/lock/${accountId}`, type: 'POST', success: function (response) {
                 Toastify({
                     text: "Thành công!", duration: 1000, "backgroundColor": "#4cea06"
                 }).showToast()
-                $('#account-manager-table').DataTable().ajax.reload();
+                dataTable.ajax.reload();
             }, error: function (err) {
                 Toastify({
                     text: err.response.message, duration: 1000, backgroundColor: "#ea0606"
@@ -292,7 +328,6 @@ const loadBillStatus = (billId) => {
                 type: 'PUT', url: '/stationery_kimi/admin/api/bill-statuses/edit/_id_',
                 contentType: 'application/json',
                 data: function (d) {
-                    console.log(getJson(d))
                     return getJson(d);
                 }
             }, remove: {

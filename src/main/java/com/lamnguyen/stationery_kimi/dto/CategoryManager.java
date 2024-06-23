@@ -15,4 +15,5 @@ public class CategoryManager implements Serializable {
     private Long id;
     private String name;
     private Integer totalProduct;
+    private Boolean lock;
 }
