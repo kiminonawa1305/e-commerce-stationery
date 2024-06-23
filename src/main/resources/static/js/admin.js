@@ -5,6 +5,14 @@ const formatCurrency = new Intl.NumberFormat('vi-VN', {
     htmlTableBillStatus = ` <table id="bill-status-manager-table"
                                            class="display row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
                                            style="width:100%">
+                                    </table>`,
+    htmlTableProductImage = ` <table id="product-image-manager-table"
+                                           class="display row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                                           style="width:100%">
+                                    </table>`,
+    htmlTableProductOption = ` <table id="product-option-manager-table"
+                                           class="display row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                                           style="width:100%">
                                     </table>`
 
 $(document).ready(function (event) {
@@ -275,7 +283,7 @@ const loadBills = () => {
     });
 
     dataTable.on("click", "button.btn-update-status", function (e) {
-        const modal = $("#modal-update-bill-status");
+        const modal = $("#modal-more-info");
         modal.modal("show");
         const billId = $(this).attr("data-id");
         modal.find(".modal-body").empty().append(htmlTableBillStatus);
@@ -507,12 +515,34 @@ const loadProducts = () => {
         let row = dataTable.row(tr);
         const id = row.data().id;
 
-        if (row.child.isShown())
+        if (row.child.isShown()) {
             row.child.hide();
-        else
-            row.child(renderMoreInfoProductManager(row.data())).show();
-        row.on("click", "td.more-info-option", function (e) {
-            alert("more-info-option")
+            return
+        }
+
+        const modal = $("#modal-more-info");
+        row.child(renderMoreInfoProductManager(row.data())).show();
+
+        const btnSeeMoreOption = $(".btn-see-more-option");
+        const btnSeeMoreImage = $(".btn-see-more-image");
+        btnSeeMoreOption.on("click", function (e) {
+            modal.find(".modal-body").empty().append(htmlTableProductOption);
+            modal.modal("show");
+            const productId = $(this).data("product-id");
+            loadProductOption(productId)
+            modal.on('hidden.bs.modal', function () {
+                dataTable.ajax.reload()
+            });
+        })
+
+        btnSeeMoreImage.on("click", function (e) {
+            modal.find(".modal-body").empty().append(htmlTableProductImage);
+            modal.modal("show");
+            const productId = $(this).data("product-id");
+            loadProductImage(productId)
+            modal.on('hidden.bs.modal', function () {
+                dataTable.ajax.reload()
+            });
         })
     });
 
@@ -548,12 +578,6 @@ const renderMoreInfoProductManager = (data) => {
                        <p data-product-id="${data.id}" style="width: 40px; height: 40px" class="btn-see-more-option d-flex justify-content-center align-items-center bg-primary border-0 rounded-3 mb-0 pb-0">
                             <i class="fa-regular fa-eye text-white"></i>
                         </p>
-                       <p data-product-id="${data.id}" style="width: 40px; height: 40px" class="btn-edit-option d-flex justify-content-center align-items-center bg-danger border-0 rounded-3 mb-0 pb-0">
-                            <i class="fa-solid fa-pen text-white"></i>
-                        </p>
-                       <p data-product-id="${data.id}" style="width: 40px; height: 40px" class="btn-add-option d-flex justify-content-center align-items-center bg-success border-0 rounded-3 mb-0 pb-0">
-                           <i class="fa-solid fa-circle-plus text-white"></i>
-                        </p>
                     </td>
                   </tr>`;
     table += `    <tr class="bg-white">
@@ -562,12 +586,6 @@ const renderMoreInfoProductManager = (data) => {
                      <td class="d-flex gap-2 justify-content-center">
                        <p data-product-id="${data.id}" style="width: 40px; height: 40px" class="btn-see-more-image d-flex justify-content-center align-items-center bg-primary border-0 rounded-3 mb-0 pb-0">
                             <i class="fa-regular fa-eye text-white"></i>
-                        </p>
-                       <p data-product-id="${data.id}" style="width: 40px; height: 40px" class="btn-edit-image d-flex justify-content-center align-items-center bg-danger border-0 rounded-3 mb-0 pb-0">
-                            <i class="fa-solid fa-pen text-white"></i>
-                        </p>
-                         <p data-product-id="${data.id}" style="width: 40px; height: 40px" class="btn-add-option d-flex justify-content-center align-items-center bg-success border-0 rounded-3 mb-0 pb-0">
-                           <i class="fa-solid fa-circle-plus text-white"></i>
                         </p>
                     </td>
                   </tr>`;
@@ -594,4 +612,126 @@ const lock = (dataTable, action, type, id) => {
             }).showToast();
         }
     });
+}
+
+const loadProductImage = (productId) => {
+    const editor = new DataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: `/stationery_kimi/admin/api/product-images/create/${productId}`,
+                contentType: "application/json",
+                processData: false,
+                data: function (d) {
+                    return getJson(d);
+                }
+            }, edit: {
+                type: 'PUT', url: '/stationery_kimi/admin/api/product-images/edit/_id_',
+                contentType: 'application/json',
+                data: function (d) {
+                    return getJson(d);
+                }
+            }, remove: {
+                type: 'DELETE', url: '/stationery_kimi/admin/api/product-images/delete/_id_'
+            }
+        }, fields: [
+            {
+                label: 'Hình ảnh: ', name: 'url', type: "upload"
+            },
+            {
+                label: 'Loại ảnh: ', name: 'type', type: 'text'
+            },
+        ], idSrc: 'id', table: '#product-image-manager-table'
+    });
+
+
+    const dataTable = new DataTable('#product-image-manager-table', {
+        ajax: {
+            url: `/stationery_kimi/admin/api/product-images/get/${productId}`,
+        }, columns: [
+            {
+                title: 'ID: ', name: 'id', data: 'id',
+            },
+            {
+                title: 'Hình ảnh: ', name: 'url', data: null, render: function (data, type, row) {
+                    return `<img src="/stationery_kimi${data.url}" style="width: 100px; height: 100px" alt="image" class="rounded-3">`
+                }
+            },
+            {
+                title: 'Loại ảnh: ', name: 'type', data: null, orderable: false, render: function (data, type, row) {
+                    return data.type ? data.type : "";
+                }
+            },
+        ], processing: true, serverSide: true, searching: false, select: true, orderable: false,
+        layout: {
+            topStart: {
+                buttons: [
+                    {extend: 'create', editor: editor},
+                    {extend: 'edit', editor: editor},
+                    {extend: 'remove', editor: editor},
+                ]
+            }
+        }
+    });
+
+    return dataTable;
+}
+
+const loadProductOption = (productId) => {
+    const editor = new DataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: `/stationery_kimi/admin/api/product-options/create/${productId}`,
+                contentType: "application/json",
+                processData: false,
+                data: function (d) {
+                    return getJson(d);
+                }
+            }, edit: {
+                type: 'PUT', url: '/stationery_kimi/admin/api/product-options/edit/_id_',
+                contentType: 'application/json',
+                data: function (d) {
+                    return getJson(d);
+                }
+            }, remove: {
+                type: 'DELETE', url: '/stationery_kimi/admin/api/product-options/delete/_id_'
+            }
+        }, fields: [
+            {
+                label: 'Tên: ', name: 'name', type: "text"
+            },
+            {
+                label: 'Số lượng: ', name: 'quantity', type: 'text'
+            },
+        ], idSrc: 'id', table: '#product-option-manager-table'
+    });
+
+
+    const dataTable = new DataTable('#product-option-manager-table', {
+        ajax: {
+            url: `/stationery_kimi/admin/api/product-options/get/${productId}`,
+        }, columns: [
+            {
+                title: 'ID: ', name: 'id', data: 'id',
+            },
+            {
+                title: 'Tên: ', name: 'name', data: 'name'
+            },
+            {
+                title: 'Số lượng: ', name: 'quantity', data: 'quantity'
+            },
+        ], processing: true, serverSide: true, searching: false, select: true, orderable: false,
+        layout: {
+            topStart: {
+                buttons: [
+                    {extend: 'create', editor: editor},
+                    {extend: 'edit', editor: editor},
+                    {extend: 'remove', editor: editor},
+                ]
+            }
+        }
+    });
+
+    return dataTable;
 }

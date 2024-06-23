@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/api/products")
-public class ProductManagerController {
+public class ProductManagerRestController {
     @Autowired
     private IProductService productService;
 
@@ -21,7 +21,7 @@ public class ProductManagerController {
         List<ProductManager> product = productService.findAll(request);
 
         return DatatableApiResponse.<List<ProductManager>>builder()
-                .data(product)
+                .data(product.stream().skip(request.getStart()).limit(request.getLength()).toList())
                 .draw(request.getDraw())
                 .recordsTotal(product.size())
                 .recordsFiltered(product.size())

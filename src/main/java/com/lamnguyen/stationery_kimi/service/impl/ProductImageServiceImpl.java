@@ -2,10 +2,7 @@ package com.lamnguyen.stationery_kimi.service.impl;
 
 import com.lamnguyen.stationery_kimi.dto.ProductImageDTO;
 import com.lamnguyen.stationery_kimi.entity.ProductImage;
-import com.lamnguyen.stationery_kimi.exception.ApplicationException;
-import com.lamnguyen.stationery_kimi.exception.ErrorCode;
 import com.lamnguyen.stationery_kimi.repository.IProductImageRepository;
-import com.lamnguyen.stationery_kimi.repository.IProductRepository;
 import com.lamnguyen.stationery_kimi.service.IProductImageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

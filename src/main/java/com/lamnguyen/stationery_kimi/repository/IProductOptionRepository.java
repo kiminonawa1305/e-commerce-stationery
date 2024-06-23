@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IProductOptionRepository extends JpaRepository<ProductOption, Long> {
     List<ProductOption> findByQuantityGreaterThanEqualAndProduct_Id(Integer quantity, Long productId);
+
+    List<ProductOption> findAllByProduct_Id(Long productId);
 }

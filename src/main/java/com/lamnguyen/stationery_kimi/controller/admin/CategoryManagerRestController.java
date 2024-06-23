@@ -23,7 +23,7 @@ public class CategoryManagerRestController {
         List<CategoryManager> categories = iCategoryService.findAll(request);
 
         return DatatableApiResponse.<List<CategoryManager>>builder()
-                .data(categories)
+                .data(categories.stream().skip(request.getStart()).limit(request.getLength()).toList())
                 .draw(request.getDraw())
                 .recordsTotal(categories.size())
                 .recordsFiltered(categories.size())

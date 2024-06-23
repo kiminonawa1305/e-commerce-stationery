@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/api/bill-statuses")
-public class BillStatusManagerController {
+public class BillStatusManagerRestController {
     @Autowired
     private IBillStatusService iBillStatusService;
 

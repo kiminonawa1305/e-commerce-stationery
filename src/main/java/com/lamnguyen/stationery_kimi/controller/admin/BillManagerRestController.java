@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/api/bills")
-public class BillManagerController {
+public class BillManagerRestController {
     @Autowired
     private IBillService iBillService;
     @Autowired
@@ -23,7 +23,7 @@ public class BillManagerController {
         List<BillManager> bills = iBillService.fillAll("all", request);
 
         return DatatableApiResponse.<List<BillManager>>builder()
-                .data(bills)
+                .data(bills.stream().skip(request.getStart()).limit(request.getLength()).toList())
                 .draw(request.getDraw())
                 .recordsTotal(bills.size())
                 .recordsFiltered(bills.size())

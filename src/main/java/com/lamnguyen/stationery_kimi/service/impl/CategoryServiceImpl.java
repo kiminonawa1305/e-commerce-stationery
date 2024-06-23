@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements ICategoryService {
         searchCategoryManager(categories, request);
         sortCategoryManager(categories, request);
 
-        return categories.stream().skip(request.getStart()).limit(request.getLength()).toList();
+        return categories;
     }
 
     @Override

@@ -82,7 +82,7 @@ public class BillServiceImpl implements IBillService {
         List<BillManager> billManagers = new ArrayList<>(bills.stream().map(this::convertToBillManager).toList());
         searchBill(billManagers, request);
         sortBill(billManagers, request);
-        return billManagers.stream().skip(request.getStart()).limit(request.getLength()).toList();
+        return billManagers;
     }
 
     @Override

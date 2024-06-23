@@ -1,7 +1,6 @@
 package com.lamnguyen.stationery_kimi.service;
 
 import com.lamnguyen.stationery_kimi.dto.ProductImageDTO;
-import com.lamnguyen.stationery_kimi.entity.ProductImage;
 
 import java.util.List;
 

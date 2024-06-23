@@ -1,7 +1,6 @@
 package com.lamnguyen.stationery_kimi.controller.admin;
 
 import com.lamnguyen.stationery_kimi.dto.*;
-import com.lamnguyen.stationery_kimi.entity.Product;
 import com.lamnguyen.stationery_kimi.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/api/accounts")
-public class AccountManagerController {
+public class AccountManagerRestController {
     @Autowired
     private IUserService iUserService;
 
@@ -21,7 +20,7 @@ public class AccountManagerController {
         List<UserDTO> userDTOs = iUserService.findAll(request);
 
         return DatatableApiResponse.<List<UserDTO>>builder()
-                .data(userDTOs)
+                .data(userDTOs.stream().skip(request.getStart()).limit(request.getLength()).toList())
                 .draw(request.getDraw())
                 .recordsTotal(userDTOs.size())
                 .recordsFiltered(userDTOs.size())

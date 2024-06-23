@@ -132,7 +132,7 @@ public class ProductServiceImpl implements IProductService {
         searchProduct(products, request);
         sortProduct(products, request);
 
-        return products.stream().skip(request.getStart()).limit(request.getLength()).toList();
+        return products;
     }
 
     private ProductDTO convertToDTO(Product product) {

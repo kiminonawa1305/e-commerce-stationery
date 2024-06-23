@@ -1,6 +1,5 @@
 package com.lamnguyen.stationery_kimi.controller.admin;
 
-import com.lamnguyen.stationery_kimi.dto.ApiResponse;
 import com.lamnguyen.stationery_kimi.dto.DatatableApiRequest;
 import com.lamnguyen.stationery_kimi.dto.DatatableApiResponse;
 import com.lamnguyen.stationery_kimi.dto.UserDTO;
@@ -13,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/api/dashboard")
-public class DashBoardManagerController {
+public class DashBoardManagerRestController {
     @Autowired
     private IUserService iUserService;
 
