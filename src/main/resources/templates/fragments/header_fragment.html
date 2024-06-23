@@ -40,18 +40,18 @@
                         </span>
                  </span>
                 <div id="not-user" th:if="${session.user} == null" class="sign-button-display">
-                    <a th:href="@{sign-in.html}"
+                    <a th:href="@{/sign-in.html}"
                        class="sign-button-bottom d-inline-block fw-bold m-0 text-decoration-none text-white w-100 text-start">
                         Đăng nhập
                     </a>
-                    <a th:href="@{sign-up.html}"
+                    <a th:href="@{/sign-up.html}"
                        class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start">
                         Đăng ký
                     </a>
                 </div>
                 <div id="have-user" class="sign-button-display" th:if="${session.user} != null">
                     <div id="user-id" th:data-user-id="${session.user.id}" hidden></div>
-                    <a th:href="@{profile.html}" id="name-user"
+                    <a th:href="@{/profile.html}" id="name-user"
                        class="sign-button-top d-inline-block text-decoration-none text-white fw-bold m-0 w-100 text-start fs-5"
                        style="line-height: 18px">
                         <span>Xin chào </span>

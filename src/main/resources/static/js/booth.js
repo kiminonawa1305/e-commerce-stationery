@@ -58,7 +58,7 @@ function loadProduct(product) {
         `<div class="card product rounded-4">
             <a href="/stationery_kimi/product/${product.id}" class="text-decoration-none">
                 <div class="card-img overflow-hidden rounded-bottom-0 rounded-4">
-                    <img src="/stationery_kimi${product.productImageDTO.url}" class="card-img-top" alt="san_pham.png">
+                    <img style="width: 300px; height: 300px" src="/stationery_kimi${product.productImageDTO.url}" class="card-img-top" alt="san_pham.png">
                 </div>
                 <div class="card-body text-center bg-white py-2">
                     <div class="card-title m-0 position-relative">`

@@ -117,6 +117,8 @@ public class ProductServiceImpl implements IProductService {
         Product product = productRepository.findById(id).orElse(Product.builder().build());
         ProductDetailDTO productDetailDTO = modelMapper.map(seeMoreDTO, ProductDetailDTO.class);
         productDetailDTO.setDescription(product.getDescription());
+        productDetailDTO.setBrand(product.getBrand());
+        productDetailDTO.setProductNew(product.getProductNew());
         return productDetailDTO;
     }
 

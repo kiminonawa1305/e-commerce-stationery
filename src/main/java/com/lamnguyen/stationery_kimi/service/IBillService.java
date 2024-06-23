@@ -5,6 +5,7 @@ import com.lamnguyen.stationery_kimi.dto.*;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IBillService {
     BillDTO createBill(HttpSession session, PaymentRestController.PaymentRequest request);
@@ -14,4 +15,6 @@ public interface IBillService {
     List<BillManager> fillAll(String status, DatatableApiRequest request);
 
     BillStatusDTO cancelBill(Long id, Long billId);
+
+    Map<Integer, Integer> getRevenueByYear(int year);
 }

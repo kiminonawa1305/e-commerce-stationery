@@ -35,6 +35,7 @@
     <script th:src="@{/js/editor.dataTables.js}"></script>
     <script th:src="@{/js/select.dataTables.js}"></script>
     <script th:src="${'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <header>
@@ -76,14 +77,22 @@
         </nav>
         <div class="rounded-2 overflow-hidden p-2" style="flex: 4;background-color: #f1f1f1">
             <section class="frame" id="dashboard" data-frame-id="1">
-                <h2>Thống kê</h2>
-                <div class="row">
-                    <div class="col-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Số lượng sản phẩm</h5>
-                            </div>
-                        </div>
+                <h2 class="col-3">Thống kê</h2>
+                <div>
+                    <div class="row m-0">
+                        <h4 class="col-5">Doanh thu theo 12 tháng</h4>
+                        <select class="col-7" id="select-month">
+                            <option value="2026">Năm 2026</option>
+                            <option value="2025">Năm 2025</option>
+                            <option selected value="2024">Năm 2024</option>
+                            <option value="2023">Năm 2023</option>
+                            <option value="2022">Năm 2022</option>
+                            <option value="2021">Năm 2021</option>
+                            <option value="2020">Năm 2020</option>
+                        </select>
+                    </div>
+                    <div id="revenue">
+                        <canvas width="100%"></canvas>
                     </div>
                 </div>
             </section>
@@ -144,6 +153,6 @@
     <div th:replace="fragments/footer_fragment::foother"></div>
 </footer>
 <script th:src="@{/js/menu.js}"></script>
-<script type="module" th:src="@{/js/admin.js}"></script>
+<script th:src="@{/js/admin.js}"></script>
 </body>
 </html>

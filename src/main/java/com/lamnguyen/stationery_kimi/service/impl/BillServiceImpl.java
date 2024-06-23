@@ -20,9 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BillServiceImpl implements IBillService {
@@ -96,6 +95,28 @@ public class BillServiceImpl implements IBillService {
                 .date(LocalDateTime.now())
                 .build();
         return iBillStatusService.save(billStatus);
+    }
+
+    @Override
+    public Map<Integer, Integer> getRevenueByYear(int year) {
+        List<Bill> bills = iBillRepository.findAll();
+        bills = bills.stream().filter(bill -> bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus()))).toList();
+        bills = bills.stream().filter(bill -> {
+            LocalDateTime date = bill.getBillStatuses().stream().filter(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus())).findFirst().orElse(null).getDate();
+            return date.getYear() == year;
+        }).toList();
+
+        Map<Integer, Integer> revenue = bills.stream().collect(Collectors.toMap(bill -> {
+            LocalDateTime date = bill.getBillStatuses().stream().filter(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus())).findFirst().orElse(null).getDate();
+            return date.getMonthValue();
+        }, bill -> {
+            int total = bill.getBillDetails().stream().mapToInt(billDetail -> billDetail.getQuantity() * billDetail.getPrice()).sum();
+            return total;
+        }, Integer::sum, TreeMap::new));
+
+        for (int i = 1; i <= 12; i++)
+            revenue.putIfAbsent(i, 0);
+        return revenue;
     }
 
     private BillDTO convertToDTO(Bill bill) {

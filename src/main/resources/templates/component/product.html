@@ -3,7 +3,7 @@
 <div class="card product rounded-4">
     <a th:href="@{/product/__${id}__}" class="text-decoration-none">
         <div class="card-img overflow-hidden rounded-bottom-0 rounded-4">
-            <img th:src="@{__${urlImage}__}" class="card-img-top" alt="san_pham.png">
+            <img style="width: 300px; height: 300px" th:src="@{__${urlImage}__}" class="card-img-top border border-secondary border-1 border-start-0 border-end-0 border-top-0" alt="san_pham.png">
         </div>
         <div class="card-body text-center bg-white py-2">
             <div class="card-title m-0 position-relative">
@@ -13,14 +13,17 @@
                     th:text="${name}" style="height: 45px; text-indent: 45px"/>
                 <h5 th:if="${productNew} == null or ${productNew} == false"
                     class="title d-inline-block text-secondary overflow-hidden mb-0" th:text="${name}"
-                    style="max-height: 45px"/>
+                    style="height: 45px"/>
             </div>
             <div class="card-text">
-                <span class="new-price text-primary fs-5 fw-bold" th:if="${discountPercent} == null or ${discountPercent} == 0.0"
+                <span class="new-price text-primary fs-5 fw-bold"
+                      th:if="${discountPercent} == null or ${discountPercent} == 0.0"
                       th:text="${#numbers.formatCurrency(price)}"></span>
-                <span class="new-price text-primary fs-5  fw-bold" th:if="${discountPercent} != null and ${discountPercent} != 0.0"
+                <span class="new-price text-primary fs-5  fw-bold"
+                      th:if="${discountPercent} != null and ${discountPercent} != 0.0"
                       th:text="${#numbers.formatCurrency(price - discountPercent * price)}"></span>
-                <del class="old-price text-body-tertiary" th:if="${discountPercent} != null and ${discountPercent} != 0.0"
+                <del class="old-price text-body-tertiary"
+                     th:if="${discountPercent} != null and ${discountPercent} != 0.0"
                      th:text="${#numbers.formatCurrency(price)}"></del>
             </div>
         </div>

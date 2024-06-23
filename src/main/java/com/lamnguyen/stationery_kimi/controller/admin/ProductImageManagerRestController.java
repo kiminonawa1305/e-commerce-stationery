@@ -1,8 +1,9 @@
 package com.lamnguyen.stationery_kimi.controller.admin;
 
 import com.lamnguyen.stationery_kimi.dto.*;
-import com.lamnguyen.stationery_kimi.entity.Product;
 import com.lamnguyen.stationery_kimi.service.IProductImageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/api/product-images")
 public class ProductImageManagerRestController {
+    private static final Logger log = LoggerFactory.getLogger(ProductImageManagerRestController.class);
     @Autowired
     private IProductImageService iProductImageService;
 
@@ -28,38 +30,29 @@ public class ProductImageManagerRestController {
                 .build();
     }
 
-    @PostMapping("/add")
-    public ApiResponse<ProductDTO> addProduct(@ModelAttribute Product product, @RequestParam(required = false) Map<String, Object> query) {
+    @PostMapping("/add/{productId}")
+    public ApiResponse<ProductDTO> add(@PathVariable("productId") Long productId, @RequestParam(required = false) Map<String, Object> query) {
 //        ProductDTO productDTO = iProductImageService.addProduct(product);
+        System.out.println(query);
         return ApiResponse.<ProductDTO>builder()
                 .message("Thêm sản phẩm thành công!")
 //                .data(productDTO)
                 .build();
     }
 
-    @PutMapping("/update")
-    public ApiResponse<ProductDTO> updateProduct(@ModelAttribute Product product) {
+    @PutMapping("/edit/{productImageId}")
+    public EditDataTableResponse<ProductImageDTO> update(@PathVariable("productImageId") Long id, @RequestParam(required = false) Map<String, Object> query) {
 //        ProductDTO productDTO = iProductImageService.updateProduct(product);
-        return ApiResponse.<ProductDTO>builder()
-                .message("Cập nhật sản phẩm thành công!")
-//                .data(productDTO)
-                .build();
-    }
-
-    @PostMapping("/lock/{id}")
-    public ApiResponse<ProductManager> lock(@PathVariable("id") Long id) {
-//        ProductManager result = iProductImageService.lock(id);
-        return ApiResponse.<ProductManager>builder()
-                .message("Khóa sản phẩm thành công!")
+        return EditDataTableResponse.<ProductImageDTO>builder()
 //                .data(result)
                 .build();
     }
 
-    @PostMapping("/new/{id}")
-    public ApiResponse<ProductManager> setNewProduct(@PathVariable("id") Long id) {
+
+    @DeleteMapping("/delete/{productImageId}")
+    public EditDataTableResponse<ProductImageDTO> delete(@PathVariable("productImageId") Long id) {
 //        ProductManager result = iProductImageService.setNewProduct(id);
-        return ApiResponse.<ProductManager>builder()
-                .message("Khóa sản phẩm thành công!")
+        return EditDataTableResponse.<ProductImageDTO>builder()
 //                .data(result)
                 .build();
     }

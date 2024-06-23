@@ -11,10 +11,10 @@
     <link rel="stylesheet" th:href="@{/css/product.css}">
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/fontawesome.js}"></script>
-    <script th:src="@{/js/jquery.js}"></script>
 
     <link rel="stylesheet" type="text/css" th:href="${'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css'}">
     <script type="text/javascript" th:src="${'https://cdn.jsdelivr.net/npm/toastify-js'}"></script>
@@ -29,7 +29,7 @@
             <div class="product-detail-left col-xl-4 pe-5 col-xs-12 col-sm-12 col-md-8">
                 <div class="product-wrap-sticky">
                     <div class="image-product-item pb-3 pt-0 ">
-                        <img th:src="@{__${productDetail.productImageDTOS.get(0).url}__}" id="large-product-image"
+                        <img style="width: 385px; height: 385px" th:src="@{__${productDetail.productImageDTOS.get(0).url}__}" id="large-product-image"
                              alt="Bút bi Thiên Long"
                              class="img-fluid">
                     </div>
@@ -45,9 +45,9 @@
                 <h1 class="fw-light" th:text="${productDetail.name}"/>
                 <div class="row">
                     <div class="col-12 col-md-8">
-                        <p class="fw-medium">Thương hiệu: <span class="text-primary" th:text="${productDetail.brand}"/>|
+                        <p class="fw-medium">Thương hiệu: <span class="text-primary pe-2" th:text="${productDetail.brand}"/>|
                             Tình trạng: <span class="text-primary">Còn hàng</span></p>
-                        <p class="fw-medium">Mã sản phẩm: <span class="text-primary" th:text="${productDetail.id}"/></p>
+                        <p class="fw-medium">Mã sản phẩm: <span class="text-primary" th:text="'#' + ${productDetail.id}"/></p>
                         <div class="product-price">
                             <div class="row"
                                  th:if="${productDetail.discountPercent != null and productDetail.discountPercent != 0.0}">
@@ -109,33 +109,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--   <div class="p-2 promolist">
-                               <div class="promolist-item">
-                                   <div class="promolist-item-header d-flex">
-                                       <h6 class="promolist-item-icon fw-light pe-3">
-                                           <i class="fa-solid fa-gift"></i>
-                                       </h6>
-                                       <h6 class="promolist-item-title fw-light">Nhận quà tặng khi mua sản phẩm thỏa điều
-                                           kiện</h6>
-                                   </div>
-                                   <div class="promolist-item-content pt-2 d-flex">
-                                       <img src="image/giftbook.webp" alt="" class="img-promolist me-2">
-                                       <p class="promolist-item-content-text">Nhận ngay Quà tặng bộ 2 sticker trang trí
-                                           nhãn vở Thiên Long x1 khi số lượng mua đạt 2 sản phẩm.</p>
-                                   </div>
-                               </div>
-                           </div>
-                           <div class="promolist-note">
-                               <h6 class="fw-bold text-primary mb-0">Lưu ý</h6>
-                               <ul>
-                                   <li class="fw-light text-primary">Sản phẩm quà tặng có giới hạn, chương trình có thể kết
-                                       thúc sớm hơn nếu hết số lượng quà
-                                   </li>
-                                   <li class="fw-light text-primary">Đối với các chương trình có nhiều mốc điều kiện giá
-                                       trị mua/số lượng mua thì chỉ áp dụng quà mốc cao nhất đơn hàng đạt được
-                                   </li>
-                               </ul>
-                           </div>-->
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="promolist-note">
@@ -225,44 +198,6 @@
             <div class="rte product_getcontent py-3 pos-relative">
                 <div id="content" class="">
                     <div th:text="${productDetail.description}"/>
-                    <!-- <p><strong>Thông số kĩ thuật :</strong></p>
-                     <table class="table table-striped">
-                         <tbody style="box-sizing: border-box;">
-                         <tr>
-                             <td><span>Thương hiệu</span></td>
-                             <td>Thiên Long</td>
-                         </tr>
-                         <tr>
-                             <td>Lực bấm</td>
-                             <td>Bấm được 12 tờ A4</td>
-                         </tr>
-                         <tr>
-                             <td>Kim bấm</td>
-                             <td>Số 10</td>
-                         </tr>
-                         <tr>
-                             <td>Xuất xứ</td>
-                             <td>Việt Nam</td>
-                         </tr>
-                         <tr>
-                             <td>Sản xuất</td>
-                             <td>Trung Quốc</td>
-                         </tr>
-                         <tr>
-                             <td>Khuyến cáo</td>
-                             <td>Tránh nguồn nhiệt, hóa chất. Không thích hợp cho trẻ dưới 3 tuổi.</td>
-                         </tr>
-                         </tbody>
-                     </table>
-                     <p style="text-align: center"><img
-                             src="//product.hstatic.net/1000230347/product/st-023_st-024_8d53abdf82514893ae6364239f4c6d45.jpg">
-                     </p>
-                     <p style="text-align: center"><img
-                             src="//product.hstatic.net/1000230347/product/st-023_b76039034ba94fb5aa3d6e7297bb81ad.jpg">
-                     </p>
-                     <p style="text-align: center"><img
-                             src="//product.hstatic.net/1000230347/product/st-024_4865ebe4087344f9b9add895d9865616.jpg">
-                     </p>-->
                 </div>
                 <div class="text-center">
                     <button id="btn-show-hidden" class="btn border border-primary">
@@ -429,6 +364,7 @@
 <footer>
     <div th:replace="fragments/footer_fragment::foother"></div>
 </footer>
+<script th:src="@{/js/menu.js}"></script>
 <script>
     $(document).ready(function () {
         const reviewStars = $('.review-star');

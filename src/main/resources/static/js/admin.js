@@ -16,7 +16,7 @@ const formatCurrency = new Intl.NumberFormat('vi-VN', {
                                     </table>`
 
 $(document).ready(function (event) {
-    let dataTableBill, dataTableAccount, dataTableCategory, dataTableProduct;
+    let dataTableBill, dataTableAccount, dataTableCategory, dataTableProduct, chartRevenueByYear;
 
     if (!location.hash) location.hash = "#dashboard"
     const menuItems = $('.menu-item-manager'), frames = $('.frame'), dashboard = $("#dashboard"),
@@ -28,6 +28,7 @@ $(document).ready(function (event) {
         menuItems.not(".active").removeClass("bg-primary").addClass("bg-warning");
         $(this).addClass("bg-primary").removeClass("bg-warning");
     })
+
     menuItems.on("mouseleave", function (e) {
         $(this).not(".active").removeClass("bg-primary").addClass("bg-warning");
     })
@@ -43,6 +44,9 @@ $(document).ready(function (event) {
         $("title").text(title)
         const manager = $(this).attr("data-manager")
         switch (manager) {
+            case "dashboard":
+                drawBar($("#select-month").val());
+                break;
             case "product":
                 if (dataTableProduct) dataTableProduct.ajax.reload()
                 else dataTableProduct = loadProducts()
@@ -63,9 +67,13 @@ $(document).ready(function (event) {
         }
     })
 
-
     const hook = location.hash.replace("#", "");
     $(`.menu-item-manager[data-hook=${hook}]`).click()
+
+
+    $("#select-month").on("change", function (e) {
+        drawBar($(this).val());
+    })
 });
 
 const loadCategory = () => {
@@ -620,23 +628,26 @@ const loadProductImage = (productId) => {
             create: {
                 type: 'POST',
                 url: `/stationery_kimi/admin/api/product-images/create/${productId}`,
-                contentType: "application/json",
+                contentType: false,
                 processData: false,
                 data: function (d) {
-                    return getJson(d);
+                    return getFromData(d);
                 }
             }, edit: {
                 type: 'PUT', url: '/stationery_kimi/admin/api/product-images/edit/_id_',
-                contentType: 'application/json',
+                contentType: false,
                 data: function (d) {
-                    return getJson(d);
+                    return getFromData(d);
                 }
             }, remove: {
                 type: 'DELETE', url: '/stationery_kimi/admin/api/product-images/delete/_id_'
             }
         }, fields: [
             {
-                label: 'Hình ảnh: ', name: 'url', type: "upload"
+                label: 'Hình ảnh: ', name: 'url', type: "upload", display: (fileId) =>
+                    `<img src="${editor.file('files', fileId).web_path}"/>`,
+                clearText: 'Clear',
+                noImageText: 'No image'
             },
             {
                 label: 'Loại ảnh: ', name: 'type', type: 'text'
@@ -735,3 +746,51 @@ const loadProductOption = (productId) => {
 
     return dataTable;
 }
+
+const drawBar = (year) => {
+    $("#revenue").empty().append(`<canvas width="100%"></canvas>`);
+    const ctx = document.getElementById('revenue').getElementsByTagName("canvas")[0].getContext("2d");
+    $.ajax({
+        url: `/stationery_kimi/admin/api/dashboard/revenue/${year}`,
+        method: "GET",
+        contentType: "application/json",
+        success: function (response) {
+            let data = [];
+            if (!response.data) data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            else data = Object.entries(response.data).map(([key, value]) => value);
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                    datasets: [{
+                        label: 'Doanh thu theo tháng',
+                        data: data,
+                        borderWidth: 1,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(255, 205, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(43,77,148,0.5)',
+                            'rgba(128,119,11,0.5)',
+                            'rgba(234,10,10,0.5)',
+                            'rgba(12,235,198,0.5)',
+                            'rgba(218,78,78,0.5)',
+                            'rgba(124,76,215,0.5)'
+                        ],
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                }
+            });
+        }
+    });
+}
+
