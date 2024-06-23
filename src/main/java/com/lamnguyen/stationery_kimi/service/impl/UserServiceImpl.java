@@ -95,7 +95,7 @@ public class UserServiceImpl implements IUserService {
         List<UserDTO> users = new ArrayList<>(convertToDTOList(userRepository.findAll()));
         searchProduct(users, request);
         sortProduct(users, request);
-        return users;
+        return users.stream().skip(request.getStart()).limit(request.getLength()).toList();
     }
 
     @Override

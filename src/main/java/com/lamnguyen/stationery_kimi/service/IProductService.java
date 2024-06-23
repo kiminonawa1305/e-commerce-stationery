@@ -12,7 +12,7 @@ public interface IProductService {
 
     ProductDTO updateProduct(Product product);
 
-    ProductDTO lockProductById(Product product);
+    ProductManager lock(Long id);
 
     List<ProductDisplayDTO> findAllByLockFalse(Integer limit, Integer page);
 
@@ -26,5 +26,7 @@ public interface IProductService {
 
     List<String> findBrandsByCategoryId(Long categoryId);
 
-    List<ProductDetailDTO> findAll(DatatableApiRequest request);
+    List<ProductManager> findAll(DatatableApiRequest request);
+
+    ProductManager setNewProduct(Long id);
 }

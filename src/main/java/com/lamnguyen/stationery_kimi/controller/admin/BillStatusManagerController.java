@@ -23,7 +23,7 @@ public class BillStatusManagerController {
     @GetMapping("/get/{billId}")
     public DatatableApiResponse<List<BillStatusDTO>> get(@PathVariable("billId") Long billId, @RequestParam(required = false) Map<String, Object> query) {
         DatatableApiRequest request = DatatableApiRequest.newInstance(query);
-        List<BillStatusDTO> billStatusDTOs = iBillStatusService.findById(billId, request);
+        List<BillStatusDTO> billStatusDTOs = iBillStatusService.findAllByBillId(billId, request);
         return DatatableApiResponse.<List<BillStatusDTO>>builder()
                 .data(billStatusDTOs)
                 .draw(request.getDraw())

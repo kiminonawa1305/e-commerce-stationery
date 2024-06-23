@@ -53,11 +53,21 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductDTO lockProductById(Product product) {
-        if (product.getId() == null) throw new ApplicationException(ErrorCode.NULL_ID_PRODUCT);
-        productRepository.lockProductById(product.getId(), product.getLock());
-        return convertToDTO(product);
+    public ProductManager lock(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.PRODUCT_NOT_FOUND));
+        product.setLock(!product.getLock());
+        return convertToProductManager(productRepository.saveAndFlush(product));
     }
+
+    @Override
+    public ProductManager setNewProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.PRODUCT_NOT_FOUND));
+        product.setProductNew(!product.getProductNew());
+        return convertToProductManager(productRepository.saveAndFlush(product));
+    }
+
 
     @Override
     public List<ProductDisplayDTO> findAllByLockFalse(Integer limit, Integer page) {
@@ -116,10 +126,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductDetailDTO> findAll(DatatableApiRequest request) {
-        List<ProductDetailDTO> products = new ArrayList<>(productRepository.findAll().stream().map(product -> this.findProductDetailById(product.getId())).toList());
-        sortProduct(products, request);
+    public List<ProductManager> findAll(DatatableApiRequest request) {
+        List<ProductManager> products = new ArrayList<>(productRepository.findAll().stream().map(this::convertToProductManager).toList());
+
         searchProduct(products, request);
+        sortProduct(products, request);
+
         return products.stream().skip(request.getStart()).limit(request.getLength()).toList();
     }
 
@@ -146,44 +158,52 @@ public class ProductServiceImpl implements IProductService {
                 .toList();
     }
 
-    private List<ProductDTO> convertToDTOList(List<Product> products) {
-        return products.stream()
-                .map(this::convertToDTO)
-                .toList();
+    private ProductManager convertToProductManager(Product product) {
+        ProductManager productManager = modelMapper.map(product, ProductManager.class);
+        productManager.setTotalOption(product.getProductOptions().size());
+        productManager.setTotalImage(product.getImage().size());
+        return productManager;
     }
 
-    private void sortProduct(List<ProductDetailDTO> products, DatatableApiRequest request) {
+    private void sortProduct(List<ProductManager> products, DatatableApiRequest request) {
         if (products.size() > 1) {
             request.getOrder().forEach(order -> {
                 switch (order.getName()) {
                     case "id" -> {
                         switch (order.getDir()) {
-                            case "asc" -> products.sort(Comparator.comparingLong(ProductDTO::getId));
+                            case "asc" -> products.sort(Comparator.comparingLong(ProductManager::getId));
                             case "desc" -> products.sort((c1, c2) -> Long.compare(c2.getId(), c1.getId()));
                         }
                     }
                     case "name" -> {
                         switch (order.getDir()) {
-                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getName));
+                            case "asc" -> products.sort(Comparator.comparing(ProductManager::getName));
                             case "desc" -> products.sort((c1, c2) -> c2.getName().compareTo(c1.getName()));
                         }
                     }
                     case "price" -> {
                         switch (order.getDir()) {
-                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getPrice));
+                            case "asc" -> products.sort(Comparator.comparing(ProductManager::getPrice));
                             case "desc" -> products.sort((c1, c2) -> c2.getPrice().compareTo(c1.getPrice()));
-                        }
-                    }
-                    case "type" -> {
-                        switch (order.getDir()) {
-                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getType));
-                            case "desc" -> products.sort((c1, c2) -> c2.getType().compareTo(c1.getType()));
                         }
                     }
                     case "brand" -> {
                         switch (order.getDir()) {
-                            case "asc" -> products.sort(Comparator.comparing(ProductDTO::getBrand));
-                            case "desc" -> products.sort((c1, c2) -> c2.getType().compareTo(c1.getBrand()));
+                            case "asc" -> products.sort(Comparator.comparing(ProductManager::getBrand));
+                            case "desc" -> products.sort((c1, c2) -> c2.getBrand().compareTo(c1.getBrand()));
+                        }
+                    }
+                    case "totalOption" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> products.sort(Comparator.comparing(ProductManager::getTotalOption));
+                            case "desc" ->
+                                    products.sort((c1, c2) -> c2.getTotalOption().compareTo(c1.getTotalOption()));
+                        }
+                    }
+                    case "totalImage" -> {
+                        switch (order.getDir()) {
+                            case "asc" -> products.sort(Comparator.comparing(ProductManager::getTotalImage));
+                            case "desc" -> products.sort((c1, c2) -> c2.getTotalImage().compareTo(c1.getTotalImage()));
                         }
                     }
                 }
@@ -191,13 +211,12 @@ public class ProductServiceImpl implements IProductService {
         }
     }
 
-    private void searchProduct(List<ProductDetailDTO> products, DatatableApiRequest request) {
+    private void searchProduct(List<ProductManager> products, DatatableApiRequest request) {
         String searchValue = request.getSearch().getValue();
         if (searchValue != null && !searchValue.isBlank())
             products.removeIf(product ->
                     !product.getName().toLowerCase().contains(searchValue.toLowerCase())
                             && !product.getId().toString().contains(searchValue.toLowerCase())
-                            && !product.getType().toLowerCase().contains(searchValue.toLowerCase())
                             && !product.getBrand().toLowerCase().contains(searchValue.toLowerCase())
             );
     }

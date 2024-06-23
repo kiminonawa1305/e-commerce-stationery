@@ -11,7 +11,7 @@ public interface IBillService {
 
     List<BillDisplay> getBillByStatusAndUserId(Long id, String status);
 
-    List<BillManager> getBillManager(String status, DatatableApiRequest request);
+    List<BillManager> fillAll(String status, DatatableApiRequest request);
 
     BillStatusDTO cancelBill(Long id, Long billId);
 }

@@ -20,7 +20,7 @@ public class BillManagerController {
     @GetMapping("/get")
     public DatatableApiResponse<List<BillManager>> get(@RequestParam(required = false) Map<String, Object> query) {
         DatatableApiRequest request = DatatableApiRequest.newInstance(query);
-        List<BillManager> bills = iBillService.getBillManager("all", request);
+        List<BillManager> bills = iBillService.fillAll("all", request);
 
         return DatatableApiResponse.<List<BillManager>>builder()
                 .data(bills)

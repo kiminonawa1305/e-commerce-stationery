@@ -76,13 +76,13 @@ public class BillServiceImpl implements IBillService {
     }
 
     @Override
-    public List<BillManager> getBillManager(String status, DatatableApiRequest request) {
+    public List<BillManager> fillAll(String status, DatatableApiRequest request) {
         List<Bill> bills = iBillRepository.findAll();
         bills = filterBillByStatus(bills, status);
         List<BillManager> billManagers = new ArrayList<>(bills.stream().map(this::convertToBillManager).toList());
         searchBill(billManagers, request);
         sortBill(billManagers, request);
-        return billManagers;
+        return billManagers.stream().skip(request.getStart()).limit(request.getLength()).toList();
     }
 
     @Override

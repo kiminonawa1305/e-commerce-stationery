@@ -29,11 +29,11 @@ public class BillStatusServiceImpl implements IBillStatusService {
     }
 
     @Override
-    public List<BillStatusDTO> findById(Long billId, DatatableApiRequest request) {
+    public List<BillStatusDTO> findAllByBillId(Long billId, DatatableApiRequest request) {
         List<BillStatusDTO> billStatusDTOS = new ArrayList<>(iBillStatusRepository.findAllByBill_Id(billId).stream().map(this::convertToDTO).toList());
         searchBillStatus(billStatusDTOS, request);
         sortBillStatus(billStatusDTOS, request);
-        return billStatusDTOS;
+        return billStatusDTOS.stream().skip(request.getStart()).limit(request.getLength()).toList();
     }
 
     @Override

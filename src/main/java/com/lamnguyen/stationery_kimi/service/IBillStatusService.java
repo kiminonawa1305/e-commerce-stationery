@@ -9,7 +9,7 @@ import java.util.List;
 public interface IBillStatusService {
     BillStatusDTO save(BillStatus billStatus);
 
-    List<BillStatusDTO> findById(Long billId, DatatableApiRequest request);
+    List<BillStatusDTO> findAllByBillId(Long billId, DatatableApiRequest request);
 
     BillStatusDTO update(Long billStatusId, BillStatusDTO billStatusDTO);
 

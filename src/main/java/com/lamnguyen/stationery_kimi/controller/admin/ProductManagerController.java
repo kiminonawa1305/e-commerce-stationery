@@ -16,15 +16,15 @@ public class ProductManagerController {
     private IProductService productService;
 
     @GetMapping("/get")
-    public DatatableApiResponse<List<ProductDetailDTO>> get(@RequestParam(required = false) Map<String, Object> query) {
+    public DatatableApiResponse<List<ProductManager>> get(@RequestParam(required = false) Map<String, Object> query) {
         DatatableApiRequest request = DatatableApiRequest.newInstance(query);
-        List<ProductDetailDTO> categories = productService.findAll(request);
+        List<ProductManager> product = productService.findAll(request);
 
-        return DatatableApiResponse.<List<ProductDetailDTO>>builder()
-                .data(categories)
+        return DatatableApiResponse.<List<ProductManager>>builder()
+                .data(product)
                 .draw(request.getDraw())
-                .recordsTotal(categories.size())
-                .recordsFiltered(categories.size())
+                .recordsTotal(product.size())
+                .recordsFiltered(product.size())
                 .build();
     }
 
@@ -46,10 +46,19 @@ public class ProductManagerController {
                 .build();
     }
 
-    @PutMapping("/lock")
-    public ApiResponse<ProductDTO> lockProduct(@ModelAttribute Product product) {
-        ProductDTO result = productService.lockProductById(product);
-        return ApiResponse.<ProductDTO>builder()
+    @PostMapping("/lock/{id}")
+    public ApiResponse<ProductManager> lock(@PathVariable("id") Long id) {
+        ProductManager result = productService.lock(id);
+        return ApiResponse.<ProductManager>builder()
+                .message("Khóa sản phẩm thành công!")
+                .data(result)
+                .build();
+    }
+
+    @PostMapping("/new/{id}")
+    public ApiResponse<ProductManager> setNewProduct(@PathVariable("id") Long id) {
+        ProductManager result = productService.setNewProduct(id);
+        return ApiResponse.<ProductManager>builder()
                 .message("Khóa sản phẩm thành công!")
                 .data(result)
                 .build();
