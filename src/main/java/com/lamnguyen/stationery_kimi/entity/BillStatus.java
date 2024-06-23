@@ -23,7 +23,7 @@ public class BillStatus {
     @Column
     private String description;
     @Column
-    private LocalDateTime data;
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "bill_id")

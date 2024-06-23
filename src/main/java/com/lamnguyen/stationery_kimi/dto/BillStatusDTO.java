@@ -15,5 +15,5 @@ public class BillStatusDTO {
     private Long id;
     private String status;
     private String description;
-    private LocalDateTime data;
+    private LocalDateTime date;
 }

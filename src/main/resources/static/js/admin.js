@@ -1,7 +1,11 @@
-const format = new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-})
+const formatCurrency = new Intl.NumberFormat('vi-VN', {
+        style: 'currency', currency: 'VND'
+    }),
+    formatDateTime = new Intl.DateTimeFormat('vi-VN', {dateStyle: 'short'}),
+    htmlTableBillStatus = ` <table id="bill-status-manager-table"
+                                           class="display row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                                           style="width:100%">
+                                    </table>`
 
 $(document).ready(function (event) {
     let dataTableBill, dataTableAccount, dataTableCategory, dataTableProduct;
@@ -128,21 +132,14 @@ const loadAccount = () => {
     $('#account-manager-table').on('click', 'button.btn-lock', function () {
         let accountId = $(this).attr('data-id');
         $.ajax({
-            url: `/stationery_kimi/admin/api/accounts/lock/${accountId}`,
-            type: 'POST',
-            success: function (response) {
+            url: `/stationery_kimi/admin/api/accounts/lock/${accountId}`, type: 'POST', success: function (response) {
                 Toastify({
-                    text: "Thành công!",
-                    duration: 1000,
-                    "backgroundColor": "#4cea06"
+                    text: "Thành công!", duration: 1000, "backgroundColor": "#4cea06"
                 }).showToast()
                 $('#account-manager-table').DataTable().ajax.reload();
-            },
-            error: function (err) {
+            }, error: function (err) {
                 Toastify({
-                    text: err.response.message,
-                    duration: 1000,
-                    backgroundColor: "#ea0606"
+                    text: err.response.message, duration: 1000, backgroundColor: "#ea0606"
                 }).showToast();
             }
         });
@@ -161,44 +158,62 @@ const getFromData = (d) => {
     return formData;
 }
 
+const getJson = (d) => {
+    let json = {};
+    $.each(d.data, function (key, value) {
+        $.each(value, function (field, fieldValue) {
+            json[field] = fieldValue; // append các trường dữ liệu
+        });
+    });
+    return JSON.stringify(json);
+}
+
 
 const loadBills = () => {
     const dataTable = new DataTable('#bill-manager-table', {
         ajax: {
             url: '/stationery_kimi/admin/api/bills/get',
-        }, columns: [
-            {
-                className: 'dt-control',
-                orderable: false,
-                data: null,
-                defaultContent: ''
-            },
-            {
-                title: 'ID: ', name: 'id', data: 'id',
-            }, {
-                title: 'User ID: ', name: 'userId', data: 'userId',
-            }, {
-                title: 'Tên khách hàng: ', name: 'name', data: 'name',
-            }, {
-                title: 'Email: ', name: 'email', data: 'email',
-            }, {
-                title: 'Số điện thoại: ', name: 'phone', data: 'phone',
-            }, {
-                title: 'Địa chỉ giao hàng: ', name: 'shippingAddress', data: 'shippingAddress', orderable: false,
-            }, {
-                title: 'Hình thức thanh toán: ', name: 'paymentMethod', data: 'paymentMethod', orderable: false,
-            }, {
-                title: 'Tổng số tiền được giảm: ',
-                name: 'totalDiscount',
-                data: null,
-                render: function (data, type, row) {
-                    return format.format(data.totalDiscount)
-                }
-            }, {
-                title: 'Tổng số tiền thanh toán: ', name: 'totalPay', data: null, render: function (data, type, row) {
-                    return format.format(data.totalPay)
-                }
-            },], processing: true, serverSide: true, search: true, select: true, scrollX: true,
+        }, columns: [{
+            className: 'dt-control', orderable: false, data: null, defaultContent: ''
+        }, {
+            title: 'ID: ', name: 'id', data: 'id',
+        }, {
+            title: 'User ID: ', name: 'userId', data: 'userId',
+        }, {
+            title: 'Tên khách hàng: ', name: 'name', data: 'name',
+        }, {
+            title: 'Email: ', name: 'email', data: 'email',
+        }, {
+            title: 'Số điện thoại: ', name: 'phone', data: 'phone',
+        }, {
+            title: 'Địa chỉ giao hàng: ', name: 'shippingAddress', data: 'shippingAddress', orderable: false,
+        }, {
+            title: 'Hình thức thanh toán: ', name: 'paymentMethod', data: 'paymentMethod', orderable: false,
+        }, {
+            title: 'Tổng số tiền được giảm: ', name: 'totalDiscount', data: null, render: function (data, type, row) {
+                return formatCurrency.format(data.totalDiscount)
+            }
+        }, {
+            title: 'Tổng số tiền thanh toán: ', name: 'totalPay', data: null, render: function (data, type, row) {
+                return formatCurrency.format(data.totalPay)
+            }
+        }, {
+            title: 'Cập nhật trạng thái hóa đơn: ', data: null, orderable: false, render: function (data, type, row) {
+                return `<button class="btn btn-sm btn-warning btn-update-status" data-id="${row.id}">Cập nhật trạng thái đơn hàng</button>`
+            }
+        },], processing: true, serverSide: true, search: true, select: true, scrollX: true
+        , createdRow: function (row, data, dataIndex) {
+            if (data.cancel) {
+                $(row).css('background-color', '#ea0808');
+                $(row).find("td").css("background", "none").css("color", "white");
+                return
+            }
+
+            if (data.success) {
+                $(row).css('background-color', '#2ef50a');
+                $(row).find("td").css("background", "none").css("color", "white");
+            }
+        },
     });
 
     // Add event listener for opening and closing details
@@ -208,7 +223,7 @@ const loadBills = () => {
         const id = row.data().id;
 
         $.ajax({
-            url: "/stationery_kimi/admin/api/bills/bill-detail/" + id,
+            url: `/stationery_kimi/admin/api/bills/bill-detail/${id}`,
             method: "GET",
             contentType: "application/json",
             success: function (response) {
@@ -223,6 +238,14 @@ const loadBills = () => {
 
             }
         })
+    });
+
+    dataTable.on("click", "button.btn-update-status", function (e) {
+        const modal = $("#modal-update-bill-status");
+        modal.modal("show");
+        const billId = $(this).attr("data-id");
+        modal.find(".modal-body").empty().append(htmlTableBillStatus);
+        loadBillStatus(billId);
     });
 
     return dataTable;
@@ -245,11 +268,87 @@ const renderBillDetail = (data) => {
                     <td>${item.id}</td>
                     <td>${item.name}</td>
                     <td>${item.quantity}</td>
-                    <td>${format.format(item.price)}</td>
+                    <td>${formatCurrency.format(item.price)}</td>
                   </tr>`;
     });
 
     table += `</tbody></table>`;
 
     return table;
+}
+
+const loadBillStatus = (billId) => {
+    const editor = new DataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: `/stationery_kimi/admin/api/bill-statuses/create/${billId}`,
+                contentType: "application/json",
+                processData: false,
+                data: function (d) {
+                    return getJson(d);
+                }
+            }, edit: {
+                type: 'PUT', url: '/stationery_kimi/admin/api/bill-statuses/edit/_id_',
+                contentType: 'application/json',
+                data: function (d) {
+                    console.log(getJson(d))
+                    return getJson(d);
+                }
+            }, remove: {
+                type: 'DELETE', url: '/stationery_kimi/admin/api/bill-statuses/delete/_id_'
+            }
+        }, fields: [
+            {
+                label: 'Trạng thái:', name: 'status',
+                type: 'select',
+                options: [
+                    {label: 'Đã đặt hàng', value: 'ORDERED'},
+                    {label: 'Đã đến kho', value: 'ARRIVED_AT_THE_WAREHOUSE'},
+                    {label: 'Đang trên đường giao', value: 'ON_THE_WAY'},
+                    {label: 'Đã giao hàng', value: 'DELIVERED'},
+                    {label: 'Đã hủy', value: 'CANCELED'}
+                ]
+            },
+            {
+                label: 'Mô tả: ', name: 'description', type: "textarea"
+            },
+            {
+                label: 'Thời gian: ', name: 'date', type: 'datetime', format: 'YYYY-MM-DD HH:mm:ss'
+            },
+        ], idSrc: 'id', table: '#bill-status-manager-table'
+    });
+
+
+    const dataTable = new DataTable('#bill-status-manager-table', {
+        ajax: {
+            url: `/stationery_kimi/admin/api/bill-statuses/get/${billId}`,
+        }, columns: [
+            {
+                title: 'ID: ', name: 'id', data: 'id',
+            },
+            {
+                title: 'Trạng thái: ', name: 'status', data: 'status',
+            },
+            {
+                title: 'Mô tả: ', name: 'description', data: 'description', orderable: false,
+            },
+            {
+                title: 'Thời gian: ', name: 'date', data: null, render: function (data, type, row) {
+                    return moment(data.date).format('DD/MM/YYYY HH:mm:ss');
+                }
+            },
+        ], processing: true, serverSide: true, search: true, select: true,
+        layout: {
+            topStart: {
+                buttons: [
+                    {extend: 'create', editor: editor},
+                    {extend: 'edit', editor: editor},
+                    {extend: 'remove', editor: editor},
+                ]
+            }
+        }
+    });
+
+    return dataTable;
 }

@@ -14,7 +14,6 @@ import java.util.Map;
 public class BillManagerController {
     @Autowired
     private IBillService iBillService;
-
     @Autowired
     private IBillDetailService iBillDetailService;
 
@@ -40,14 +39,4 @@ public class BillManagerController {
                 .message("Thành công!")
                 .build();
     }
-
-
-    /*@PutMapping("/update")
-    public ApiResponse<ProductDTO> updateProduct(@ModelAttribute Product product) {
-        ProductDTO productDTO = productService.updateProduct(product);
-        return ApiResponse.<ProductDTO>builder()
-                .message("Cập nhật sản phẩm thành công!")
-                .data(productDTO)
-                .build();
-    }*/
 }

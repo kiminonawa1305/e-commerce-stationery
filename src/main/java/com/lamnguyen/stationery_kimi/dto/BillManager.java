@@ -11,4 +11,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class BillManager extends BillDisplay {
     private Long userId;
+    private Boolean cancel;
+    private Boolean success;
 }

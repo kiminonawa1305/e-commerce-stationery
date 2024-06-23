@@ -34,6 +34,7 @@
     <script th:src="@{/js/dataTables.select.js}"></script>
     <script th:src="@{/js/editor.dataTables.js}"></script>
     <script th:src="@{/js/select.dataTables.js}"></script>
+    <script th:src="${'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'}"></script>
 </head>
 <body>
 <header>
@@ -45,26 +46,31 @@
             <a href="#dashboard" data-hook="dashboard" data-frame="1"
                data-manager="dashboard"
                class="d-block p-2 w-100 menu-item-manager text-decoration-none text-white bg-primary">
+                <i class="fa-solid fa-chart-simple me-1"></i>
                 Thống kê
             </a>
             <a href="#quan-ly-danh-muc" data-hook="quan-ly-danh-muc" data-frame="2"
                data-manager="category"
                class="category-manager d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                <i class="fa-solid fa-list me-1" style="margin-bottom:  -3px"></i>
                 Quản lý danh mục
             </a>
             <a href="#quan-ly-san-pham" data-hook="quan-ly-san-pham" data-frame="3"
                data-manager="product"
                class="d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                <img class="me-1" alt="product-icon" th:src="@{/images/icon/stationery.png}" style="width: 18px"/>
                 Quản lý sản phẩm
             </a>
             <a href="#quan-ly-tai-khoan" data-hook="quan-ly-tai-khoan" data-frame="4"
                data-manager="account"
                class="d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                <i class="fa-solid fa-user me-1"></i>
                 Quản lý tài khoản
             </a>
             <a href="#quan-ly-hoa-don" data-hook="quan-ly-hoa-don" data-frame="5"
                data-manager="bill"
                class="d-block p-2 w-100  menu-item-manager text-decoration-none text-white bg-warning">
+                <i class="fa-solid fa-box me-1"></i>
                 Quản lý hóa đơn
             </a>
         </nav>
@@ -93,8 +99,6 @@
                 <table id="product-manager-table"
                        class="display nowrap row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
                        style="width:100%">
-                    <thead>
-                    </thead>
                 </table>
             </section>
             <section class="frame" id="account-manager" data-frame-id="1">
@@ -114,6 +118,28 @@
         </div>
     </div>
 </main>
+
+<!-- Modal -->
+<div class="modal fade modal-xl" data-bs-backdrop="static" data-bs-keyboard="false"
+     id="modal-update-bill-status" tabindex="-1" aria-labelledby="Update bill status" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #f1f1f1">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Trạng thái đơn hàng</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="bill-status-manager-table"
+                       class="display row-border table table-striped border border-bottom-0 border-1 border-secondary rounded-2 overflow-hidden"
+                       style="width:100%">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 <footer>
     <div th:replace="fragments/footer_fragment::foother"></div>
 </footer>

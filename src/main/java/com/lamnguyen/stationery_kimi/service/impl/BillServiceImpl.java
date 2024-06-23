@@ -62,7 +62,7 @@ public class BillServiceImpl implements IBillService {
         BillStatus billStatus = BillStatus.builder()
                 .bill(bill)
                 .status(BillStatusEnum.ORDERED.getStatus())
-                .data(LocalDateTime.now())
+                .date(LocalDateTime.now())
                 .build();
         iBillStatusService.save(billStatus);
         return convertToDTO(bill);
@@ -93,7 +93,7 @@ public class BillServiceImpl implements IBillService {
         BillStatus billStatus = BillStatus.builder()
                 .bill(bill)
                 .status(BillStatusEnum.CANCELED.getStatus())
-                .data(LocalDateTime.now())
+                .date(LocalDateTime.now())
                 .build();
         return iBillStatusService.save(billStatus);
     }
@@ -104,7 +104,7 @@ public class BillServiceImpl implements IBillService {
 
     private BillDisplay convertToBillDisplay(Bill bill) {
         BillDisplay billDisplay = modelMapper.map(bill, BillDisplay.class);
-        billDisplay.setDate(dateTimeFormatter.format(getBillStatusOrder(bill).getData()));
+        billDisplay.setDate(dateTimeFormatter.format(getBillStatusOrder(bill).getDate()));
         billDisplay.setTotalPay(bill.getBillDetails().stream().mapToInt(billDetail -> billDetail.getQuantity() * billDetail.getPrice()).sum() + bill.getShippingFee() - bill.getBillDetails().stream().mapToInt(BillDetail::getDiscount).sum());
         billDisplay.setTotalDiscount(bill.getBillDetails().stream().mapToInt(BillDetail::getDiscount).sum());
         return billDisplay;
@@ -114,6 +114,8 @@ public class BillServiceImpl implements IBillService {
         BillDisplay billDisplay = convertToBillDisplay(bill);
         BillManager billManager = modelMapper.map(billDisplay, BillManager.class);
         billManager.setUserId(bill.getUser().getId());
+        billManager.setCancel(bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.CANCELED.getStatus())));
+        billManager.setSuccess(bill.getBillStatuses().stream().anyMatch(billStatus -> billStatus.getStatus().equals(BillStatusEnum.DELIVERED.getStatus())));
         return billManager;
     }
 
