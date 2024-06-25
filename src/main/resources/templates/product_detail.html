@@ -29,7 +29,8 @@
             <div class="product-detail-left col-xl-4 pe-5 col-xs-12 col-sm-12 col-md-8">
                 <div class="product-wrap-sticky">
                     <div class="image-product-item pb-3 pt-0 ">
-                        <img style="width: 385px; height: 385px" th:src="@{__${productDetail.productImageDTOS.get(0).url}__}" id="large-product-image"
+                        <img style="width: 385px; height: 385px"
+                             th:src="@{__${productDetail.productImageDTOS.get(0).url}__}" id="large-product-image"
                              alt="Bút bi Thiên Long"
                              class="img-fluid">
                     </div>
@@ -45,9 +46,11 @@
                 <h1 class="fw-light" th:text="${productDetail.name}"/>
                 <div class="row">
                     <div class="col-12 col-md-8">
-                        <p class="fw-medium">Thương hiệu: <span class="text-primary pe-2" th:text="${productDetail.brand}"/>|
+                        <p class="fw-medium">Thương hiệu: <span class="text-primary pe-2"
+                                                                th:text="${productDetail.brand}"/>|
                             Tình trạng: <span class="text-primary">Còn hàng</span></p>
-                        <p class="fw-medium">Mã sản phẩm: <span class="text-primary" th:text="'#' + ${productDetail.id}"/></p>
+                        <p class="fw-medium">Mã sản phẩm: <span class="text-primary"
+                                                                th:text="'#' + ${productDetail.id}"/></p>
                         <div class="product-price">
                             <div class="row"
                                  th:if="${productDetail.discountPercent != null and productDetail.discountPercent != 0.0}">
@@ -79,7 +82,6 @@
                             <div class="product-classify">
                                 <label for="product-classify" class="form-label">Phân loại</label>
                                 <select name="productOptionId" class="form-select" id="product-classify">
-                                    <option selected disabled>Chọn loại màu sắc</option>
                                     <option th:each="option: ${productDetail.productOptionDTOS}"
                                             th:data-max-quantity="${option.quantity}"
                                             th:value="${option.id}"
@@ -105,7 +107,6 @@
                                         <span>Thêm vào giỏ hàng</span>
                                         <i class="fa-solid fa-cart-shopping"></i>
                                     </button>
-                                    <button class="btn btn-warning w-50 p-2">Mua ngay</button>
                                 </div>
                             </div>
                         </div>
@@ -511,6 +512,8 @@
                 }
             })
         })
+
+        inputQuantity.data('max-quantity', selectOption.find(':selected').data("max-quantity"));
     })
 </script>
 </body>

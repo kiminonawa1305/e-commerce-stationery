@@ -8,11 +8,13 @@ import com.lamnguyen.stationery_kimi.service.IShoppingCartService;
 import com.lamnguyen.stationery_kimi.service.impl.ProductServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -147,13 +149,10 @@ public class PageController {
         return "admin-page";
     }
 
-    @PostMapping("/admin")
+    @PostMapping(value = "/admin", produces = MediaType.ALL_VALUE)
     @ResponseBody
     public String uploadFile(@RequestParam Map<String, Object> data) {
-        System.out.println(data.get("action"));
-        System.out.println(data.get("uploadField"));
-        System.out.println(data.get("action").getClass());
-        System.out.println(data.get("uploadField").getClass());
-        return "success";
+        MultipartFile file = (MultipartFile) data.get("file");
+        return data.get("uploadField").toString();
     }
 }

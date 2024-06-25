@@ -30,7 +30,7 @@ public class ProductImageManagerRestController {
                 .build();
     }
 
-    @PostMapping("/add/{productId}")
+    @PostMapping("/create/{productId}")
     public ApiResponse<ProductDTO> add(@PathVariable("productId") Long productId, @RequestParam(required = false) Map<String, Object> query) {
 //        ProductDTO productDTO = iProductImageService.addProduct(product);
         System.out.println(query);

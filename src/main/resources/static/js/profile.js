@@ -103,14 +103,9 @@ $(document).ready(function () {
         if ($(this).hasClass("active")) return
         updateListBill(displayBills, "delivered")
     });
-
     canceled.on("click", function () {
         if ($(this).hasClass("active")) return
         updateListBill(displayBills, "canceled")
-    });
-    delivered.on("click", function () {
-        if ($(this).hasClass("active")) return
-        updateListBill(displayBills, "delivered")
     });
 
     btnStatusBill.on("click", function () {
@@ -180,7 +175,7 @@ const updateListBill = (displayBills, status) => {
         success: function (response) {
             const data = response.data;
             if (data) data.forEach(bill => {
-                displayBills.append(loadBill(bill, status === "canceled"))
+                displayBills.append(loadBill(bill, status === "canceled" || status === "delivered"))
             });
 
             $(".btn-canceled-bill").on("click", function () {
@@ -255,14 +250,14 @@ const loadBill = (bill, isCancel) => {
                             ${format.format(bill.totalPay)}
                         </div>
                         <div class="col-2 d-flex gap-2 justify-content-center border border-end-0 border-top-0 border-bottom-0 border-1 border-secondary"
-                             style="padding-block: 12px">`
-    if (!isCancel)
-        html += `<button data-bill-id="${bill.id}" 
+                             style="padding-block: 12px">
+                            <button data-bill-id="${bill.id}" 
                             class="btn btn-see-bill-detail btn-primary d-inline-flex justify-content-center align-items-center"
                                     style="width: 40px; height: 40px">
                                 <i class="fa-solid fa-eye"></i>
-                            </button>
-                            <button class="btn btn-danger btn-canceled-bill"
+                            </button>`
+    if (!isCancel)
+        html += `           <button class="btn btn-danger btn-canceled-bill"
                             data-bill-id="${bill.id}"
                                     style="width: 40px; height: 40px">
                                 <i class="fa-solid fa-xmark"></i>

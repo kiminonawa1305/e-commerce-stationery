@@ -114,6 +114,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
         user.setVerifyEmailStatus(verifyEmailStatus);
         user.setRole(UserRole.USER.toString());
+        user.setLock(false);
         UserDTO userDTO = userService.save(user);
         return UserDTO.builder()
                 .email(userDTO.getEmail())

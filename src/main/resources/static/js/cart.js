@@ -61,9 +61,8 @@ $(document).ready(function () {
                 }).showToast();
             },
             error: (err) => {
-                console.log(err)
                 Toastify({
-                    text: err.response.message,
+                    text: err.responseJSON.message,
                     duration: 1000,
                     backgroundColor: "#ea0606"
                 }).showToast();
@@ -116,7 +115,7 @@ $(document).ready(function () {
                 "cartItemId": cartItemId,
             }),
             success: (response) => {
-                updateCart(response.data, totalPrice, totalDiscount, totalPay, totalAmount)
+                updateCart(response.data, totalPrice, totalDiscount, totalPay, totalAmount, null)
                 Toastify({
                     text: "Thành công!",
                     duration: 1000,
@@ -263,9 +262,17 @@ $(document).ready(function () {
 const updateCart = (data, totalPrice, totalDiscount, totalPay, totalAmount, totalPayItem) => {
     totalPrice.text(format.format(data.totalPrice))
     totalDiscount.text(format.format(data.totalDiscount))
-    totalPay.text(format.format(data.totalPay))
+    console.log(data.totalPay )
+    if (data.totalPay < 200000) {
+        totalPay.text(format.format(data.totalPay + 10000))
+        $(".shipping-fee").text(format.format(10000))
+    } else {
+        $(".shipping-fee").text(format.format(0))
+        totalPay.text(format.format(data.totalPay))
+    }
     totalAmount.text(format.format(data.totalAmount))
-    totalPayItem.text(format.format(data.totalPayItem))
+    if (totalPayItem)
+        totalPayItem.text(format.format(data.totalPayItem))
 }
 
 

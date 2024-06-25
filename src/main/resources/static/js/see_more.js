@@ -67,7 +67,6 @@ $(document).ready(function () {
             method: "POST",
             contentType: "application/json",
             success: (response) => {
-                console.log(response.data)
                 Toastify({
                     text: "Thêm vào giỏ hàng thành công!",
                     duration: 1000,
@@ -78,7 +77,6 @@ $(document).ready(function () {
                 $("#quantity").val(1)
             },
             error: (error) => {
-                console.log(error)
                 Toastify({
                     text: "Lỗi thêm vào giỏ hàng!",
                     duration: 1000,

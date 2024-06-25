@@ -116,6 +116,13 @@
                                     <div class="total-price-cart" th:text="${#numbers.formatCurrency(totalPrice)}"/>
                                 </div>
                                 <div class="d-flex justify-content-between">
+                                    <div class="mb-3">Phí vận chuyển</div>
+                                    <div class="shipping-fee" th:if="${totalPrice} < 200000"
+                                         th:text="${#numbers.formatCurrency(10000)}"/>
+                                    <div class="shipping-fee" th:if="${totalPrice} >= 200000"
+                                         th:text="${#numbers.formatCurrency(0)}"/>
+                                </div>
+                                <div class="d-flex justify-content-between">
                                     <div class="mb-3">Tổng giảm</div>
                                     <div class="total-discount-cart"
                                          th:text="${#numbers.formatCurrency(totalDiscount)}"/>
@@ -123,7 +130,10 @@
                                 <hr/>
                                 <div class="d-flex justify-content-between">
                                     <div class="mb-3">Tổng thanh toán</div>
-                                    <div class="total-pay-cart" th:text="${#numbers.formatCurrency(totalPay)}"/>
+                                    <div th:if="${totalPrice} < 200000" class="total-pay-cart"
+                                         th:text="${#numbers.formatCurrency(totalPay + 10000)}"/>
+                                    <div th:if="${totalPrice} >= 200000" class="total-pay-cart"
+                                         th:text="${#numbers.formatCurrency(totalPay)}"/>
                                 </div>
                                 <input class="btn btn-primary rounded-2" type="submit" id="btn-submit"
                                        value="Tiến hành đặt hàng"/>

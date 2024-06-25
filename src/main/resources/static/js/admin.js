@@ -184,7 +184,11 @@ const getFromData = (d) => {
     let formData = new FormData();
     $.each(d.data, function (key, value) {
         $.each(value, function (field, fieldValue) {
-            formData.append(field, fieldValue); // append các trường dữ liệu
+            if (field === 'file') {
+                formData.append(field, fieldValue[0]);
+            } else {
+                formData.append(field, fieldValue);
+            }
         });
     });
     return formData;
@@ -644,9 +648,32 @@ const loadProductImage = (productId) => {
             }
         }, fields: [
             {
-                label: 'Hình ảnh: ', name: 'url', type: "upload", display: (fileId) =>
-                    `<img src="${editor.file('files', fileId).web_path}"/>`,
-                clearText: 'Clear',
+                label: 'Hình ảnh: ',
+                name: 'url',
+                type: "upload",
+                display: (fileId) => {
+                    console.log(fileId)
+                    return `<img src="${editor.file('files', fileId).web_path}"/>`
+                },
+                ajax: function (files) {
+                    const data = new FormData();
+                    data.set("file", files);
+                    $.ajax({
+                        url: "http://localhost:8081/stationery_kimi/admin",
+                        type: 'POST',
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            console.log(response)
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    })
+
+                    return files;
+                },
                 noImageText: 'No image'
             },
             {
